@@ -68,7 +68,7 @@ chrome.notifications.onClicked.addListener(function(event){
  var itspurge = false;
 if(event.startsWith("Debug_r")){
   var itsdebug = true;
-  chrome.tabs.create({url: 'debug-history.html'});
+  chrome.tabs.create({url: 'debugdetails.html?id=' + event});
 }
 if(event.startsWith("Purge_r")){
   var itspurge = true;
