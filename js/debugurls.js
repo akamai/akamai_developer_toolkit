@@ -125,9 +125,9 @@ function makeErrorRefReq(arr_errorrefdata, callback) {
   
       var urlparser = document.createElement('a');
       urlparser = active_token['baseurl'];
-      //active_token['baseurl'] = urlparser.toLocaleString() + 'diagnostic-tools/v2/ip-addresses/104.97.15.125/log-lines?endTime=2018-07-12T01%3A31%3A05Z&requestId='+ arr_errorrefdata;
+      active_token['baseurl'] = urlparser.toLocaleString() + 'diagnostic-tools/v2/ip-addresses/104.97.15.125/log-lines?endTime=2018-07-12T01%3A31%3A05Z&requestId='+ arr_errorrefdata;
   
-      active_token['baseurl'] = urlparser.toLocaleString() + 'diagnostic-tools/v2/errors/' + arr_errorrefdata + '/translated-error';
+      //active_token['baseurl'] = urlparser.toLocaleString() + 'diagnostic-tools/v2/errors/' + arr_errorrefdata + '/translated-error';
   
       //var body_data = postBody(arr_urls);
   
