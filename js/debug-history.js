@@ -49,7 +49,7 @@ function loadHistory() {
       li_body_html += "<p><li><b>Full Response:</b>" + li_body_html_response + "</li></p>";
 
 
-     // li_body_html += '<p><a href="#" class="see-more-link" requestId='+obj_history.requestId+'>See more</a></p>';
+      li_body_html += '<p><a href="#" class="see-more-link" requestId='+obj_history.requestId+'>See more</a></p>';
       li_body_html += '<p><a href="#" class="learnmore_debug">Click here</a> to view all "reason for failure" codes and its meaning</p>';
       
 
