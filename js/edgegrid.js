@@ -21,7 +21,7 @@ function authHeaderValueWithOutSignature(apiTokens, timestamp) {
   without_signature += 'access_token=' + apiTokens['accesstoken'] + ';';
   without_signature += 'timestamp=' + timestamp + ';';
   without_signature += 'nonce=70ffd2fa-cede-43ea-befc-c5b6ea33f32b;';
-  without_signature += 'maxBody=131072;'
+  //without_signature += 'maxBody=131072;'
   return without_signature;
 }
 
