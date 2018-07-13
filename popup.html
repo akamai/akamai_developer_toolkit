@@ -1,0 +1,190 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Akamai Developer Toolkit v1.0</title>
+    <link type="text/css" rel="stylesheet" href="css/materialize.css" media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link href="fonts/materialicons.css" rel="stylesheet" type="text/css">
+
+  </head>
+  <body>
+
+    <div class="container" style="width: 650px; padding: 0px">
+
+      <!--title and feedback-->
+
+      <div class="row">
+        <div class="col s9 left">
+            <h4 class="light-blue-text text-accent-3" style="padding-left:20px;"> Akamai Developer Toolkit</h4>
+           <p style="padding-left: 20px;">Created by ryu@akamai.com & ajayapra@akamai.com | version 1.0</p>
+        </div>
+        <div class="col s2 right">
+          <p></p>
+        <a href="#!" id="feedbackform" class="btn blue-grey lighten-5 hoverable tooltipped" data-position="bottom" data-tooltip="Provide feedback to improve the tool"><i class="material-icons blue-grey-text text-darken-2">feedback</i></a>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col s12">
+
+            <div class="card white hoverable">
+                
+                
+              <div class="card-content black-text">
+                  <span class="card-title black-text">API Credentials Manager</span>
+                  
+                  <p>Manage your API credentials and toggle between different kinds of API tokens based on the service you are trying to access </p>
+                  <ul id="tokenlist" class="collection orange-text text-darken-2"></ul>
+                  <div id="apitab-nocredential" class="col s12 center-align" style="font-size: 13px;">
+                      <p>Looks like you have no API credentials configured, <a id="addnewtokenlink" href="#">click here</a> to configure one.</p>
+                  </br>
+                    </div>
+                    <a id="deletealltoken" href="#" class="btn blue-grey lighten-5 hoverable tooltipped" data-position="top" data-tooltip="Delete all tokens"><i class="material-icons blue-grey-text text-darken-2">delete</i></a>
+                    <a id="addnewtoken" href="#" class="btn light-blue hoverable tooltipped" data-position="top" data-tooltip="Add new credential"><i class="material-icons">add</i></a>
+                    
+             
+              </div>
+            </div>
+            <div class="card white hoverable">
+              <div class="card-content black-text">
+                <div class="row">
+                  <div class="col s6 left">
+                    <span class="card-title black-text">Fast Purge</span>
+                    <p>Manage and make purge requests</p>
+                  </div>
+                  <div class="col s4">
+                    <div class="switch" style="margin-top: 20px">
+                      <label>
+                        Invalidation
+                        <input id="updatetype-switch" type="checkbox">
+                        <span class="lever light-blue"></span>
+                        Delete
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col s2 right">
+                    </br>
+                    <a id='purgehistorydetails' href="#" class="btn blue-grey lighten-5 hoverable tooltipped" data-position="bottom" data-tooltip="Purge history">
+                      <i class="material-icons blue-grey-text text-darken-2">history</i>
+                    </a>
+                  </div>
+                </div>
+                <div class="input-field">
+                  <textarea id="purgeurls" class="materialize-textarea"></textarea>
+                  <label for="purgeurls">Enter URLs to purge (Newline separated, include http(s)://)</label>
+                </div>
+                <a id="submitButton-stg" class="btn blue-grey lighten-5 hoverable submit-button blue-grey-text text-darken-3" network="staging">Purge Staging</a>
+                <a id="submitButton-pro" class="btn light-blue hoverable submit-button" style="width: 30%;" network="production">Purge Production</a>
+              </div>
+            </div>
+            <div class="card white hoverable">
+                <div class="card-content black-text">
+                    <div class="row">
+                      <div class="col s5 left">
+                        <span class="card-title black-text">Browser Settings</span>
+                        <p>Use the options below to flush DNS, proxy requests and enable Akamai debug headers</p>
+                      </div>
+                      <div class="col s3 right">
+                          <div class="switch center tooltipped" data-position="bottom right" data-tooltip="If you don't see the headers try refreshing your page again" style="margin-top: 5px;">
+                              <label>
+                               OFF
+                                <input id="updatetype-debugheaders" type="checkbox">
+                                <span class="lever light-blue"></span>
+                                ON
+                              </label>
+                            </div>
+                            <span class="right" style="margin-top: 10px;">Enable Akamai Headers</span>
+                      </div>
+                      <div class="col s3 right">
+                          <a id="flushdns" href="#!" class="btn blue-grey lighten-5 hoverable tooltipped blue-grey-text text-darken-3" data-position="bottom" data-tooltip="flushes your browser's DNS cache" style="margin-left: 0px;">Flush DNS</a>
+                   
+                      </div>
+                      </div>
+                    </br>
+                    <div class="row">
+                      <div class="col s12">
+                        <h6> Proxy Configurations</h6>
+                        <span>Manage your browser's proxy settings by either selecting a pre-existing configuration or proceed by creating one.  </span>
+                        </br></br>
+                              <div id="proxyList">
+                              </div>
+                              <div id="addProxy">
+                                  <a id="addProxyBtn" class="btn light-blue hoverable tooltipped" data-position="bottom" data-tooltip="Add a proxy setting"><i class="material-icons">add</i></a>
+                              </div>
+                              </br> 
+                              <span>Note: Currently only HTTP requests work. HTTPs connections will fail due to chrome's proxy API implementation, if you do know how to resovle them please do let us know by clicking on the feedback button on top of this plugin.</span>
+                      </div>
+                    </div>    
+                </div>
+            </div>
+            <div class="card white hoverable">
+                <div class="card-content white">
+                  <div class="row">
+                    <div class="col s8 left">
+                        <span class="card-title black-text">Debug Requests</span>
+                        <p>Translate error reference codes, once you submit the request you can either click on debug history or on the notification you recieve after placing the request to view the results</p>
+                       
+                    </div>
+                    <div class="col s4 right">
+                        <a id='debughistorydetails' href="#!" class="btn blue-grey lighten-5 hoverable tooltipped blue-grey-text text-darken-3" data-position="bottom" data-tooltip="click here to view the results of your latest request">Debug History</a>
+                        
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col s12">
+                        <div class="input-field disabled">
+                            <textarea id="debugurls" class="materialize-textarea"></textarea>
+                            <label for="debugurls">Enter Error Reference Code</label>
+                          </div>
+                          <a id="debugdata" href="#!" class="btn light-blue hoverable submit-button" style="width: 40%;">Translate Error Code</a>  
+                          </br>
+                          </br>
+                          <p><i>Need more debugging features? <a href="#!" id="feedbackformlink" class="orange-text">click here </a> to request them</i></p> 
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="card grey darken-1">
+              <div class="row">
+                <div class="col s12">
+                  <h5 style="padding-left:20px;" class="white-text">Upcoming Features</h5>
+                  <h6 style="padding-left:20px;" class="white-text">Below is the list of features that are currently being developed, if you wish to have a feature added to this extension please <a href="#" id="feedbackformlink" class="orange-text">click here </a> to request them</h6>
+                </div>            
+              </div>
+              <div class="card white hoverable grey lighten-1">
+                <div class="card-content black-text">
+                  <span class="card-title black-text">Developer Points of Presence</span>
+                  <p>Manage your Akamai sandboxes and debug issues going through the sandbox</p>
+                  </br></br>
+                  <div id="devpops-nosandbox" class="center-align" style="font-size: 13px;">
+                      <p>Looks like you have no sandboxes created, <a id="createsandboxlink" href="#">click here</a> to create one.</p>
+                      <p>Note: you will need to have aleast PAPI api tokens configured or devpops API tokens configured</p>
+                      </br>
+                  </div>
+                  <a id="deleteallsandbox" href="#" class="btn blue-grey lighten-5 hoverable tooltipped disabled" data-position="top" data-tooltip="Delete all sandboxes"><i class="material-icons blue-grey-text text-darken-2">delete</i></a>
+                  <a id="addnewsandbox" href="#" class="btn light-blue hoverable tooltipped disabled" data-position="top" data-tooltip="Create a new Akamai sandbox"><i class="material-icons">add</i></a> 
+                </div>
+              </div>
+
+            <p></p>
+            </br>
+            </div> <!--upcoming section div is closed here-->
+
+          </div>
+      </div>
+    </div> 
+    <!-- container -->
+
+    <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <!-- <script type="text/javascript" src="js/core.js"></script> -->
+    <!-- <script type="text/javascript" src="js/enc&#45;base64.js"></script> -->
+    <!-- <script type="text/javascript" src="js/hmac&#45;sha256.js"></script> -->
+    <!-- <script type="text/javascript" src="js/sha256.js"></script> -->
+    <!-- <script type="text/javascript" src="js/edgegrid.js"></script> -->
+    <script type="text/javascript" src="js/purge.js"></script>
+    <script type="text/javascript" src="js/popup.js"></script>
+    <script type="text/javascript" src="js/debugurls.js"></script>
+  </body>
+</html>

@@ -1,0 +1,62 @@
+<html>
+  <head>
+    <title>Debug History Details</title>
+    <link type="text/css" rel="stylesheet" href="css/materialize.css" media="screen,projection"/>
+  </head>
+  <body>
+    <div class="container" style="margin-top: 100px;">
+    <div class="row">
+        <div class="col s12">
+          <div class="card">
+            <div class="card-content">
+
+              <div class="row">
+                <span class="card-title">Debug History Details</span>
+              </div>
+              <div class="row">
+              <div id="debughistorytab" class="col s12">
+              <div class="row" style="font-size: 11px">
+                    <div class='col s2' style='width: inherit;'>Time(GMT)</div>
+                    <div class='col s3'>Reference Error ID</div>
+                    <div class='col s2'>Reason for failure</div>
+                    <div class='col s2'>Error Response Code</div>
+                    <div class='col s3'>Server IP</div>
+              </div>
+              <ul id="debughistorylist" class="collapsible" data-collapsible="accordion"></ul>
+
+              <div class="row right-align" style="margin-bottom: 0px">
+                <div class="col s12">
+                  <a id="cleardebugHistoryButton" href="#!" class="btn blue-grey">Clear History</a>
+                </div>
+              </div>
+              </div>
+            </div>
+
+
+              <div id="debughistorytab-nohistory" class="col s12 center-align" style="font-size: 13px">
+                    <p>No Debug History Available.</p>
+              </div>
+
+              <div class="row">
+                <div class="col s7 left-align">
+                  <div id="no-info-msg" style="display: none;"><p>No information available.</div>
+                </div>
+                <div class="col s5 right-align">
+                  <a id="closeButton" class="light-blue waves-effect waves-light btn">Close Tab</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    </div> <!-- container -->
+
+    <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="js/debug-history.js"></script>
+  </body>
+</html>
+
+

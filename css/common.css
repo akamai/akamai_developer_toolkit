@@ -1,0 +1,66 @@
+.secondary-content a:hover {
+  text-decoration: underline;
+}
+
+.see-more-link a:hover {
+  text-decoration: underline;
+}
+
+li.disabled {
+  color: #D3D3D3; 
+}
+
+.secondary-content {
+  font-size: 13px;
+}
+
+.submit-button {
+  width: 150px;
+  padding-left: 15px; 
+  padding-right: 15px; 
+}
+
+#joblist .collection-item {
+  padding-left: 20px;
+}
+
+/* token list */
+
+#tokenlist.collection {
+  font-size: 11.5px;
+  border-left: unset;
+  border-right: unset;
+}
+
+/* history list */
+#historylist.collapsible {
+  border-left: unset;
+  border-right: unset;
+  box-shadow: unset;
+  font-size: 13px;
+}
+
+/* tabs */
+.tabs .tab a.active {
+  color: #21a5d2;
+}
+
+.tabs .tab a:hover {
+  color: #21a5d2;
+}
+
+.tabs .tab a {
+  color: #969696;
+}
+
+.tabs .indicator {
+  background-color: #f38b00;
+}
+
+/* switch button */
+.switch label input[type=checkbox]:checked+.lever:after {
+    background-color: #f38b00 !important;
+}
+.switch label input[type=checkbox]:checked+.lever {
+    background-color: #ffd092 !important;
+}
