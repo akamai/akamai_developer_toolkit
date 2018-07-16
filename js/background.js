@@ -3,38 +3,36 @@ var debug_headers = "akamai-x-cache-on, akamai-x-cache-remote-on, akamai-x-check
 var akamai_header = { "name":"Pragma", "value":debug_headers}
 var non_akamai_header = { "name":"Pragma", "value":""}
 
-
 chrome.runtime.onInstalled.addListener(function() {
   chrome.contextMenus.create({
-    "id": "akamaipurgeparent",
+    "id": "akamaidevtoolkit",
     "title": "Purge this URL", 
     "contexts":["all"]
   });
   chrome.contextMenus.create({
-    "id": "akamaipurgechild1",
+    "id": "akamaidevtoolkitchild1",
     "title": "Purge Staging Network", 
-    "parentId": "akamaipurgeparent",
+    "parentId": "akamaidevtoolkit",
     "contexts":["all"]
   });
   chrome.contextMenus.create({
-    "id": "akamaipurgechild2",
+    "id": "akamaidevtoolkitchild2",
     "title": "Purge Production Network", 
-    "parentId": "akamaipurgeparent",
+    "parentId": "akamaidevtoolkit",
     "contexts":["all"]
   });
 
 });
 
 chrome.contextMenus.onClicked.addListener(function(event){
-
   var network = "staging";
 
   if (event.srcUrl != null) {
     switch (event.menuItemId) {
-      case "akamaipurgechild1":
+      case "akamaidevtoolkitchild1":
         network = "staging";
         break;
-      case "akamaipurgechild2":
+      case "akamaidevtoolkitchild2":
         network = "production";
         break;
       default:
@@ -63,27 +61,25 @@ chrome.contextMenus.onClicked.addListener(function(event){
 });
 
 chrome.notifications.onClicked.addListener(function(event){
- // chrome.tabs.create({url: 'purgedetails.html?id=' + event});
- var itsdebug = false;
- var itspurge = false;
-if(event.startsWith("Debug_r")){
-  var itsdebug = true;
-  chrome.tabs.create({url: 'debugdetails.html?id=' + event});
-}
-if(event.startsWith("Purge_r")){
-  var itspurge = true;
-  chrome.tabs.create({url: 'purgedetails.html?id=' + event});
-}
+  // chrome.tabs.create({url: 'purgedetails.html?id=' + event});
+  var itsdebug = false;
+  var itspurge = false;
 
+  if(event.startsWith("Debug_r")){
+    var itsdebug = true;
+    chrome.tabs.create({url: 'debugdetails.html?id=' + event});
+  }
 
-
+  if(event.startsWith("Purge_r")){
+    var itspurge = true;
+    chrome.tabs.create({url: 'purgedetails.html?id=' + event});
+  }
 });
 
 
 chrome.runtime.onUpdateAvailable.addListener(function(){
 	chrome.runtime.reload();
 });
-
 
 chrome.webRequest.onAuthRequired.addListener(
 	function(details, callbackFn) {
@@ -106,9 +102,6 @@ chrome.webRequest.onAuthRequired.addListener(
 	{urls: ["<all_urls>"]},
 	['asyncBlocking']
 );
-
-
-
 
 chrome.webRequest.onBeforeRequest.addListener(function(url){
   chrome.storage.local.get('update_type_debug', function(data){;
@@ -164,8 +157,5 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 
   },
   {urls: ["<all_urls>"]},
-  ["blocking", "requestHeaders"]);
-
-
-
-
+  ["blocking", "requestHeaders"]
+);
