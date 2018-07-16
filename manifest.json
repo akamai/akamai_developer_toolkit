@@ -8,7 +8,7 @@
       "default_popup": "popup.html",
       "default_title": "Akamai Developer Toolkit"
    },
-   "description": "A chrome extension that provides developers access to Akamai developer tools right within their workspace",
+   "description": "A chrome extension that provide developers access to Akamai developer tools right within their workspace",
    "icons": {
       "128": "img/icons-128.png",
       "16": "img/icons-128.png",
@@ -18,6 +18,6 @@
    "name": "Akamai Developer Toolkit",
    "permissions": [ "alarms", "notifications", "tabs", "activeTab", "storage", "contextMenus", "https://*/*", "http://*/*" , "proxy", "webRequest", "webRequestBlocking", "chrome://net-internals/#dns" ],
    "update_url": "https://clients2.google.com/service/update2/crx",
-   "version": "1.0.8",
+   "version": "1.0.9",
    "web_accessible_resources": [ "fonts/*.*", "js/jquery-3.1.1.min.js", "css/font-awesome.min.css", "css/HoldOn.min.css", "js/HoldOn.min.js" ]
 }

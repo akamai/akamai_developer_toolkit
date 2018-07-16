@@ -336,7 +336,7 @@ function setProxyWithData(isDirect, profileData){
 					host: paras[2],
 					port: parseInt(paras[3])
 			    },
-			    bypassList: ["*.*.akamaiapis.net","127.0.0.1/8","*.akamai.com", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "<local>"]
+			    bypassList: ["*.*.akamaiapis.net","127.0.0.1/8", "*.akamai.com", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "<local>"]
 			}
 		};
 		chrome.proxy.settings.set(
@@ -488,6 +488,8 @@ function FindProxyForURL(url, host) { \n
 }
 
 $(document).ready(function(){
+
+ 
   loadCredentialList();
   loadProxy();
 
@@ -911,6 +913,7 @@ $(document).on('click', '#editProxyForm #deleteProxyBtn', function(){
   $('#debugdata').click(function(){
    
     var arr_target_debugdata = $('#debugurls').val().split("\n");
+    var arr_target_ghostIP = $('#ghostIp').val().split("\n");
     var submit_buttons = $('#debugdata');
 
     //enter code to differentiate between error code and request ID
@@ -925,7 +928,7 @@ $(document).on('click', '#editProxyForm #deleteProxyBtn', function(){
       submit_buttons.addClass("disabled");
       this_obj.html('<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>');
       chrome.runtime.getBackgroundPage(function (backgroundpage){
-        backgroundpage.makeErrorRefReq(arr_target_debugdata.filter(Boolean), function(request_result){
+        backgroundpage.makeErrorRefReq(arr_target_debugdata.filter(Boolean), arr_target_ghostIP.filter(Boolean), function(request_result){
           submit_buttons.removeClass("disabled").blur();
           this_obj.html(this_html);
         });

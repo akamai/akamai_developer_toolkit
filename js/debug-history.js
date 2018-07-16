@@ -34,7 +34,7 @@ function loadHistory() {
       li_header = "<div class='collapsible-header' style='padding: 0px'>" + li_header_html + "</div>";
 
       li_body_html = "<li><b>Submitted</b> - " + obj_history.requestedTime + " GMT</li>";
-      li_body_html += "<li><b>Reason for failure</b> - " + obj_history.reason_for_failure + "</li>";
+      li_body_html += "<li><b>Reason for failure / Status</b> - " + obj_history.reason_for_failure + "</li>";
       li_body_html += "<li><b>Reference Error Code</b> - " + obj_history.refID + "</li>";
       li_body_html += "<li><b>Requested URL</b> - " + obj_history.requesturl + "</li>";
      // li_body_html += "<li><b>Purge Progress</b> - " + obj_history.debug_progress + "</li>";

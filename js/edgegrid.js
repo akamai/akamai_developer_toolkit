@@ -13,34 +13,22 @@ function getTimeStampInUtc() {
     }
   }
   return temp_arr[0] + temp_arr[1] + temp_arr[2] + 'T' + temp_arr[3] + ':' + temp_arr[4] + ':' + temp_arr[5] + '+0000';
-  //return temp_arr[0] + '-' + temp_arr[1] + '-' + temp_arr[2] + 'T' + temp_arr[3] + ':' + temp_arr[4] + ':' + temp_arr[5] + 'Z';
 }
 
 function authHeaderValueWithOutSignature(apiTokens, timestamp) {
   var without_signature = 'EG1-HMAC-SHA256 client_token=' + apiTokens['clienttoken'] + ';';
   without_signature += 'access_token=' + apiTokens['accesstoken'] + ';';
   without_signature += 'timestamp=' + timestamp + ';';
-  without_signature += 'nonce=70ffd2fa-cede-43ea-befc-c5b6ea33f32b;';
-  //without_signature += 'maxBody=131072;'
+  without_signature += 'nonce=0ffd2fa-cede-43ea-befc-c5b6ea33f32b;';
   return without_signature;
 }
 
 function dataToSign(apiTokens, without_signature, timestamp, body, method) {
   var parser = document.createElement('a');
   parser.href = apiTokens['baseurl'];
-  arr_t = [method, parser.protocol.replace(":", ""), parser.hostname, parser.pathname].join('\t');
+  arr_t = [method, parser.protocol.replace(":", ""), parser.hostname, parser.pathname + parser.search].join('\t');
   var hash_body_in_base64 = "";
   if (body != "") {hash_body_in_base64 = CryptoJS.enc.Base64.stringify(CryptoJS.SHA256(body));}
-  data_to_sign = arr_t + '\t\t' + hash_body_in_base64 + '\t' + without_signature;
-  return data_to_sign;
-}
-
-function dataToSign_nobody(apiTokens, without_signature, timestamp, method) {
-  var parser = document.createElement('a');
-  parser.href = apiTokens['baseurl'];
-  arr_t = [method, parser.protocol.replace(":", ""), parser.hostname, parser.pathname].join('\t');
-  var hash_body_in_base64 = "";
-  //if (body != "") {hash_body_in_base64 = CryptoJS.enc.Base64.stringify(CryptoJS.SHA256(body));}
   data_to_sign = arr_t + '\t\t' + hash_body_in_base64 + '\t' + without_signature;
   return data_to_sign;
 }
@@ -60,19 +48,6 @@ function authorizationHeader(ingredient) {
   var timestamp = getTimeStampInUtc();
   var auth_header_without_signature = authHeaderValueWithOutSignature(tokens, timestamp);
   var data_to_sign = dataToSign(tokens, auth_header_without_signature, timestamp, body, method);
-  var signing_key_hash_in_base64 = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA256(timestamp, tokens['secret']));
-  var signature = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA256(data_to_sign, signing_key_hash_in_base64));
-  return authorization_header = auth_header_without_signature + 'signature=' + signature;
-}
-
-function authorizationHeader_nobody(ingredient) {
-  var method = ingredient.method;
-  var tokens = ingredient.tokens;
-  //var body = (method == 'POST') ? ingredient.body : "";
-  var timestamp = getTimeStampInUtc();
-  console.log (timestamp)
-  var auth_header_without_signature = authHeaderValueWithOutSignature(tokens, timestamp);
-  var data_to_sign = dataToSign_nobody(tokens, auth_header_without_signature, timestamp, method);
   var signing_key_hash_in_base64 = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA256(timestamp, tokens['secret']));
   var signature = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA256(data_to_sign, signing_key_hash_in_base64));
   return authorization_header = auth_header_without_signature + 'signature=' + signature;
