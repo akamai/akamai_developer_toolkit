@@ -52,3 +52,4 @@ function authorizationHeader(ingredient) {
   var signature = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA256(data_to_sign, signing_key_hash_in_base64));
   return authorization_header = auth_header_without_signature + 'signature=' + signature;
 }
+

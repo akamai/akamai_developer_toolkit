@@ -36,7 +36,6 @@ function showBasicNotification(requestId, title, message, force, img = img_info)
   });
 }
 
-
 function saveHistory(purge_result) {
   var purge_type = '--';
   var purge_progress = 'Unknown';
@@ -97,7 +96,6 @@ function showListNotification(title, purge_result) {
     }
   }
   
-
   chrome.notifications.create(purge_result.requestId, {
     type: "list",
     iconUrl: icon_url,
@@ -151,8 +149,8 @@ function makePurgeRequest(arr_urls, network, callback) {
     }
 
     var urlparser = document.createElement('a');
-    urlparser = active_token['baseurl'];
-    active_token['baseurl'] = urlparser.toLocaleString() + '/ccu/v3/' + update_type + '/url/' + network;
+    urlparser.href = active_token['baseurl'];
+    active_token['baseurl'] = urlparser.origin + '/ccu/v3/' + update_type + '/url/' + network;
 
     var body_data = postBody(arr_urls);
 
