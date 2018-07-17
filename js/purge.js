@@ -149,11 +149,7 @@ function makePurgeRequest(arr_urls, network, callback) {
     }
 
     var urlparser = document.createElement('a');
-<<<<<<< HEAD
-    urlparser = active_token['baseurl'];
-=======
     urlparser.href = active_token['baseurl'];
->>>>>>> master
     active_token['baseurl'] = urlparser.origin + '/ccu/v3/' + update_type + '/url/' + network;
 
     var body_data = postBody(arr_urls);
