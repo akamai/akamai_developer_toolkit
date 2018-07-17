@@ -122,8 +122,6 @@
                   <div class="row">
                     <div class="col s8 left">
                         <span class="card-title black-text">Debug Requests</span>
-                        <p>Translate error reference codes, once you submit the request you can either click on debug history or on the notification you recieve after placing the request to view the results</p>
-                       
                     </div>
                     <div class="col s4 right">
                         <a id='debughistorydetails' href="#!" class="btn blue-grey lighten-5 hoverable tooltipped blue-grey-text text-darken-3" data-position="bottom" data-tooltip="click here to view the results of your latest request">Debug History</a>
@@ -132,11 +130,21 @@
                   </div>
                   <div class="row">
                     <div class="col s12">
-                        <div class="input-field disabled">
-                            <textarea id="debugurls" class="materialize-textarea"></textarea>
-                            <label for="debugurls">Enter Error Reference Code</label>
+                      <span>Allows you to fetch ghost logs for an error or a successfull request from Akamai servers. If you received an error, then simply enter the Error Reference Code. If you wish to pull logs for a succcessfull transaction, then turn on Akamai debug headers under browser settings and enter the <b>hostname</b> and the <b>Akamai server IP</b> below and click submit</span>
+                     
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col s12">
+                        <div class="input-field">
+                            <textarea id="debugurls"  placeholder="9.01233r453ftvfer OR www.example.com"  class="materialize-textarea"></textarea>
+                            <label for="debugurls">Enter Error Reference Code OR Request hostname</label>
                           </div>
-                          <a id="debugdata" href="#!" class="btn light-blue hoverable submit-button" style="width: 40%;">Translate Error Code</a>  
+                          <div class="input-field">
+                              <textarea id="ghostIp" placeholder="104.90.115.100" class="materialize-textarea"></textarea>
+                              <label for="ghostIp">Enter Ghost IP (<b>Only</b> required if you enter a hostname above)</label>
+                            </div>
+                          <a id="debugdata" href="#!" class="btn light-blue hoverable submit-button" style="width: 40%;">Fetch Logs</a>  
                           </br>
                           </br>
                           <p><i>Need more debugging features? <a href="#!" id="feedbackformlink" class="orange-text">click here </a> to request them</i></p> 
