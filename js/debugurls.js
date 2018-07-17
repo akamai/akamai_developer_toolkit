@@ -41,7 +41,7 @@ function saveDebugHistory(debug_result) {
     });
   }
 
-  function saveDebugHistory_logs(debug_result) {
+  function saveDebugHistory_logs(debug_result, arr_ghostIP, arr_errorrefdata) {
     var debug_type = '--';
     var debug_progress = 'Unknown';
     var debugId = 'Unknown';
@@ -55,7 +55,9 @@ function saveDebugHistory(debug_result) {
     var history_data = { 
       'requestedTime': debug_result.requestedTime,
       'lastupdated': getCurrentDatetimeUTC(),
-      'reason_for_failure': 'click to see the raw logs',
+      'reason_for_failure': 'click for raw logs',
+      'ghost_IP': arr_ghostIP,
+      'hostname_entered': arr_errorrefdata,
       //'error_response_code': debug_result.response.translatedError.httpResponseCode,
       //'serverIp': debug_result.response.translatedError.serverIp,
       //'refID': debug_result.refID,
@@ -64,7 +66,7 @@ function saveDebugHistory(debug_result) {
      // 'purgeId': debugId,
      // 'network': purge_result.network,
      // 'Ref Error Code': debug_result.httpResponseCode,
-      'raw_response': debug_result.response.loglines,
+      'raw_response': debug_result.response.logLines,
       'token_used': debug_result.token,
       //'update_type': purge_result.update_type,
       'requestId': debug_result.requestId
@@ -123,7 +125,7 @@ function saveDebugHistory(debug_result) {
   }
 
 
-  function saveDebugHistoryerror_logs(debug_result) {
+  function saveDebugHistoryerror_logs(debug_result, arr_ghostIP, arr_errorrefdata) {
     var debug_type = '--';
     var debug_progress = 'Unknown';
     var debugId = 'Unknown';
@@ -132,7 +134,9 @@ function saveDebugHistory(debug_result) {
     var history_data = { 
       'requestedTime': debug_result.requestedTime,
       'lastupdated': getCurrentDatetimeUTC(),
-      'reason_for_failure': 'click to see the raw logs',
+      'reason_for_failure': 'click for raw logs',
+      'ghost_IP': arr_ghostIP,
+      'hostname_entered': arr_errorrefdata,
       //'error_response_code': debug_result.response.translatedError.httpResponseCode,
       //'serverIp': debug_result.response.translatedError.serverIp,
       //'refID': debug_result.refID,
@@ -159,16 +163,16 @@ function saveDebugHistory(debug_result) {
     });
   }
   
-function onDebugSuccess(debug_result) {
+function onDebugSuccess(debug_result, arr_ghostIP, arr_errorrefdata) {
     //console.log ("onDebugSuccess is run")
     debug_result['accepted'] = "success";
     debug_result['requestedTime'] = getCurrentDatetimeUTC(); 
     //console.log ('req-id = ' + debug_result.response.translatedError.url)
-    showListNotificationdebug("Debug Request Successful", debug_result);
+    showListNotificationdebug("Debug Request Successful", debug_result, arr_ghostIP, arr_errorrefdata);
 }
   
 
-  function onDebugError(debug_result) {
+  function onDebugError(debug_result, arr_ghostIP, arr_errorrefdata) {
     var accepted = "";
     var title = "";
    // console.log ("error is run")
@@ -178,15 +182,17 @@ function onDebugSuccess(debug_result) {
       var title = "Translation Failed";
      // console.log ("response error" + debug_result.response)
     } catch (err) {
+      if(jQuery.isEmptyObject(arr_ghostIP)){
+        debug_result['response'] = JSON.parse(debug_result.xhr.responseText)
+      }
       //debug_result['response'] = {detail: 'Could not make API call, please enter a valid error ref ID'};
-      debug_result['response'] = JSON.parse(debug_result.xhr.responseText)
       var accepted = "connect-fail";
       var title = "Request Failed";
     }
   
     debug_result['accepted'] = accepted;
     debug_result['requestedTime'] = getCurrentDatetimeUTC(); 
-    showListNotificationdebugerror(title, debug_result);
+    showListNotificationdebugerror(title, debug_result, arr_ghostIP, arr_errorrefdata);
   }
 
 
@@ -210,11 +216,11 @@ function makeErrorRefReq(arr_errorrefdata, arr_ghostIP, callback) {
       //set endtime for 
 
       if (jQuery.isEmptyObject(arr_ghostIP)){
-        console.log ('arr_ghostIP');
-        active_token['baseurl'] = urlparser.toLocaleString() + 'diagnostic-tools/v2/errors/' + arr_errorrefdata + '/translated-error';
+        console.log ('no arr_ghostIP');
+        active_token['baseurl'] = urlparser.toLocaleString() + '/diagnostic-tools/v2/errors/' + arr_errorrefdata + '/translated-error';
       }
       else {
-        active_token['baseurl'] = urlparser.toLocaleString() + 'diagnostic-tools/v2/ip-addresses/' + arr_ghostIP + '/log-lines?endTime=' + timestamp_debug + '&hostHeader='+ arr_errorrefdata;
+        active_token['baseurl'] = urlparser.toLocaleString() + '/diagnostic-tools/v2/ip-addresses/' + arr_ghostIP + '/log-lines?endTime=' + timestamp_debug + '&hostHeader='+ arr_errorrefdata;
     
       }
      // active_token['baseurl'] = urlparser.toLocaleString() + 'diagnostic-tools/v2/ip-addresses/104.97.15.125/log-lines?endTime=2018-07-16T03%3A01%3A38Z&clientIp=66.31.23.36&duration=30&hostHeader=www.akamaidevops.com&requestId='+ arr_errorrefdata;
@@ -241,8 +247,8 @@ function makeErrorRefReq(arr_errorrefdata, arr_ghostIP, callback) {
               response: response,
               token: original_token,
               refID: arr_errorrefdata,
-              requestId: requestId
-            });
+              requestId: requestId,
+            }, arr_ghostIP, arr_errorrefdata);
         },
         error: function(xhr, status, error) {
           onDebugError({
@@ -251,7 +257,7 @@ function makeErrorRefReq(arr_errorrefdata, arr_ghostIP, callback) {
             refID: arr_errorrefdata,
             token: original_token,
             requestId: requestId
-          }); 
+          }, arr_ghostIP, arr_errorrefdata); 
         },
         complete: function (xhr, status) {
           if (typeof callback != 'undefined') {
@@ -263,7 +269,7 @@ function makeErrorRefReq(arr_errorrefdata, arr_ghostIP, callback) {
     });
 }
 
-function showListNotificationdebug(title, debug_result) {
+function showListNotificationdebug(title, debug_result, arr_ghostIP, arr_errorrefdata) {
 
     switch (debug_result.accepted) {
       case "success":
@@ -285,10 +291,7 @@ function showListNotificationdebug(title, debug_result) {
   
     var obj_raw_response = debug_result.response;
     var display_items = [];
-    if (debug_result.response.logLines.headers != '0'){
-    display_items = ['log fetch successful'];
-    }
-    else {
+    if(jQuery.isEmptyObject(arr_ghostIP)) {
       display_fields = ['reasonForFailure', 'title'];
       for(var key in obj_raw_response.translatedError) {
         if (display_fields.indexOf(key) >= 0) {
@@ -297,8 +300,12 @@ function showListNotificationdebug(title, debug_result) {
         }
       }
     }
+    else{
+      //display_items = ["title: log fetch successful", "message: click to see more"];
+      console.log (display_items);
+      }
 
-  
+  if(jQuery.isEmptyObject(arr_ghostIP)){
     chrome.notifications.create(debug_result.requestId, {
       type: "list",
       iconUrl: icon_url,
@@ -307,19 +314,32 @@ function showListNotificationdebug(title, debug_result) {
       items: display_items
     }, function() {
       if (debug_result.accepted != 'connect-fail') { 
-        if (debug_result.response.logLines.headers != '0'){
-          saveDebugHistory_logs(debug_result);
-        }
-        else {
+        if(jQuery.isEmptyObject(arr_ghostIP)) {
           saveDebugHistory(debug_result); 
         }
-       
+        else {
+          saveDebugHistory_logs(debug_result, arr_ghostIP, arr_errorrefdata);
+        }
       } 
-    }); 
+    });
+  }
+  else {
+    chrome.notifications.create(debug_result.requestId, {
+      type: "basic",
+      iconUrl: icon_url,
+      title: title,
+      message: "Log fetch successful"
+    }, function() {
+      if (debug_result.accepted != 'connect-fail') { 
+          saveDebugHistory_logs(debug_result, arr_ghostIP, arr_errorrefdata);
+      } 
+    });
+  }
+ 
   
   }
 
-  function showListNotificationdebugerror(title, debug_result) {
+  function showListNotificationdebugerror(title, debug_result, arr_ghostIP, arr_errorrefdata) {
 
     switch (debug_result.accepted) {
       case "success":
@@ -358,9 +378,13 @@ function showListNotificationdebug(title, debug_result) {
       message: "",
       items: display_items
     }, function() {
-     // if (debug_result.accepted != 'connect-fail') { 
-        saveDebugHistoryerror(debug_result); 
-     // } 
+      if (jQuery.isEmptyObject(arr_ghostIP)){
+        saveDebugHistoryerror(debug_result);
+      }
+      else{
+        saveDebugHistoryerror_logs(debug_result, arr_ghostIP, arr_errorrefdata);
+      }
+
     }); 
   
   }

@@ -27,16 +27,41 @@ function loadHistory() {
       var raw_response = obj_history.raw_response;
 
       li_header_html = "<div class='col s2' style='width: inherit;'>" + obj_history.requestedTime.split(' ')[1] + "</div>";
-      li_header_html += "<div class='col s3'>" + obj_history.refID + "</div>";
+      if(jQuery.isEmptyObject(obj_history.ghost_IP)){
+        li_header_html += "<div class='col s3'>" + obj_history.refID + "</div>";
+      }
+      else{
+        li_header_html += "<div class='col s3'>" + obj_history.hostname_entered + "</div>";
+      }
+      
       li_header_html += "<div class='col s2'>" + obj_history.reason_for_failure + "</div>";
       li_header_html += "<div class='col s2'>" + obj_history.error_response_code + "</div>";
-      li_header_html += "<div class='col s3'>" + obj_history.serverIp + "</div>";
+      if(jQuery.isEmptyObject(obj_history.ghost_IP)){
+        li_header_html += "<div class='col s3'>" + obj_history.serverIp + "</div>";
+      }
+      else{
+        li_header_html += "<div class='col s3'>" + obj_history.ghost_IP + "</div>";
+      }
+      
       li_header = "<div class='collapsible-header' style='padding: 0px'>" + li_header_html + "</div>";
 
       li_body_html = "<li><b>Submitted</b> - " + obj_history.requestedTime + " GMT</li>";
       li_body_html += "<li><b>Reason for failure / Status</b> - " + obj_history.reason_for_failure + "</li>";
-      li_body_html += "<li><b>Reference Error Code</b> - " + obj_history.refID + "</li>";
-      li_body_html += "<li><b>Requested URL</b> - " + obj_history.requesturl + "</li>";
+      if(jQuery.isEmptyObject(obj_history.ghost_IP)){
+        li_body_html += "<li><b>Reference Error Code</b> - " + obj_history.refID + "</li>";
+      }
+      else{
+        li_body_html += "<li><b>Hostname entered to fetch logs</b> - " + obj_history.hostname_entered + "</li>";
+      }
+      
+      if(jQuery.isEmptyObject(obj_history.ghost_IP)){
+        li_body_html += "<li><b>Requested URL</b> - " + obj_history.requesturl + "</li>";
+      }
+      else{
+        //li_body_html += "<li><b>Requested URL</b> - " + obj_history.requesturl + "</li>";
+      }
+
+      
      // li_body_html += "<li><b>Purge Progress</b> - " + obj_history.debug_progress + "</li>";
       //li_body_html += "<li><b>Network</b>- " + obj_history.network + "</li>";
 
