@@ -19,7 +19,7 @@
     "default_popup":"popup.html",
     "default_title":"Akamai Developer Toolkit"
   },
-  "description":"A chrome extension that provides developers access to Akamai developer tools right within their workspace",
+  "description":"A chrome extension that provide developers access to Akamai developer tools right within their workspace",
   "icons":{
     "128":"img/icons-128.png",
     "16":"img/icons-128.png",
