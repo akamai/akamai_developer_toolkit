@@ -37,31 +37,20 @@ function showBasicNotification(requestId, title, message, force, img = img_info)
 }
 
 function saveHistory(purge_result) {
-  var purge_type = '--';
-  var purge_progress = 'Unknown';
   var purgeId = 'Unknown';
-
-  if (purge_result.accepted == 'success') {
-    purge_type = (purge_result.response.estimatedSeconds == 5) ? 'v3' : 'v2';
-    purge_progress = (purge_type == 'v2') ? 'In-Progress' : 'No-Status';
-    purgeId = purge_result.response.purgeId;
-  }
-
   var history_data = { 
     'requestedTime': purge_result.requestedTime,
     'lastupdated': getCurrentDatetimeUTC(),
     'purge_request_accepted': purge_result.accepted,
-    'purge_progress': purge_progress,
-    'purge_type': purge_type,
-    'purgeId': purgeId,
+    'purge_type': purge_result.purge_type,
+    'purgeId': purge_result.response.purgeId,
     'network': purge_result.network,
-    'urls': purge_result.request_urls,
+    'purge_objects': purge_result.request_objects,
     'raw_response': purge_result.response,
     'token_used': purge_result.token,
     'update_type': purge_result.update_type,
     'requestId': purge_result.requestId
   };
-
   var save_obj = {};
   var key = 'H_' + purge_result.requestId;
   save_obj[key] = history_data;
@@ -69,7 +58,6 @@ function saveHistory(purge_result) {
 }
 
 function showListNotification(title, purge_result) {
-
   switch (purge_result.accepted) {
     case "success":
       icon_url = img_success;
@@ -101,13 +89,13 @@ function showListNotification(title, purge_result) {
     iconUrl: icon_url,
     title: purge_result.token.desc + ": " + title,
     message: "",
-    items: display_items
+    items: display_items,
+    contextMessage: purge_result.purge_type.toUpperCase() + " Purge" + " - " + purge_result.accepted.capitalize()
   }, function() {
     if (purge_result.accepted != 'connect-fail') { 
       saveHistory(purge_result); 
     } 
   }); 
-
 }
 
 function onPurgeSuccess(purge_result) {
@@ -116,11 +104,9 @@ function onPurgeSuccess(purge_result) {
   showListNotification("Purge Success", purge_result);
 }
 
-
 function onPurgeError(purge_result) {
   var accepted = "";
   var title = "";
-
   try {
     purge_result['response'] = JSON.parse(purge_result.xhr.responseText);
     var accepted = "fail";
@@ -130,13 +116,37 @@ function onPurgeError(purge_result) {
     var accepted = "connect-fail";
     var title = "Request Failed";
   }
-
   purge_result['accepted'] = accepted;
   purge_result['requestedTime'] = getCurrentDatetimeUTC(); 
   showListNotification(title, purge_result);
 }
 
-function makePurgeRequest(arr_urls, network, callback) {
+function inputParser(arr_purge_targets) {
+  var urlchecker = document.createElement('a');
+  var re_cpcode = /^\d\d\d\d\d\d$/g;
+  var arr_urls = [], arr_cpcodes = [], arr_tags = [];
+
+  for(var i=0; i < arr_purge_targets.length; i++) {
+    urlchecker.href = arr_purge_targets[i];
+    if (urlchecker.protocol == "http:" || urlchecker.protocol == "https:") {
+      arr_urls.push(arr_purge_targets[i]);   
+    } else if (arr_purge_targets[i].match(re_cpcode) != null) {
+      arr_cpcodes.push(arr_purge_targets[i]);
+    } else {
+      arr_tags.push(arr_purge_targets[i]);
+    }
+  }
+
+  var purge_targets = { 
+    urls: arr_urls,
+    cpcodes: arr_cpcodes,
+    tags: arr_tags,
+  };
+
+  return purge_targets;
+}
+
+function makePurgeRequest(arr_purge_targets, network, callback) {
   chrome.storage.local.get(['active_token', 'update_type'], function(data) { 
     var update_type = data['update_type'];
     var active_token = $.extend({}, data['active_token']); 
@@ -148,56 +158,92 @@ function makePurgeRequest(arr_urls, network, callback) {
       return false;
     }
 
+    var obj_purge_targets = inputParser(arr_purge_targets);
+    var purge_requests = [];
     var urlparser = document.createElement('a');
     urlparser.href = active_token['baseurl'];
-    active_token['baseurl'] = urlparser.origin + '/ccu/v3/' + update_type + '/url/' + network;
 
-    var body_data = postBody(arr_urls);
+    if (obj_purge_targets.urls.length > 0) {
+      active_token.baseurl = urlparser.origin + '/ccu/v3/' + update_type + '/url/' + network; 
+      purge_requests.push({
+        baseurl: active_token.baseurl,
+        body_data: postBody(obj_purge_targets.urls),
+        auth_header: authorizationHeader({method: "POST", body: postBody(obj_purge_targets.urls), tokens: active_token}),
+        purge_type: 'url',
+        requestId: "PurgeURL_r" + new Date().getTime().toString()
+      });
+    } 
+    
+    if (obj_purge_targets.cpcodes.length > 0) {
+      active_token.baseurl = urlparser.origin + '/ccu/v3/' + update_type + '/cpcode/' + network; 
+      purge_requests.push({
+        baseurl: active_token.baseurl,
+        body_data: postBody(obj_purge_targets.cpcodes),
+        auth_header: authorizationHeader({method: "POST", body: postBody(obj_purge_targets.cpcodes), tokens: active_token}),
+        purge_type: 'cpcode',
+        requestId: "PurgeCPCode_r" + new Date().getTime().toString()
+      });
+    } 
+    
+    if (obj_purge_targets.tags.length > 0) {
+      active_token.baseurl = urlparser.origin + '/ccu/v3/' + update_type + '/tag/' + network; 
+      purge_requests.push({
+        baseurl: active_token.baseurl,
+        body_data: postBody(obj_purge_targets.tags),
+        auth_header: authorizationHeader({method: "POST", body: postBody(obj_purge_targets.tags), tokens: active_token}),
+        purge_type: 'tag',
+        requestId: "PurgeTag_r" + new Date().getTime().toString()
+      });
+    }
 
-    var auth_header = authorizationHeader({
-      method: "POST",
-      body: body_data,
-      tokens: active_token
-    });
-
-    var requestId = "Purge_r" + new Date().getTime().toString();
-
-    $.ajax({
-      url: active_token['baseurl'],
-      contentType: "application/json",
-      type: 'POST',
-      data: body_data,
-      headers: { 'Authorization': auth_header },
-      success: function(response, status, xhr) { 
-        onPurgeSuccess({
-          xhr: xhr,
-          status: status,
-          response: response,
-          request_urls: arr_urls,
-          network: network,
-          token: original_token,
-          update_type: update_type,
-          requestId: requestId
-        });
-      },
-      error: function(xhr, status, error) {
-        onPurgeError({
-          xhr: xhr,
-          status: status,
-          request_urls: arr_urls,
-          network: network,
-          token: original_token,
-          update_type: update_type,
-          requestId: requestId
-        }); 
-      },
-      complete: function (xhr, status) {
-        if (typeof callback != 'undefined') {
-          callback(status);
-        }
+    if (purge_requests.length > 0) {
+      for (i=0; i < purge_requests.length; i++) {
+        sendPurgeRequest(purge_requests[i], network, update_type, original_token, callback);
       }
-    });
-
+    } else {
+      showBasicNotification('inputerror', 'Input Error', 'Please check entered purge targets are correct', true, img_fail);
+      callback("fail");
+      return false;
+    }
   });
 }
 
+function sendPurgeRequest(obj_request, network, update_type, original_token, callback) {
+  $.ajax({
+    url: obj_request.baseurl,
+    contentType: "application/json",
+    type: 'POST',
+    data: obj_request.body_data,
+    headers: { 'Authorization': obj_request.auth_header },
+    success: function(response, status, xhr) { 
+      onPurgeSuccess({
+        xhr: xhr,
+        status: status,
+        response: response,
+        request_objects: JSON.parse(obj_request.body_data).objects,
+        network: network,
+        token: original_token,
+        update_type: update_type,
+        requestId: obj_request.requestId,
+        purge_type: obj_request.purge_type
+      });
+    },
+    error: function(xhr, status, error) {
+      onPurgeError({
+        xhr: xhr,
+        status: status,
+        request_objects: JSON.parse(obj_request.body_data).objects,
+        network: network,
+        token: original_token,
+        update_type: update_type,
+        requestId: obj_request.requestId,
+        purge_type: obj_request.purge_type
+      }); 
+    },
+    complete: function (xhr, status) {
+      if (typeof callback != 'undefined') {
+        callback(status);
+      }
+    }
+  });
+}

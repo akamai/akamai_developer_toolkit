@@ -45,6 +45,7 @@
              
               </div>
             </div>
+
             <div class="card white hoverable">
               <div class="card-content black-text">
                 <div class="row">
@@ -70,13 +71,14 @@
                   </div>
                 </div>
                 <div class="input-field">
-                  <textarea id="purgeurls" class="materialize-textarea"></textarea>
-                  <label for="purgeurls">Enter URLs to purge (Newline separated, include http(s)://)</label>
+                  <textarea id="purgeurls" class="materialize-textarea" placeholder="http://www.foo.com/hello.jpg&#13;&#10;342567&#13;&#10;cachetag"></textarea>
+                  <label for="purgeurls">Enter URL/CPCode/Tag to purge (Newline separated, URL should includes http(s)://)</label>
                 </div>
                 <a id="submitButton-stg" class="btn blue-grey lighten-5 hoverable submit-button blue-grey-text text-darken-3" network="staging">Purge Staging</a>
-                <a id="submitButton-pro" class="btn light-blue hoverable submit-button" style="width: 30%;" network="production">Purge Production</a>
+                <a id="submitButton-pro" class="btn light-blue hoverable submit-button" network="production">Purge Production</a>
               </div>
             </div>
+
             <div class="card white hoverable">
                 <div class="card-content black-text">
                     <div class="row">

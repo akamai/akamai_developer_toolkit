@@ -824,16 +824,14 @@ $(document).on('click', '#editProxyForm #deleteProxyBtn', function(){
     chrome.tabs.create({url: 'https://goo.gl/forms/7ZaZ7XMATVQ8xEyu1'});
   });
 
-
-
   $('#submitButton-stg, #submitButton-pro').click(function(obj){
-    var arr_target_urls = $('#purgeurls').val().split("\n");
+    var arr_purge_targets = $('#purgeurls').val().split("\n");
     var network = $(this).attr('network');
-    for(i=0; i < arr_target_urls.length; i++) {
-      arr_target_urls[i] = arr_target_urls[i].trim().replace(/\s+/g, '');
+    for(i=0; i < arr_purge_targets.length; i++) {
+      arr_purge_targets[i] = arr_purge_targets[i].trim().replace(/\s+/g, '');
     }
-    if (arr_target_urls.filter(Boolean).length == 0) {
-      Materialize.toast('Please enter URLs to purge', 1500);
+    if (arr_purge_targets.filter(Boolean).length == 0) {
+      Materialize.toast('Please enter Cpcode/Tag/URL to purge', 1500);
       return false;
     } else {
       var submit_buttons = $('#submitButton-stg, #submitButton-pro');
@@ -842,7 +840,7 @@ $(document).on('click', '#editProxyForm #deleteProxyBtn', function(){
       submit_buttons.addClass("disabled");
       this_obj.html('<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>');
       chrome.runtime.getBackgroundPage(function (backgroundpage){
-        backgroundpage.makePurgeRequest(arr_target_urls.filter(Boolean), network, function(request_result){
+        backgroundpage.makePurgeRequest(arr_purge_targets.filter(Boolean), network, function(request_result){
           submit_buttons.removeClass("disabled").blur();
           this_obj.html(this_html);
         });
