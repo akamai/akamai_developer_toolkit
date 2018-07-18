@@ -41,6 +41,9 @@ Please download the extension here [Akamai Developer Toolkit - Chrome Web Store]
 > Update: 07/07/18: Support added for proxying HTTP requests, flush DNS cache and enabling Akamai debug headers <br/>
 > Version 1: API credentials manager, ability to issue fast purge request directly from the page you are working on <br/>
 
+#### Interested in contributing code or looking at our roadmap?
+[Roadmap and Backlog](https://trello.com/b/NMa7Qyn7/akamai-developer-toolkit-project-backlog-and-dashboard)
+If you wish to contribute code to the extension, please email: ajayapra@akamai.com 
 
 #### Disclaimer: 
 This is an unofficial extension and there will be no Akamai engineering or Akamai Technical support provided in case the tool fails or throws errors, that being said please report all issues using the feedback button within the extension. All API tokens and credentials are stored locally in your laptop and not beamed up to the internet, we run edgegrid within the extension and pass the computed authorization headers with the API requests.
