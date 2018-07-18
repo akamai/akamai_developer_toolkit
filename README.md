@@ -35,13 +35,14 @@ Manage and make invalidate/delete requests
 Please download the extension here [Akamai Developer Toolkit - Chrome Web Store](https://chrome.google.com/webstore/detail/akamai-developer-toolkit/oeekflkhfpllpepjdkpodopelgaebeed/) and tell us what features you would like to see within the extension using the feedback button within the extension.
 
 
-> Change Log: <br/>
+#### Change Log:
 > Update: 07/18/18: Support added to pruge content using CP codes or Cache Tags <br/>
 > Update: 07/16/18: Support added to a) Translate error reference codes and b) Fetch logs from Akamai servers using Hostname and Ghost IP address <br/>
 > Update: 07/07/18: Support added for proxying HTTP requests, flush DNS cache and enabling Akamai debug headers <br/>
 > Version 1: API credentials manager, ability to issue fast purge request directly from the page you are working on <br/>
 
 
-#### Disclaimer: This is an unofficial extension and there will be no Akamai engineering or Akamai Technical support provided in case the tool fails or throws errors, that being said please report all issues using the feedback button within the extension. All API tokens and credentials are stored locally in your laptop and not beamed up to the internet, we run edgegrid within the extension and pass the computed authorization headers with the API requests.
+#### Disclaimer: 
+This is an unofficial extension and there will be no Akamai engineering or Akamai Technical support provided in case the tool fails or throws errors, that being said please report all issues using the feedback button within the extension. All API tokens and credentials are stored locally in your laptop and not beamed up to the internet, we run edgegrid within the extension and pass the computed authorization headers with the API requests.
 
  
