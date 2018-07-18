@@ -1,55 +1,56 @@
 <html>
   <head>
-    <title>Purge History Details</title>
+    <title>Purge History</title>
     <link type="text/css" rel="stylesheet" href="css/materialize.css" media="screen,projection"/>
   </head>
   <body>
     <div class="container" style="margin-top: 100px;">
-    <div class="row">
+      <div class="row">
         <div class="col s12">
           <div class="card">
             <div class="card-content">
 
               <div class="row">
-                <span class="card-title">Purge History Details</span>
+                <span class="card-title">Purge History</span>
               </div>
-              <div class="row">
-              <div id="historytab" class="col s12">
-              <div class="row" style="font-size: 11px">
-                    <div class='col s2' style='width: inherit;'>Time(GMT)</div>
-                    <div class='col s1' style='width: inherit;'>Type</div>
-                    <div class='col s6' style='padding-right: 0px;'>ID Associated with API</div>
-                    <div class='col s2' style='width: inherit; padding-left:0px'>Accepted</div>
-                    <div class='col s2 right-align' style="padding-right: 20px">Progress</div>
-              </div>
-              <ul id="historylist" class="collapsible" data-collapsible="accordion"></ul>
 
-              <div class="row right-align" style="margin-bottom: 0px">
-                <div class="col s12">
-                  <a id="clearHistoryButton" href="#" class="btn blue-grey">Clear History</a>
+              <div class="row" id="historytab">
+								<table class="highlight centered" style="font-size: 14px">
+									<thead>
+										<tr>
+											<th>Time(GMT)</th>
+											<th>Token</th>
+											<th>UpdateType</th>
+											<th>PurgeType</th>
+											<th>PurgeId</th>
+											<th>Number of Purged Objects</th>
+											<th>Network</th>
+											<th>Status</th>
+											<th></th>
+										</tr>
+                  </thead>
+                  <tbody id="historylist">
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="row" id="historytab-nohistory">
+                <div class="col s12 center-align" style="font-size: 13px">
+                  <p>No Purge History Available.</p>
                 </div>
               </div>
-              </div>
-            </div>
 
-
-              <div id="historytab-nohistory" class="col s12 center-align" style="font-size: 13px">
-                    <p>No Purge History Available.</p>
-              </div>
-
-              <div class="row">
-                <div class="col s7 left-align">
-                  <div id="no-info-msg" style="display: none;"><p>No information available.</div>
-                </div>
-                <div class="col s5 right-align">
-                  <a id="closeButton" class="light-blue waves-effect waves-light btn">Close Tab</a>
+              <div class="row right-align">
+                <div class="col s12 right-align">
+                  <a id="clearHistoryButton" class="btn blue-grey waves-effect waves-light">Clear History</a>
+                  <a id="closeButton" class="btn light-blue waves-effect waves-light">Close Tab</a>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
-    </div>
-
+      </div>
     </div> <!-- container -->
 
     <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
