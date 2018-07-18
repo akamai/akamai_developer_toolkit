@@ -4,6 +4,8 @@ Over the past few months I have had very interesting discussions with developers
 
 After a few brainstorming sessions with [Ricky Yu](https://github.com/ricky840) and his experience with building tools/extensions we decided to create a chrome extension that provides Akamai developer features directly within a browser. Below is a quick summary of the features available for testing within the chrome extension. 
 
+Here is a link the [extension](https://chrome.google.com/webstore/detail/akamai-developer-toolkit/oeekflkhfpllpepjdkpodopelgaebeed/)
+
 ### Akamai API Manager:
 Manage your API credentials and toggle between different kinds of API tokens based on the service you are trying to access.
 - Ability to add and manage API credentials	Ability to manage up to 20 API credentials. Developers tend to have multiple API tokens within a single Akamai account, this extensions helps you toggle between the multiple API endpoints depending on the Akamai service you have access to.    
