@@ -51,7 +51,7 @@
                 <div class="row">
                   <div class="col s6 left">
                     <span class="card-title black-text">Fast Purge</span>
-                    <p>Manage and make purge requests</p>
+                    <p>Manage and make purge requests using URL or URLs, CP codes or Cache Tags</p>
                   </div>
                   <div class="col s4">
                     <div class="switch" style="margin-top: 20px">
@@ -70,9 +70,12 @@
                     </a>
                   </div>
                 </div>
+              </br>
                 <div class="input-field">
-                  <textarea id="purgeurls" class="materialize-textarea" placeholder="http://www.foo.com/hello.jpg&#13;&#10;342567&#13;&#10;cachetag"></textarea>
-                  <label for="purgeurls">Enter URL/CPCode/Tag to purge (Newline separated, URL should includes http(s)://)</label>
+                 <!-- <textarea id="purgeurls" class="materialize-textarea" placeholder="http://www.foo.com/hello.jpg &#60;-- URL&#13;&#10;342567 &#60;-- CP codes&#13;&#10;cachetag &#60;-- Tags"></textarea>-->
+                  <textarea id="purgeurls" class="materialize-textarea" placeholder="http://www.example.com/hello.jpg"></textarea>
+                 
+                  <label for="purgeurls">Type here to purge (Enter multiple urls, cpcodes or tags separated by a newline. URL(s) should start with http(s)://)</label>
                 </div>
                 <a id="submitButton-stg" class="btn blue-grey lighten-5 hoverable submit-button blue-grey-text text-darken-3" network="staging">Purge Staging</a>
                 <a id="submitButton-pro" class="btn light-blue hoverable submit-button" network="production">Purge Production</a>
