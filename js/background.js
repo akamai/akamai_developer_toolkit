@@ -7,8 +7,8 @@ var non_akamai_header = { "name":"Pragma", "value":""}
  * Adding google analytics to track only clicks within the extension, this will help us improve services that are most used, feel free to email ajayapra@akamai.com in case you would like to get a non-analytics version of our extension
  * Source https://chromium.googlesource.com/chromium/src/+/master/chrome/common/extensions/docs/examples/tutorials/analytics/popup.js
  */
-/* prod analytics tracker */
-var _AnalyticsCode = 'UA-116652320-2';
+/* dev analytics tracker */
+var _AnalyticsCode = 'UA-116652320-3';
 
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', _AnalyticsCode]);
