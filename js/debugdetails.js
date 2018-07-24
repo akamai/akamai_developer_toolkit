@@ -1,6 +1,9 @@
 //Ricky Yu owns this page, please do comment out the section you edit or added so he is aware of the changes
 
 $(document).ready(function(){
+  chrome.runtime.getBackgroundPage(function (backgroundpage){
+    backgroundpage._gaq.push(['_trackEvent', 'Debug_details_page', 'loaded']);
+   });
 
     var passedId = getUrlParameter('id');
   
@@ -144,7 +147,12 @@ $(document).ready(function(){
       });
     });
   
-    $('#closeButton').click(function(){ closeCurrentTab(); }); 
+    $('#closeButton').click(function(){ 
+      chrome.runtime.getBackgroundPage(function (backgroundpage){
+        backgroundpage._gaq.push(['_trackEvent', 'Debug_details_page_closebtn', 'clicked']);
+       });
+      closeCurrentTab(); 
+    }); 
 
   });
   

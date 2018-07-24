@@ -1,3 +1,7 @@
+chrome.runtime.getBackgroundPage(function (backgroundpage){
+  backgroundpage._gaq.push(['_trackEvent', 'Popup_page', 'loaded']);
+ });
+
 function loadCredentialList() {
   $('#tokenlist').empty();
   chrome.storage.local.get('tokens', function(data) {
@@ -32,7 +36,7 @@ function loadCredentialList() {
   });
 }
 
-
+/* this function does not get used within this page*/
 function loadHistory() {
   $("#historylist1").empty();
   chrome.storage.local.get(null, function(data) {
@@ -98,6 +102,7 @@ function loadHistory() {
     $('#historytab').show();
     $('#historytab-nohistory').hide();
   });
+
 }
 
 
@@ -166,6 +171,12 @@ function closeOtherForms(){
 }
 
 function addProxy(){
+
+  chrome.runtime.getBackgroundPage(function (backgroundpage){
+    backgroundpage._gaq.push(['_trackEvent', 'Add_new_proxy_btn', 'clicked']);
+   });
+  
+
   closeOtherForms();
 
 	var profileId = 'profile-'+$.now();
@@ -219,6 +230,7 @@ function addProxy(){
 
 
 function saveProxy(profileId, profileName, scheme, host, port, username, password, useRules, rulesUrl){
+
 	if(scheme === 'pac'){
 		port = username = password = rulesUrl = '';
 		useRules = false;
@@ -496,6 +508,12 @@ $(document).ready(function(){
   $(document).on('click', '#addProxyBtn', addProxy);
 
   $(document).on('click', '#flushdns', function(){
+   
+    chrome.runtime.getBackgroundPage(function (backgroundpage){
+      backgroundpage._gaq.push(['_trackEvent', 'flushdns', 'clicked']);
+     });
+    
+
     chrome.tabs.query({}, function (tabs) {
       var needCreate = true;
       for (var i = 0; i < tabs.length; i++) {
@@ -540,6 +558,10 @@ $(document).ready(function(){
   });
 
   $(document).on('click', '#addProxy #submitBtn', function(){
+    chrome.runtime.getBackgroundPage(function (backgroundpage){
+      backgroundpage._gaq.push(['_trackEvent', 'Add_new_proxy_savebtn', 'clicked']);
+      });
+    
     var profileId = $(this).data('profileid');
     var profileName = $('#txtProfileName').prop('value');
     var proxyScheme = $('#txtProxyScheme').prop('value');
@@ -604,6 +626,11 @@ $(document).on('change', '#txtProxyScheme', function(){
   }
 });
 $(document).on('click', '#proxyList #editProxyBtn', function(){
+  chrome.runtime.getBackgroundPage(function (backgroundpage){
+    backgroundpage._gaq.push(['_trackEvent', 'Edit_existing_proxy_btn', 'clicked']);
+    });
+  
+
   closeOtherForms();
 
   var profileId = $(this).data('profileid');
@@ -664,6 +691,10 @@ $(document).on('click', '#proxyList #editProxyBtn', function(){
   });
 });
 $(document).on('click submit', '#editProxyForm #submitBtn', function(){
+  chrome.runtime.getBackgroundPage(function (backgroundpage){
+    backgroundpage._gaq.push(['_trackEvent', 'saving_edits_in_existing_proxy_form', 'clicked']);
+    });
+  
   var profileId = $(this).data('profileid');
   var profileName = $('#txtProfileName').prop('value');
   var proxyScheme = $('#txtProxyScheme').prop('value');
@@ -698,10 +729,18 @@ $(document).on('click submit', '#editProxyForm #submitBtn', function(){
   saveProxy(profileId, profileName, proxyScheme, proxyHost, proxyPort, proxyUsername, proxyPassword, useRules, rulesUrl);
 });
 $(document).on('click', '#editProxyForm #cancelBtn', function(){
+  chrome.runtime.getBackgroundPage(function (backgroundpage){
+    backgroundpage._gaq.push(['_trackEvent', 'cancelling_edits_in_existing_proxy_form', 'clicked']);
+    });
+  
   $('#editProxyForm').prev('#editProxyBtn').show();
   $('#editProxyForm').remove();
 });
 $(document).on('click', '#editProxyForm #deleteProxyBtn', function(){
+  chrome.runtime.getBackgroundPage(function (backgroundpage){
+    backgroundpage._gaq.push(['_trackEvent', 'deleting_edits_in_existing_proxy_form', 'clicked']);
+    });
+  
   var profileId = $(this).data('profileid');
   chrome.storage.local.get('lastProfileId', function(lastProfileIdObj){
     var lastProfileId = lastProfileIdObj['lastProfileId'];
@@ -757,12 +796,22 @@ $(document).on('click', '#editProxyForm #deleteProxyBtn', function(){
 
 
   $("#updatetype-switch").change(function(){
+    chrome.runtime.getBackgroundPage(function (backgroundpage){
+      backgroundpage._gaq.push(['_trackEvent', 'toggle_purge_type', 'clicked']);
+      });
+    
+
     var type = $(this).prop("checked") ? "delete" : "invalidate";
     chrome.storage.local.set({update_type: type});
   });
 
 
   $("#updatetype-debugheaders").change(function(){
+    chrome.runtime.getBackgroundPage(function (backgroundpage){
+      backgroundpage._gaq.push(['_trackEvent', 'toggle_debug_headers', 'clicked']);
+      });
+    
+
     var type = $(this).prop("checked") ? "ON" : "OFF";
     chrome.storage.local.set({update_type_debug: type}, function(){
     console.log("type: " + type); 
@@ -790,6 +839,12 @@ $(document).on('click', '#editProxyForm #deleteProxyBtn', function(){
 
 
   $('#clearHistoryButton').click(function(){
+    chrome.runtime.getBackgroundPage(function (backgroundpage){
+      backgroundpage._gaq.push(['_trackEvent', 'Clear_purge_history', 'clicked']);
+      });
+    
+    
+
     chrome.storage.local.get(null, function(data) {
       var arr_history = [];
       for (var key in data) {
@@ -805,28 +860,59 @@ $(document).on('click', '#editProxyForm #deleteProxyBtn', function(){
   });
 
   $('#deletealltoken').click(function() {
+    chrome.runtime.getBackgroundPage(function (backgroundpage){
+      backgroundpage._gaq.push(['_trackEvent', 'Delete_all_tokens', 'clicked']);
+      });
+    
+
     chrome.storage.local.remove(['tokens', 'active_token']);
     $("#apitab").hide();
     $("#apitab-nocredential").show();
   });
 
   $('#addnewtoken, #addnewtokenlink').click(function(){
+    chrome.runtime.getBackgroundPage(function (backgroundpage){
+      backgroundpage._gaq.push(['_trackEvent', 'Add_new_credential', 'clicked']);
+      });
+    
+
     chrome.tabs.create({url: 'credential.html'});
   });
 
   $('#purgehistorydetails, #purgehistorydetailslink').click(function(){
+    chrome.runtime.getBackgroundPage(function (backgroundpage){
+      backgroundpage._gaq.push(['_trackEvent', 'View_purge_history', 'clicked']);
+      });
+    
+
     chrome.tabs.create({url: 'purge-history.html'});
   });
 
   $('#debughistorydetails, #debughistorydetailslink').click(function(){
+    chrome.runtime.getBackgroundPage(function (backgroundpage){
+      backgroundpage._gaq.push(['_trackEvent', 'View_debug_history', 'clicked']);
+      });
+    
+
     chrome.tabs.create({url: 'debug-history.html'});
   });
 
   $('#feedbackform, #feedbackformlink').click(function(){
+    chrome.runtime.getBackgroundPage(function (backgroundpage){
+      backgroundpage._gaq.push(['_trackEvent', 'View_feedback_form', 'clicked']);
+      });
+    
+
     chrome.tabs.create({url: 'https://goo.gl/forms/7ZaZ7XMATVQ8xEyu1'});
   });
 
   $('#submitButton-stg, #submitButton-pro').click(function(obj){
+    chrome.runtime.getBackgroundPage(function (backgroundpage){
+      backgroundpage._gaq.push(['_trackEvent', 'Submit_purge_req', 'clicked']);
+      });
+    
+    
+
     var arr_purge_targets = $('#purgeurls').val().split("\n");
     var network = $(this).attr('network');
     for(i=0; i < arr_purge_targets.length; i++) {
@@ -852,6 +938,11 @@ $(document).on('click', '#editProxyForm #deleteProxyBtn', function(){
 
 
   $(document).on('click', '.see-more-link', function(obj){
+    chrome.runtime.getBackgroundPage(function (backgroundpage){
+      backgroundpage._gaq.push(['_trackEvent', 'Purge_see_more_link', 'clicked']);
+      });
+    
+
     chrome.tabs.create({url: 'purgedetails.html?id=' + $(this).attr('requestId')});
   });
 
@@ -863,9 +954,19 @@ $(document).on('click', '#editProxyForm #deleteProxyBtn', function(){
     switch(button_type) {
       case "edit":
         chrome.tabs.create({url: 'credential.html?id='+token_id});
+        chrome.runtime.getBackgroundPage(function (backgroundpage){
+          backgroundpage._gaq.push(['_trackEvent', 'Editing_an_api_token', 'clicked']);
+          });
+        
+        
         break;
       case "delete":
         $(this).closest("li.avatar").fadeOut("normal", function(){$(this).remove();});
+        chrome.runtime.getBackgroundPage(function (backgroundpage){
+          backgroundpage._gaq.push(['_trackEvent', 'Deleting_an_api_token', 'clicked']);
+          });
+        
+        
         chrome.storage.local.get(['tokens', 'active_token'], function(data) {
           var arr_tokens = data['tokens'];
           var active_token = data['active_token'];
@@ -891,6 +992,10 @@ $(document).on('click', '#editProxyForm #deleteProxyBtn', function(){
         $(this).closest("li.avatar").find(".key-img").fadeToggle();
         $('.collection-item.avatar').addClass("disabled");
         $(this).closest("li.avatar").removeClass("disabled");
+        chrome.runtime.getBackgroundPage(function (backgroundpage){
+          backgroundpage._gaq.push(['_trackEvent', 'Activating_an_api_token', 'clicked']);
+          });
+        
         chrome.storage.local.get('tokens', function(tokens) {
           var arr_tokens = tokens['tokens'];
           for(var i=0; i < arr_tokens.length; i++) {
@@ -909,6 +1014,10 @@ $(document).on('click', '#editProxyForm #deleteProxyBtn', function(){
 
 
   $('#debugdata').click(function(){
+  chrome.runtime.getBackgroundPage(function (backgroundpage){
+    backgroundpage._gaq.push(['_trackEvent', 'Fetch_logs', 'clicked']);
+    });
+   // _gaq.push(['_trackEvent', 'Fetch_logs', 'clicked']);
    
     var arr_target_debugdata = $('#debugurls').val().split("\n");
     var arr_target_ghostIP = $('#ghostIp').val().split("\n");

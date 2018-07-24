@@ -1,6 +1,3 @@
-
-
-
 function saveDebugHistory(debug_result) {
     var debug_type = '--';
     var debug_progress = 'Unknown';
@@ -164,6 +161,7 @@ function saveDebugHistory(debug_result) {
   }
   
 function onDebugSuccess(debug_result, arr_ghostIP, arr_errorrefdata) {
+  _gaq.push(['_trackEvent', 'Debug_req_successful', 'yes']);
     //console.log ("onDebugSuccess is run")
     debug_result['accepted'] = "success";
     debug_result['requestedTime'] = getCurrentDatetimeUTC(); 
@@ -173,6 +171,7 @@ function onDebugSuccess(debug_result, arr_ghostIP, arr_errorrefdata) {
   
 
   function onDebugError(debug_result, arr_ghostIP, arr_errorrefdata) {
+    _gaq.push(['_trackEvent', 'Debug_req_successful', 'no']);
     var accepted = "";
     var title = "";
    // console.log ("error is run")
@@ -180,6 +179,7 @@ function onDebugSuccess(debug_result, arr_ghostIP, arr_errorrefdata) {
       debug_result['response'] = JSON.parse(debug_result.xhr.responseText);
       var accepted = "fail";
       var title = "Translation Failed";
+      _gaq.push(['_trackEvent', 'Debug_req_failure_reason', 'transaction_failed']);
      // console.log ("response error" + debug_result.response)
     } catch (err) {
       if(jQuery.isEmptyObject(arr_ghostIP)){
@@ -188,6 +188,7 @@ function onDebugSuccess(debug_result, arr_ghostIP, arr_errorrefdata) {
       //debug_result['response'] = {detail: 'Could not make API call, please enter a valid error ref ID'};
       var accepted = "connect-fail";
       var title = "Request Failed";
+      _gaq.push(['_trackEvent', 'Debug_req_failure_reason', 'request_failed']);
     }
   
     debug_result['accepted'] = accepted;
@@ -217,9 +218,11 @@ function makeErrorRefReq(arr_errorrefdata, arr_ghostIP, callback) {
 
       if (jQuery.isEmptyObject(arr_ghostIP)){
         console.log ('no arr_ghostIP');
+        _gaq.push(['_trackEvent', 'Error_ref_code_translation', 'processed']);
         active_token['baseurl'] = urlparser.toLocaleString() + '/diagnostic-tools/v2/errors/' + arr_errorrefdata + '/translated-error';
       }
       else {
+        _gaq.push(['_trackEvent', 'fetch_logs_from_ghost_IP', 'processed']);
         active_token['baseurl'] = urlparser.toLocaleString() + '/diagnostic-tools/v2/ip-addresses/' + arr_ghostIP + '/log-lines?endTime=' + timestamp_debug + '&hostHeader='+ arr_errorrefdata;
     
       }
