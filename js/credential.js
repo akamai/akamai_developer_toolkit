@@ -1,4 +1,7 @@
 $(document).ready(function(){
+  chrome.runtime.getBackgroundPage(function (backgroundpage){
+    backgroundpage._gaq.push(['_trackEvent', 'Add_new_credentials_page', 'loaded']);
+   });
 
   var apiTokenIds = ['baseurl', 'accesstoken', 'clienttoken', 'secret', 'credential_desc'];
   var passedId = getUrlParameter('id');
@@ -25,7 +28,9 @@ $(document).ready(function(){
   }
 
   $('#submitButton').click(function() {
-
+    chrome.runtime.getBackgroundPage(function (backgroundpage){
+      backgroundpage._gaq.push(['_trackEvent', 'New_credentials_page_save_btn', 'clicked']);
+     });
     var desc = $("#credential_desc").val().trim();
     var baseurl = $("#baseurl").val().trim();
     var accesstoken = $("#accesstoken").val().trim();
@@ -89,6 +94,9 @@ $(document).ready(function(){
 
       chrome.storage.local.set({'tokens': arr_tokens} , function() { 
         alert('Saved Successfully');
+        chrome.runtime.getBackgroundPage(function (backgroundpage){
+          backgroundpage._gaq.push(['_trackEvent', 'New_credentials_page_save_successful', 'yes']);
+         });
         closeCurrentTab();
       });
 
@@ -97,6 +105,9 @@ $(document).ready(function(){
   });
 
   $('#clearButton').click(function() {
+    chrome.runtime.getBackgroundPage(function (backgroundpage){
+      backgroundpage._gaq.push(['_trackEvent', 'New_credentials_page_reset_btn', 'clicked']);
+     });
     for (var i=0; i < apiTokenIds.length; i++) {
       obj_input = $('#'+apiTokenIds[i]).val('');
     }

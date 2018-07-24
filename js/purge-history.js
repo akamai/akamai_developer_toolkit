@@ -48,7 +48,13 @@ function loadHistory() {
 $(document).ready(function(){
   loadHistory();
 
+  chrome.runtime.getBackgroundPage(function (backgroundpage){
+    backgroundpage._gaq.push(['_trackEvent', 'Purge_history_page', 'loaded']);
+   });
   $('#clearHistoryButton').click(function(){
+    chrome.runtime.getBackgroundPage(function (backgroundpage){
+      backgroundpage._gaq.push(['_trackEvent', 'Purge_history_page_clearhistory', 'clicked']);
+     });
     chrome.storage.local.get(null, function(data) {
       var arr_history = [];
       for (var key in data) {
@@ -64,8 +70,15 @@ $(document).ready(function(){
   });
 
   $(document).on('click', '.see-more-link', function(obj){
+    chrome.runtime.getBackgroundPage(function (backgroundpage){
+      backgroundpage._gaq.push(['_trackEvent', 'Purge_history_page_seemore', 'clicked']);
+     });
     chrome.tabs.create({url: 'purgedetails.html?id=' + $(this).attr('requestId')});
   });
 
-  $('#closeButton').click(function(){ closeCurrentTab(); }); 
+  $('#closeButton').click(function(){ 
+    chrome.runtime.getBackgroundPage(function (backgroundpage){
+      backgroundpage._gaq.push(['_trackEvent', 'Purge_history_page_closebtn', 'clicked']);
+     });
+    closeCurrentTab(); }); 
 });

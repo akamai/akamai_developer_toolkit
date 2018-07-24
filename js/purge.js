@@ -1,5 +1,6 @@
 //Ricky Yu owns this page, please do comment out the section you edit or added so he is aware of the changes
 
+
 var img_success = "img/success_icon.png",
   img_fail = "img/fail_icon.png",
   img_info = "img/info_icon.jpg";
@@ -102,19 +103,25 @@ function onPurgeSuccess(purge_result) {
   purge_result['accepted'] = "success";
   purge_result['requestedTime'] = getCurrentDatetimeUTC(); 
   showListNotification("Purge Success", purge_result);
+  _gaq.push(['_trackEvent', 'Purge_req_successful', 'yes']);
+
 }
 
 function onPurgeError(purge_result) {
+  _gaq.push(['_trackEvent', 'Purge_req_successful', 'no']);
+
   var accepted = "";
   var title = "";
   try {
     purge_result['response'] = JSON.parse(purge_result.xhr.responseText);
     var accepted = "fail";
     var title = "Purge Failed";
+    _gaq.push(['_trackEvent', 'Purge_req_failure_reason', 'Purge_failed']);
   } catch (err) {
     purge_result['response'] = {detail: 'Could not make API call'};
     var accepted = "connect-fail";
     var title = "Request Failed";
+    _gaq.push(['_trackEvent', 'Purge_req_failure_reason', 'Request Failed']);
   }
   purge_result['accepted'] = accepted;
   purge_result['requestedTime'] = getCurrentDatetimeUTC(); 

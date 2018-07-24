@@ -2,6 +2,10 @@
 
 $(document).ready(function(){
 
+  chrome.runtime.getBackgroundPage(function (backgroundpage){
+    backgroundpage._gaq.push(['_trackEvent', 'Purge_details_page', 'loaded']);
+   });
+
   var passedId = getUrlParameter('id');
 
   if (passedId == '' || passedId == null) {
@@ -149,6 +153,10 @@ $(document).ready(function(){
     });
   });
 
-  $('#closeButton').click(function(){ closeCurrentTab(); }); 
+  $('#closeButton').click(function(){ 
+    chrome.runtime.getBackgroundPage(function (backgroundpage){
+      backgroundpage._gaq.push(['_trackEvent', 'Purge_details_page_closebtn', 'clicked']);
+     });
+    closeCurrentTab(); }); 
 });
 
