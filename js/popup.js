@@ -190,7 +190,6 @@ function loadProxy() {
         $('#proxyList').append('<input type="radio" ' + checkedStatus + ' id="setProxyBtn_' + profileId + '" data-profileid="' + profileId + '" /><label for="setProxyBtn_' + profileId + '">' + paras[0] + '</label><a id="editProxyBtn"  data-profileid="' + profileId + '" href="#!" class="right tooltipped" data-position="left" data-tooltip="Edit this proxy setting" style="font-size: 15px;">Edit</a><hr />\
 				');
       }
-
     }
   });
 }
@@ -470,7 +469,6 @@ $(document).ready(function() {
     });
   });
 
-
   $(document).on('click', '#setProxyBtn', function() {
     var profileId = $(this).data('profileid');
     setProxy(profileId);
@@ -567,7 +565,6 @@ $(document).ready(function() {
       $('#lblProxyPassword').show();
       $('#txtProxyPassword').show();
       $('#trSmart').show();
-
     }
   });
 
@@ -830,37 +827,23 @@ $(document).ready(function() {
   });
 
   $('#apicredstutorial').click(function(){
-
 		chrome.runtime.getBackgroundPage(function (backgroundpage){
 			backgroundpage._gaq.push(['_trackEvent', 'View_api_creds_tutorial', 'clicked']);
 		});
 		chrome.tabs.create({url: 'https://youtu.be/6PhU7lwOqHM'});
 	});
 
-    chrome.runtime.getBackgroundPage(function (backgroundpage){
-      backgroundpage._gaq.push(['_trackEvent', 'View_api_creds_tutorial', 'clicked']);
-      });
-    
-
-    chrome.tabs.create({url: 'https://youtu.be/6PhU7lwOqHM'});
-  });
-
-
-$('#fastpurgetutorial').click(function(){
+  $('#fastpurgetutorial').click(function(){
     chrome.runtime.getBackgroundPage(function (backgroundpage){
       backgroundpage._gaq.push(['_trackEvent', 'View_fast_purge_tutorial', 'clicked']);
-      });
-    
-
+    });
     chrome.tabs.create({url: 'https://youtu.be/kk9RDQaARxw'});
   });
 
-$('#debugtutorial').click(function(){
+  $('#debugtutorial').click(function(){
     chrome.runtime.getBackgroundPage(function (backgroundpage){
       backgroundpage._gaq.push(['_trackEvent', 'View_debug_reqests_tutorial', 'clicked']);
       });
-    
-
     chrome.tabs.create({url: 'https://youtu.be/8NW0M7PyW68'});
   });
 
@@ -868,38 +851,8 @@ $('#debugtutorial').click(function(){
     chrome.runtime.getBackgroundPage(function (backgroundpage){
       backgroundpage._gaq.push(['_trackEvent', 'View_browser_settings_tutorial', 'clicked']);
       });
-    
-
     chrome.tabs.create({url: 'https://youtu.be/YZsaQZzMtmM'});
   });
-
-
-  $('#submitButton-stg, #submitButton-pro').click(function(obj){
-    chrome.runtime.getBackgroundPage(function (backgroundpage){
-      backgroundpage._gaq.push(['_trackEvent', 'Submit_purge_req', 'clicked']);
-      });
-    
-
-	$('#fastpurgetutorial').click(function(){
-		chrome.runtime.getBackgroundPage(function (backgroundpage){
-			backgroundpage._gaq.push(['_trackEvent', 'View_fast_purge_tutorial', 'clicked']);
-		});
-		chrome.tabs.create({url: 'https://youtu.be/kk9RDQaARxw'});
-	});
-
-	$('#debugtutorial').click(function(){
-		chrome.runtime.getBackgroundPage(function (backgroundpage){
-			backgroundpage._gaq.push(['_trackEvent', 'View_debug_reqests_tutorial', 'clicked']);
-		});
-		chrome.tabs.create({url: 'https://youtu.be/8NW0M7PyW68'});
-	});
-
-	$('#browsersettingstutorial').click(function(){
-		chrome.runtime.getBackgroundPage(function (backgroundpage){
-			backgroundpage._gaq.push(['_trackEvent', 'View_browser_settings_tutorial', 'clicked']);
-		});
-		chrome.tabs.create({url: 'https://youtu.be/YZsaQZzMtmM'});
-	});
 
   $('#submitButton-stg, #submitButton-pro').click(function(obj) {
     chrome.runtime.getBackgroundPage(function(backgroundpage) {
