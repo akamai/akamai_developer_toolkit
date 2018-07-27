@@ -26,13 +26,12 @@ function loadHistory() {
 
     for (var i=0; i < arr_history.length; i++) {
       var obj_history = arr_history[i];
-      var raw_response = obj_history.raw_response;
       tbody_html = "<tr>"; 
       tbody_html += "<td>" + obj_history.requestedTime + "</td>"; 
       tbody_html += "<td>" + obj_history.token_used.desc.capitalize() + "</td>"; 
       tbody_html += "<td>" + obj_history.update_type.capitalize() + "</td>"; 
       tbody_html += "<td>" + obj_history.purge_type.toUpperCase() + "</td>"; 
-      tbody_html += "<td>" + obj_history.purgeId + "</td>"; 
+      tbody_html += "<td>" + (obj_history.purgeId === undefined ? "Unknown" : obj_history.purgeId) + "</td>"; 
       tbody_html += "<td>" + obj_history.purge_objects.length + "</td>"; 
       tbody_html += "<td>" + obj_history.network.capitalize() + "</td>"; 
       tbody_html += "<td>" + obj_history.purge_request_accepted.capitalize() + "</td>"; 
