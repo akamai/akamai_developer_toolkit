@@ -8,7 +8,8 @@ var non_akamai_header = { "name":"Pragma", "value":""}
  * Source https://chromium.googlesource.com/chromium/src/+/master/chrome/common/extensions/docs/examples/tutorials/analytics/popup.js
  */
 /* dev analytics tracker */
-var _AnalyticsCode = 'UA-116652320-3';
+// var _AnalyticsCode = 'UA-116652320-3';
+var _AnalyticsCode = 'UA-116652320-3---';
 
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', _AnalyticsCode]);
@@ -22,8 +23,6 @@ _gaq.push(['_trackPageview']);
   var s = document.getElementsByTagName('script')[0];
   s.parentNode.insertBefore(ga, s);
 })();
-
-
 
 chrome.runtime.onInstalled.addListener(function() {
   chrome.contextMenus.create({
@@ -43,7 +42,6 @@ chrome.runtime.onInstalled.addListener(function() {
     "parentId": "akamaidevtoolkit",
     "contexts":["all"]
   });
-
 });
 
 chrome.contextMenus.onClicked.addListener(function(event){

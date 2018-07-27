@@ -37,7 +37,6 @@
     "contextMenus",
     "https://*/*",
     "http://*/*",
-    "chrome://net-internals/*",
     "proxy",
     "webRequest",
     "webRequestBlocking"
