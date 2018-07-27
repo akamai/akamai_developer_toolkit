@@ -830,11 +830,55 @@ $(document).ready(function() {
   });
 
   $('#apicredstutorial').click(function(){
+
 		chrome.runtime.getBackgroundPage(function (backgroundpage){
 			backgroundpage._gaq.push(['_trackEvent', 'View_api_creds_tutorial', 'clicked']);
 		});
 		chrome.tabs.create({url: 'https://youtu.be/6PhU7lwOqHM'});
 	});
+
+    chrome.runtime.getBackgroundPage(function (backgroundpage){
+      backgroundpage._gaq.push(['_trackEvent', 'View_api_creds_tutorial', 'clicked']);
+      });
+    
+
+    chrome.tabs.create({url: 'https://youtu.be/6PhU7lwOqHM'});
+  });
+
+
+$('#fastpurgetutorial').click(function(){
+    chrome.runtime.getBackgroundPage(function (backgroundpage){
+      backgroundpage._gaq.push(['_trackEvent', 'View_fast_purge_tutorial', 'clicked']);
+      });
+    
+
+    chrome.tabs.create({url: 'https://youtu.be/kk9RDQaARxw'});
+  });
+
+$('#debugtutorial').click(function(){
+    chrome.runtime.getBackgroundPage(function (backgroundpage){
+      backgroundpage._gaq.push(['_trackEvent', 'View_debug_reqests_tutorial', 'clicked']);
+      });
+    
+
+    chrome.tabs.create({url: 'https://youtu.be/8NW0M7PyW68'});
+  });
+
+  $('#browsersettingstutorial').click(function(){
+    chrome.runtime.getBackgroundPage(function (backgroundpage){
+      backgroundpage._gaq.push(['_trackEvent', 'View_browser_settings_tutorial', 'clicked']);
+      });
+    
+
+    chrome.tabs.create({url: 'https://youtu.be/YZsaQZzMtmM'});
+  });
+
+
+  $('#submitButton-stg, #submitButton-pro').click(function(obj){
+    chrome.runtime.getBackgroundPage(function (backgroundpage){
+      backgroundpage._gaq.push(['_trackEvent', 'Submit_purge_req', 'clicked']);
+      });
+    
 
 	$('#fastpurgetutorial').click(function(){
 		chrome.runtime.getBackgroundPage(function (backgroundpage){
