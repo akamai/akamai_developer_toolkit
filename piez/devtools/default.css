@@ -277,9 +277,9 @@ td {
 @media all and ( max-width: 1200px ) {
 	h1 {
 		 text-align: center;
-		 font-size: 16px;
+		 font-size: 30px;
 		 font-weight: 400;
-		 color: #676767;
+		 color: #000000;
 		 min-height: 33px;
 	}
 	[class*="col-"] {
@@ -287,9 +287,9 @@ td {
 		vertical-align: middle;
 	}
 	h3 {
-		 font-size: 15px;
+		 font-size: 30px;
 		 font-weight: 600;
-		 color: #353535;
+		 color: #525252;
 		 text-align: center;
 	}
 	table {
