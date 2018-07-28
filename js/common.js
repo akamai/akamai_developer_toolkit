@@ -14,6 +14,7 @@ function closeCurrentTab() {
     chrome.tabs.remove(tab.id);
   });
 }
+
 function getTimeStampInUtcUrlencoded() {
   obj_date = new Date();
   year = obj_date.getUTCFullYear();
