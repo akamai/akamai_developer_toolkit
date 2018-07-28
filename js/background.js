@@ -81,52 +81,68 @@ beforeSendCallback = function(details) {
           //The URL matched our exclusion criteria
           return;
       } //else
-      //Do your normal event processing here
-  chrome.storage.local.get('update_type_debug', function(data){;
-    var type = data['update_type_debug'];
-    //console.log("type is :"  + type);
-    if (type == 'ON'){
-      enabled = type === 'ON';
-      
-  }
-    if(type == 'OFF'|| type == null){
-      enabled = false;
-  }
-    });
 
-  if (enabled){
-   	if (details.url.indexOf('http') != -1) {
-	  	if (piezCurrentStateCached == 'piez-a2') {
-			 details.requestHeaders.push({name: 'pragma', value: 'x-akamai-a2-trace, akamai-x-cache-on, akamai-x-cache-remote-on, akamai-x-check-cacheable, akamai-x-get-cache-key, akamai-x-get-true-cache-key, akamai-x-get-extracted-values, akamai-x-get-request-id, akamai-x-serial-no, akamai-x-get-ssl-client-session-id, akamai-x-get-client-ip'});
-			 details.requestHeaders.push({name: 'x-akamai-rua-debug', value: 'on'});
-		 }
-		 else {
-			 details.requestHeaders.push({name: 'x-im-piez', value: 'on'});
-			 details.requestHeaders.push({name: 'pragma', value: 'akamai-x-ro-trace, akamai-x-cache-on, akamai-x-cache-remote-on, akamai-x-check-cacheable, akamai-x-get-cache-key, akamai-x-get-true-cache-key, akamai-x-get-extracted-values, akamai-x-get-request-id, akamai-x-serial-no, akamai-x-get-ssl-client-session-id, akamai-x-get-client-ip'});
-			 details.requestHeaders.push({name: 'x-akamai-ro-piez', value: 'on'});
-			 details.requestHeaders.push({name: 'x-akamai-a2-disable', value: 'on'})
-		 }
-
-   }
-  }
   else {
-    if (details.url.indexOf('http') != -1) {
-	  	if (piezCurrentStateCached == 'piez-a2') {
-			 details.requestHeaders.push({name: 'pragma', value: 'x-akamai-a2-trace'});
-			 details.requestHeaders.push({name: 'x-akamai-rua-debug', value: 'on'});
-		 }
-		 else {
-			 details.requestHeaders.push({name: 'x-im-piez', value: 'on'});
-			 details.requestHeaders.push({name: 'pragma', value: 'akamai-x-ro-trace'});
-			 details.requestHeaders.push({name: 'x-akamai-ro-piez', value: 'on'});
-			 details.requestHeaders.push({name: 'x-akamai-a2-disable', value: 'on'})
-		 }
-
-   }
+    //console.log('in the else loop');
+      //Do your normal event processing here
+      chrome.storage.local.get('update_type_debug', function(data){;
+        var type = data['update_type_debug'];
+       // console.log("type is :"  + type);
+        if (type == 'ON'){
+          enabled = type === 'ON';
+          
+      }
+        if(type == 'OFF'|| type == null){
+          enabled = false;
+      }
+        });
+    
+      if (enabled){
+         if (details.url.indexOf('http') != -1) {
+          if (piezCurrentStateCached == 'piez-a2') {
+          console.log('A2 headers - pragma on');
+           details.requestHeaders.push({name: 'pragma', value: 'x-akamai-a2-trace, akamai-x-cache-on, akamai-x-cache-remote-on, akamai-x-check-cacheable, akamai-x-get-cache-key, akamai-x-get-true-cache-key, akamai-x-get-extracted-values, akamai-x-get-request-id, akamai-x-serial-no, akamai-x-get-ssl-client-session-id, akamai-x-get-client-ip'});
+           details.requestHeaders.push({name: 'x-akamai-rua-debug', value: 'on'});
+         }
+         if (piezCurrentStateCached == 'piez-off'){
+           details.requestHeaders.push({name: 'pragma', value: 'akamai-x-ro-trace, akamai-x-cache-on, akamai-x-cache-remote-on, akamai-x-check-cacheable, akamai-x-get-cache-key, akamai-x-get-true-cache-key, akamai-x-get-extracted-values, akamai-x-get-request-id, akamai-x-serial-no, akamai-x-get-ssl-client-session-id, akamai-x-get-client-ip'});
+         }
+         else {
+          console.log('IM headers - pragma on');
+           details.requestHeaders.push({name: 'x-im-piez', value: 'on'});
+           details.requestHeaders.push({name: 'pragma', value: 'akamai-x-ro-trace, akamai-x-cache-on, akamai-x-cache-remote-on, akamai-x-check-cacheable, akamai-x-get-cache-key, akamai-x-get-true-cache-key, akamai-x-get-extracted-values, akamai-x-get-request-id, akamai-x-serial-no, akamai-x-get-ssl-client-session-id, akamai-x-get-client-ip'});
+           details.requestHeaders.push({name: 'x-akamai-ro-piez', value: 'on'});
+           details.requestHeaders.push({name: 'x-akamai-a2-disable', value: 'on'})
+         }
+    
+       }
+      }
+      else {
+        if (details.url.indexOf('http') != -1) {
+          if (piezCurrentStateCached == 'piez-a2') {
+            //console.log('A2 headers - pragma off');
+           details.requestHeaders.push({name: 'pragma', value: 'x-akamai-a2-trace'});
+           details.requestHeaders.push({name: 'x-akamai-rua-debug', value: 'on'});
+         }
+         if (piezCurrentStateCached == 'piez-off'){
+          console.log('do nothing');
+         }
+         else {
+          //console.log('IM headers - pragma off');
+           details.requestHeaders.push({name: 'x-im-piez', value: 'on'});
+           details.requestHeaders.push({name: 'pragma', value: 'akamai-x-ro-trace'});
+           details.requestHeaders.push({name: 'x-akamai-ro-piez', value: 'on'});
+           details.requestHeaders.push({name: 'x-akamai-a2-disable', value: 'on'})
+         }
+    
+       }
+    
+      }
+    
+      return {requestHeaders: details.requestHeaders};
 
   }
 
-	return {requestHeaders: details.requestHeaders};
 };
 
 chrome.webNavigation.onBeforeNavigate.addListener(function beforeNavigate(details) {
@@ -231,7 +247,9 @@ var setPiezCurrentState = function(state) {
 			//chrome.browserAction.setBadgeText({"text": piezCurrentStateOptions[state]["browserActionText"]});
       //chrome.browserAction.setBadgeBackgroundColor({"color": [44, 146, 3, 255]});
       chrome.browserAction.setBadgeText({text: ''});
-			chrome.webRequest.onBeforeSendHeaders.removeListener(beforeSendCallback);
+      //chrome.webRequest.onBeforeSendHeaders.removeListener(beforeSendCallback);
+			chrome.webRequest.onBeforeSendHeaders.addListener(beforeSendCallback, {urls: [ "<all_urls>" ]}, ['requestHeaders','blocking']);
+
 		});
 	}
 	else {
