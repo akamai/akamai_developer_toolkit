@@ -1,6 +1,4 @@
 //Ricky Yu owns this page, please do comment out the section you edit or added so he is aware of the changes
-
-
 var img_success = "img/success_icon.png",
   img_fail = "img/fail_icon.png",
   img_info = "img/info_icon.jpg";
@@ -11,29 +9,12 @@ function updateActiveToken(token) {
   });
 }
 
-function showBasicNotification(requestId, title, message, force, img = img_info) {
-  var history_key = "H_" + requestId;
-
-  chrome.storage.local.get([history_key, 'notification'], function(data){
-    var history = data[history_key];
-    var notification_switch = data['notification'];
-    var token_desc = "";
-
-    if (notification_switch || force) {
-      if (history != null && typeof history != 'undefined') {
-        token_desc = history.token_used.desc;
-        if (token_desc != "") {
-          title = token_desc + ": " + title;
-        }
-      }
-
-      chrome.notifications.create(requestId, {
-        type: "basic",
-        iconUrl: img,
-        title: title,
-        message: message
-      });
-    }
+function showBasicNotification(title, message, img = img_info) {
+  chrome.notifications.create(getCurrentDatetimeUTC(), {
+    type: "basic",
+    iconUrl: img,
+    title: title,
+    message: message
   });
 }
 
@@ -160,7 +141,13 @@ function makePurgeRequest(arr_purge_targets, network, callback) {
     var original_token = data['active_token'];
 
     if (jQuery.isEmptyObject(active_token)) {
-      showBasicNotification('noactivetoken', 'No Active Token', 'Please activate a credential', true, img_fail);
+      showBasicNotification('No Active Token', 'Please activate a credential', img_fail);
+      callback("fail");
+      return false;
+    }
+
+    if (active_token.tokentype !== "Fast Purge APIs") {
+      showBasicNotification('Wrong Type Token', 'Please activate Fast Purge credential', img_fail);
       callback("fail");
       return false;
     }
@@ -208,7 +195,7 @@ function makePurgeRequest(arr_purge_targets, network, callback) {
         sendPurgeRequest(purge_requests[i], network, update_type, original_token, callback);
       }
     } else {
-      showBasicNotification('inputerror', 'Input Error', 'Please check entered purge targets are correct', true, img_fail);
+      showBasicNotification('Input Error', 'Please check entered purge targets are correct', img_fail);
       callback("fail");
       return false;
     }
