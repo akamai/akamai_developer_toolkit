@@ -82,17 +82,17 @@ beforeSendCallback = function(details) {
           return;
       } //else
       //Do your normal event processing here
-      chrome.storage.local.get('update_type_debug', function(data){;
-        var type = data['update_type_debug'];
-        //console.log("type is :"  + type);
-        if (type == 'ON'){
-          enabled = type === 'ON';
-          
-      }
-        if(type == 'OFF'|| type == null){
-          enabled = false;
-      }
-        });
+  chrome.storage.local.get('update_type_debug', function(data){;
+    var type = data['update_type_debug'];
+    //console.log("type is :"  + type);
+    if (type == 'ON'){
+      enabled = type === 'ON';
+      
+  }
+    if(type == 'OFF'|| type == null){
+      enabled = false;
+  }
+    });
 
   if (enabled){
    	if (details.url.indexOf('http') != -1) {
