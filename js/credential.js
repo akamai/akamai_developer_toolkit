@@ -88,6 +88,7 @@ $(document).ready(function(){
             obj_input.focus();
             break;
           default:
+            break;
         }
         return false;
       }
@@ -209,6 +210,7 @@ $(document).ready(function(){
               $("#accesstoken").val(arr_tokens[i].token_value);
               break;
             default:
+              break;
           }
         }
       }
