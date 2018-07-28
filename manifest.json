@@ -20,6 +20,7 @@
     "default_title":"Akamai Developer Toolkit"
   },
   "description":"A chrome extension that provide developers access to Akamai developer tools right within their workspace",
+  "devtools_page": "/piez/devtools/devtools.html",
   "icons":{
     "128":"img/icons-128.png",
     "16":"img/icons-128.png",
@@ -34,6 +35,8 @@
     "tabs",
     "activeTab",
     "storage",
+    "cookies",
+    "webNavigation",
     "contextMenus",
     "https://*/*",
     "http://*/*",
