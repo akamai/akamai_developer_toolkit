@@ -6,6 +6,17 @@ $(document).ready(function(){
     backgroundpage._gaq.push(['_trackEvent', 'Add_new_credentials_page', 'loaded']);
   });
 
+  var credentialType = function(domain) {
+    if (domain.match(/.*\.luna\.akamaiapis\.net$/i)) {
+      return "luna";
+    } else if (domain.match(/.*\.purge\.akamaiapis\.net$/i)) {
+      return "purge";
+    } else {
+      return null;
+    }
+    return null;
+  }
+
   var apiTokenIds = ['credential_desc', 'baseurl', 'accesstoken', 'clienttoken', 'secret', 'tokentype'];
   var passedId = getUrlParameter('id');
   var edit_mode = false;
@@ -77,6 +88,7 @@ $(document).ready(function(){
             obj_input.focus();
             break;
           default:
+            break;
         }
         return false;
       }
@@ -154,4 +166,70 @@ $(document).ready(function(){
     Materialize.updateTextFields();
     $('select').material_select();
   });
-});
+
+	$(":file").change(function(){
+		var uploaded_file = this.files[0];
+    if (!uploaded_file) {
+      alert("Failed to load file");
+    } else if (!uploaded_file.type.match('text.*')) {
+		  alert(uploaded_file.name + " is not a valid text file");
+    } else {
+      var read = new FileReader();
+      read.onload = function(frObj) {
+        var f_body = frObj.target.result;
+        var arr_fline = f_body.split('\n');
+        var split_re = /secret=|host=|token=/i;
+        var arr_tokens = [];
+        for (var i=0; i < arr_fline.length; i++) {
+          var fline_trimed = arr_fline[i].replace(/\s+/g, '');
+          if (fline_trimed.match(/.*host.*akamaiapis\.net.*|.*akamaiapis\.net.*host.*/i)) {
+            arr_tokens.push({ token_type: "host", token_value: fline_trimed.split(split_re)[1] });
+          } else if (fline_trimed.match(/.*client.*secret.*|.*secret.*client.*/i)) {
+            arr_tokens.push({ token_type: "client_secret", token_value: fline_trimed.split(split_re)[1] });
+          } else if (fline_trimed.match(/.*client.*token.*|.*token.*client.*/i)) { 
+            arr_tokens.push({ token_type: "client_token", token_value: fline_trimed.split(split_re)[1] });
+          } else if (fline_trimed.match(/.*access.*token.*|.*token.*access.*/i)) {  
+            arr_tokens.push({ token_type: "access_token", token_value: fline_trimed.split(split_re)[1] });
+          } else {
+            //
+          }
+        }
+        for (var i=0; i < arr_tokens.length; i++) {
+          switch (arr_tokens[i].token_type) {
+            case "host":
+              $("#baseurl").val("https://" + arr_tokens[i].token_value);
+              $("#baseurl").trigger("change");
+              break;
+            case "client_secret":
+              $("#secret").val(arr_tokens[i].token_value);
+              break;
+            case "client_token":
+              $("#clienttoken").val(arr_tokens[i].token_value);
+              break;
+            case "access_token":
+              $("#accesstoken").val(arr_tokens[i].token_value);
+              break;
+            default:
+              break;
+          }
+        }
+      }
+      read.readAsText(uploaded_file);
+    }
+	});
+
+  $('#baseurl').on("change paste keyup", function() {
+    var credential_type = credentialType($(this).val());
+    if (credential_type === "purge") {
+      $("#tokentype").val("Fast Purge APIs");
+      $('select').material_select();
+    } else if (credential_type === "luna") {
+      $("#tokentype").val("General OPEN APIs");
+      $('select').material_select();
+    } else {
+      $("#tokentype").val(null);
+      $('select').material_select();
+    }
+  });
+
+}); // document ready
