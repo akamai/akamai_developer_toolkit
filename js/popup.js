@@ -987,7 +987,6 @@ $(document).ready(function() {
     }
   });
 
-<<<<<<< HEAD
 
 //piez config
 document.getElementById("piez-off").onclick = function() {
@@ -1042,20 +1041,3 @@ var setFormField = function(piezSettings) {
 setFormField();
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
-}); // document_ready
->>>>>>> master
