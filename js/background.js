@@ -100,7 +100,7 @@ beforeSendCallback = function(details) {
       if (enabled){
          if (details.url.indexOf('http') != -1) {
           if (piezCurrentStateCached == 'piez-a2') {
-          console.log('A2 headers - pragma on');
+          //console.log('A2 headers - pragma on');
            details.requestHeaders.push({name: 'pragma', value: 'x-akamai-a2-trace, akamai-x-cache-on, akamai-x-cache-remote-on, akamai-x-check-cacheable, akamai-x-get-cache-key, akamai-x-get-true-cache-key, akamai-x-get-extracted-values, akamai-x-get-request-id, akamai-x-serial-no, akamai-x-get-ssl-client-session-id, akamai-x-get-client-ip'});
            details.requestHeaders.push({name: 'x-akamai-rua-debug', value: 'on'});
          }
@@ -108,11 +108,14 @@ beforeSendCallback = function(details) {
            details.requestHeaders.push({name: 'pragma', value: 'akamai-x-ro-trace, akamai-x-cache-on, akamai-x-cache-remote-on, akamai-x-check-cacheable, akamai-x-get-cache-key, akamai-x-get-true-cache-key, akamai-x-get-extracted-values, akamai-x-get-request-id, akamai-x-serial-no, akamai-x-get-ssl-client-session-id, akamai-x-get-client-ip'});
          }
          else {
-          console.log('IM headers - pragma on');
-           details.requestHeaders.push({name: 'x-im-piez', value: 'on'});
-           details.requestHeaders.push({name: 'pragma', value: 'akamai-x-ro-trace, akamai-x-cache-on, akamai-x-cache-remote-on, akamai-x-check-cacheable, akamai-x-get-cache-key, akamai-x-get-true-cache-key, akamai-x-get-extracted-values, akamai-x-get-request-id, akamai-x-serial-no, akamai-x-get-ssl-client-session-id, akamai-x-get-client-ip'});
-           details.requestHeaders.push({name: 'x-akamai-ro-piez', value: 'on'});
-           details.requestHeaders.push({name: 'x-akamai-a2-disable', value: 'on'})
+           if (piezCurrentStateCached !== 'piez-a2'){
+           // console.log('IM headers - pragma on');
+            details.requestHeaders.push({name: 'x-im-piez', value: 'on'});
+            details.requestHeaders.push({name: 'pragma', value: 'akamai-x-ro-trace, akamai-x-cache-on, akamai-x-cache-remote-on, akamai-x-check-cacheable, akamai-x-get-cache-key, akamai-x-get-true-cache-key, akamai-x-get-extracted-values, akamai-x-get-request-id, akamai-x-serial-no, akamai-x-get-ssl-client-session-id, akamai-x-get-client-ip'});
+            details.requestHeaders.push({name: 'x-akamai-ro-piez', value: 'on'});
+            details.requestHeaders.push({name: 'x-akamai-a2-disable', value: 'on'});
+           }
+
          }
     
        }
@@ -120,20 +123,22 @@ beforeSendCallback = function(details) {
       else {
         if (details.url.indexOf('http') != -1) {
           if (piezCurrentStateCached == 'piez-a2') {
-            //console.log('A2 headers - pragma off');
+           // console.log('A2 headers - pragma off');
            details.requestHeaders.push({name: 'pragma', value: 'x-akamai-a2-trace'});
            details.requestHeaders.push({name: 'x-akamai-rua-debug', value: 'on'});
          }
          if (piezCurrentStateCached == 'piez-off'){
-          console.log('do nothing');
+          //console.log('do nothing');
          }
          else {
-          //console.log('IM headers - pragma off');
+          if (piezCurrentStateCached !== 'piez-a2'){
+         // console.log('IM headers - pragma off');
            details.requestHeaders.push({name: 'x-im-piez', value: 'on'});
            details.requestHeaders.push({name: 'pragma', value: 'akamai-x-ro-trace'});
            details.requestHeaders.push({name: 'x-akamai-ro-piez', value: 'on'});
-           details.requestHeaders.push({name: 'x-akamai-a2-disable', value: 'on'})
-         }
+           details.requestHeaders.push({name: 'x-akamai-a2-disable', value: 'on'});
+          }
+          }
     
        }
     
