@@ -35,7 +35,7 @@ function loadHistory() {
       tbody_html += "<td>" + obj_history.purge_objects.length + "</td>"; 
       tbody_html += "<td>" + obj_history.network.capitalize() + "</td>"; 
       tbody_html += "<td>" + obj_history.purge_request_accepted.capitalize() + "</td>"; 
-      tbody_html += "<td><a class='see-more-link' requestId=" + obj_history.requestId + ">See more</a></td>"; 
+      tbody_html += "<td class='see-more-link'><a href='#!' requestId='" + obj_history.requestId + "'>See more</a></td>"; 
       tbody_html += "</tr>";
       $("#historylist").append(tbody_html);
     }
@@ -68,7 +68,7 @@ $(document).ready(function(){
     });  
   });
 
-  $(document).on('click', '.see-more-link', function(obj){
+  $(document).on('click', '[requestId]', function(obj){
     chrome.runtime.getBackgroundPage(function (backgroundpage){
       backgroundpage._gaq.push(['_trackEvent', 'Purge_history_page_seemore', 'clicked']);
      });

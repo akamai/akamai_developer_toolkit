@@ -156,7 +156,8 @@ $(document).ready(function(){
   $('#closeButton').click(function(){ 
     chrome.runtime.getBackgroundPage(function (backgroundpage){
       backgroundpage._gaq.push(['_trackEvent', 'Purge_details_page_closebtn', 'clicked']);
-     });
-    closeCurrentTab(); }); 
+    });
+    closeCurrentTab(); 
+  }); 
 });
 

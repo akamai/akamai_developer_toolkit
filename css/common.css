@@ -11,8 +11,10 @@ li.disabled {
 }
 
 .secondary-content {
+  top: 4px !important;
   font-size: 13px;
   width: 60px;
+  line-height: 19px;
 }
 
 .submit-button {
@@ -64,4 +66,19 @@ li.disabled {
 }
 .switch label input[type=checkbox]:checked+.lever {
     background-color: #ffd092 !important;
+}
+
+/* Tutorial Video Icon */
+.tutorial-video-icon {
+  vertical-align: top;
+}
+
+/* padding top */
+.padding-top {
+  padding-top: 15px;
+}
+
+/* materilize overriding */
+textarea.materialize-textarea {
+  padding: 1.5rem 0 0 0 !important;
 }

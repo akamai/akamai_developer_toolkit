@@ -3,12 +3,6 @@ var img_success = "img/success_icon.png",
   img_fail = "img/fail_icon.png",
   img_info = "img/info_icon.jpg";
 
-function updateActiveToken(token) {
-  chrome.storage.local.set({'active_token': token}, function(){
-    console.log('Active Token Updated: ' + token.uniqid);
-  });
-}
-
 function showBasicNotification(title, message, img = img_info) {
   chrome.notifications.create(getCurrentDatetimeUTC(), {
     type: "basic",
@@ -147,7 +141,7 @@ function makePurgeRequest(arr_purge_targets, network, callback) {
     }
 
     if (active_token.tokentype !== "Fast Purge APIs") {
-      showBasicNotification('Wrong Type Token', 'Please activate Fast Purge credential', img_fail);
+      showBasicNotification('Credential Type Mismatch', 'Please activate Fast Purge credential', img_fail);
       callback("fail");
       return false;
     }

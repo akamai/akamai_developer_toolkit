@@ -3,7 +3,7 @@ chrome.runtime.getBackgroundPage(function(backgroundpage) {
 });
 
 function loadCredentialList() {
-  $('#tokenlist').empty();
+  $('#tokenlist').empty().hide();
   chrome.storage.local.get('tokens', function(data) {
     var arr_tokens = data['tokens'];
     if (typeof arr_tokens === 'undefined' || arr_tokens === null) {
@@ -13,18 +13,21 @@ function loadCredentialList() {
       for (i = 0; i < arr_tokens.length; i++) {
         var api_credential = arr_tokens[i];
         var list_html = '<li class="collection-item avatar disabled">';
-        list_html += '<img src="img/key.png" class="circle key-img" style="display: none;">';
+        list_html += '<i class="material-icons key-img circle teal lighten-2 z-depth-1" style="display: none;">lock_open</i>';
         list_html += '<span class="center" style="font-size: 15px;">' + api_credential.desc + '</span>';
         list_html += '<p>' + api_credential.tokentype + '</p>';
         list_html += '<p class="blue-grey-text">Click on Activate to enable this credential for your requests</p>';
         list_html += '<div class="secondary-content">';
         list_html += '<div><a id="token-activate" href="#!" tokenid="' + api_credential.uniqid + '" action="activate">Activate</a></div>';
         list_html += '<div><a id="token-edit" href="#!" tokenid="' + api_credential.uniqid + '" action="edit">Edit</a></div>';
+        list_html += '<div><a id="token-download" href="#!" tokenid="' + api_credential.uniqid + '" action="download">Download</a></div>';
         list_html += '<div><a id="token-delete" href="#!" tokenid="' + api_credential.uniqid + '" action="delete">Delete</a></div>';
         list_html += '</div></li>';
         $('#tokenlist').append(list_html);
       }
+      // if (arr_tokens.length == 1) {$('#token-activate').trigger('click')};
       $("#apitab-nocredential").hide();
+      $('#tokenlist').show();
     } else {
       $("#apitab-nocredential").show();
       return false;
@@ -97,6 +100,33 @@ chrome.runtime.onStartup.addListener(function() {
     setProxy(lastProfileId);
   });
 });
+
+function downloadToken(objToken) {
+  var body = "";
+  var field_names = {
+    baseurl: "host",
+    clienttoken: "client_token",
+    accesstoken: "access_token",
+    secret: "client_secret",
+    desc: "credential_desc",
+    tokentype: "credential_type"
+  };
+  for (var each in field_names) {
+    if (each === "baseurl") {
+      var url = objToken[each].replace('https://', '');
+      body += field_names[each] + " = " + url + "\n\n";
+    } else {
+      body += field_names[each] + " = " + objToken[each] + "\n\n";
+    }
+  }
+  var atag = document.createElement('a');
+  atag.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(body));
+  atag.setAttribute('download', 'credential.txt');
+  atag.style.display = 'none';
+  document.body.appendChild(atag);
+  atag.click();
+  document.body.removeChild(atag);
+}
 
 function closeOtherForms() {
   $('[id="editProxyBtn"]').show();
@@ -912,16 +942,6 @@ $(document).ready(function() {
     }
   });
 
-  $(document).on('click', '.see-more-link', function(obj) {
-    chrome.runtime.getBackgroundPage(function(backgroundpage) {
-      backgroundpage._gaq.push(['_trackEvent', 'Purge_see_more_link', 'clicked']);
-    });
-    chrome.tabs.create({
-      url: 'purgedetails.html?id=' + $(this).attr('requestId')
-    });
-  });
-
-
   $(document).on('click', '#tokenlist li a', function(event) {
     var button_type = $(this).attr('action');
     var token_id = $(this).attr('tokenid');
@@ -979,6 +999,17 @@ $(document).ready(function() {
           for (var i = 0; i < arr_tokens.length; i++) {
             if (arr_tokens[i].uniqid == token_id) {
               updateActiveToken(arr_tokens[i]);
+              break;
+            }
+          }
+        });
+        break;
+      case "download":
+        chrome.storage.local.get('tokens', function(tokens) {
+          var arr_tokens = tokens['tokens'];
+          for (var i = 0; i < arr_tokens.length; i++) {
+            if (arr_tokens[i].uniqid == token_id) {
+              downloadToken(arr_tokens[i]);
               break;
             }
           }
