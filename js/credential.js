@@ -7,9 +7,9 @@ $(document).ready(function(){
   });
 
   var credentialType = function(domain) {
-    if (domain.match(/.*\.luna\.akamaiapis\.net$/i)) {
+    if (domain.match(/.*\.luna\.akamaiapis\.net\/?$/i)) {
       return "luna";
-    } else if (domain.match(/.*\.purge\.akamaiapis\.net$/i)) {
+    } else if (domain.match(/.*\.purge\.akamaiapis\.net\/?$/i)) {
       return "purge";
     } else {
       return null;
@@ -98,6 +98,13 @@ $(document).ready(function(){
     urlparser.href = baseurl;
     if (urlparser.protocol !== 'https:') {
       alert('Base URL should start with https://');
+      $("#baseurl").focus();
+      return false;
+    }
+
+    var domainre = /^https:\/\/[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]+\.(?:purge|luna)\.akamaiapis\.net\/?$/i;
+    if (!baseurl.match(domainre)) {
+      alert('Please check if Base URL is in right format');
       $("#baseurl").focus();
       return false;
     }

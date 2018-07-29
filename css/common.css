@@ -11,9 +11,10 @@ li.disabled {
 }
 
 .secondary-content {
-  top: 11px !important;
+  top: 4px !important;
   font-size: 13px;
   width: 60px;
+  line-height: 19px;
 }
 
 .submit-button {

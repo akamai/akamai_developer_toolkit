@@ -78,3 +78,9 @@ function createLiHtml(field_data) {
 
   return html;
 }
+
+function updateActiveToken(token) {
+  chrome.storage.local.set({'active_token': token}, function(){
+    console.log('Active Token Updated: ' + token.uniqid);
+  });
+}
