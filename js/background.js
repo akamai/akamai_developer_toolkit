@@ -30,8 +30,8 @@ _gaq.push(['_trackPageview']);
   s.parentNode.insertBefore(ga, s);
 })();
 
-//piez settings
 
+//piez settings
 var inspectedTab = {};
 var devtools_port;
 var piezCurrentStateOptions = { 'piez-im-simple':
@@ -290,7 +290,8 @@ var initPiezStorageState = function() {
 
 //get the URL that the tab is navigating to
 chrome.runtime.onStartup.addListener(function() {
-	initPiezStorageState();
+  initPiezStorageState();
+  
 });
 
 function recordFirsttimeuser(){
