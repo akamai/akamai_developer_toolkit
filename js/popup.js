@@ -2,6 +2,8 @@ chrome.runtime.getBackgroundPage(function(backgroundpage) {
   backgroundpage._gaq.push(['_trackEvent', 'Popup_page', 'loaded']);
 });
 
+
+
 function loadCredentialList() {
   $('#tokenlist').empty().hide();
   chrome.storage.local.get('tokens', function(data) {
@@ -66,6 +68,28 @@ function loadVersionNumber(){
   // console.log('injecting version number');
   var thisVersion = chrome.runtime.getManifest().version;
   $('.versionNumber').append(' ' + thisVersion);
+  //twitter settings
+window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+  return t;
+}(document, "script", "twitter-wjs"));
+
+}
+
+function loadTwitter(){
+  $('.twitter-wjs').prepend('<a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=This%20is%20awesome%21%20I%20can%20now%20control%20and%20debug%20Akamai%20features%20directly%20from%20my%20workspace.%20Check%20out%20the%20new%20Akamai%20developer%20toolkit%20chrome%20extension%20https%3A%2F%2Fakamaidevops.page.link%2Fshare%20" data-size="large"> Tweet</a>');
+
 }
 chrome.runtime.onInstalled.addListener(function() {
   //adding detection of first time install and show modal
@@ -504,6 +528,7 @@ $(document).ready(function() {
   loadCredentialList();
   loadProxy();
   loadVersionNumber();
+  loadTwitter();
   //get first time user storage value
   chrome.storage.local.get('firstTime', function(valueT) {
     var valueT = valueT['firstTime'];
@@ -521,7 +546,6 @@ $(document).ready(function() {
        // console.log('load update dialog done' + valueU);
       }
     });
-
   $(document).on('click', '#addProxyBtn', addProxy);
   $(document).on('click', '#flushdns', function() {
     chrome.runtime.getBackgroundPage(function(backgroundpage) {
