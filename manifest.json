@@ -11,7 +11,8 @@
       "js/edgegrid.js",
       "js/purge.js",
       "js/debugurls.js",
-      "js/background.js"
+      "js/background.js",
+      "js/jquery-ui.min.js"
     ]
   },
   "browser_action":{
@@ -40,15 +41,17 @@
     "contextMenus",
     "https://*/*",
     "http://*/*",
+    "chrome://net-internals/*",
     "proxy",
     "webRequest",
     "webRequestBlocking"
   ],
   "update_url":"https://clients2.google.com/service/update2/crx",
-  "version":"1.0.19",
+  "version":"1.0.20",
   "web_accessible_resources":[
     "fonts/*.*",
     "js/jquery-3.1.1.min.js",
+    "js/jquery-ui.min.js",
     "css/font-awesome.min.css",
     "css/HoldOn.min.css",
     "js/HoldOn.min.js"

@@ -72,6 +72,7 @@ var piezCurrentStateOptions = { 'piez-im-simple':
 var piezCurrentStateCached = '';
 
 
+
 beforeSendCallback = function(details) {
 
 
@@ -397,6 +398,38 @@ chrome.webRequest.onBeforeRequest.addListener(function(url){
   }, {urls: ["<all_urls>"]}, ["blocking"]
 );
 
+//trying out a different way to proxy request https requests
+/*var host = "https://www.akamaidevops.com.edgekey-staging.net";
+chrome.webRequest.onBeforeRequest.addListener(
+    function(details) {
+         return {redirectUrl: host + details.url.match(/^https?:\/\/[^\/]+([\S\s]*)/)[1]};
+    },
+    {
+        urls: [
+            "*://akamaidevops.com/*",
+            "*://www.akamaidevops.com/*"
+        ],
+        types: ["main_frame", "sub_frame", "stylesheet", "script", "image", "object", "xmlhttprequest", "other"]
+    },
+    ["blocking"]
+);
+
+chrome.webRequest.onBeforeSendHeaders.addListener(
+  function(details) {
+    for (var i = 0; i < details.requestHeaders.length; ++i) {
+	    var flag=true;
+      if (details.requestHeaders[i].name === 'Host') {
+        details.requestHeaders.splice(i, 1);
+        flag=false;
+	      break;
+      }	
+	if (flag) details.requestHeaders.push({"name":"Host","value":"www.akamaidevops.com"});
+    }
+    return {requestHeaders: details.requestHeaders};
+  },
+  {urls: ["*://www.akamaidevops.com.edgekey-staging.net/*"]},
+  ["blocking", "requestHeaders"]);
+*/
 /* commenting this section out since we rely on Piez pragma header addition to push headers into the request
 chrome.webRequest.onBeforeSendHeaders.addListener(
   function(details) {

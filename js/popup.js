@@ -32,7 +32,22 @@ function loadCredentialList() {
   });
 }
 
+
+function loadDialog(){
+  console.log('load dialog is called');
+  $('body').prepend('<div class="ui-widget">\n<div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .2em;"><p><h6 style="margin-left: 5px;"><b>Thank you for installing the extension!</b> If you are a first time user, click <a href="#!" id="loadgettingstartedvideo" style="color: blue;"> here </a> to view the getting started video</h6></p></div></div>');
+  //unset first time user storage value
+}
+
+function recordFirsttimeuser(){
+  console.log('first time user');
+ // $('body').prepend('<div class="ui-widget">\n<div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .2em;"><p><h6 style="margin-left: 5px;"><b>Thank you for installing the extension!</b> If you are a first time user, click <a href="#!" id="loadgettingstartedvideo" style="color: blue;"> here </a> to view the getting started video</h6></p></div></div>');
+//set a local storage item as first time user
+}
+
 chrome.runtime.onInstalled.addListener(function() {
+      //adding detection of first time install and show modal
+  recordFirsttimeuser();
   if (localStorage.length > 0) {
     var data = {};
     for (var i = 0; i < localStorage.length; i++) {
@@ -439,9 +454,12 @@ function FindProxyForURL(url, host) { \n
 $(document).ready(function() {
   loadCredentialList();
   loadProxy();
-
+  //get first time user storage value
+  //if the storage value is set true, then load up Loaddialog and unset first time user inside load dialog
+  
   $(document).on('click', '#addProxyBtn', addProxy);
   $(document).on('click', '#flushdns', function() {
+    loadDialog();
     chrome.runtime.getBackgroundPage(function(backgroundpage) {
       backgroundpage._gaq.push(['_trackEvent', 'flushdns', 'clicked']);
     });
@@ -679,6 +697,19 @@ $(document).ready(function() {
     $('#editProxyForm').prev('#editProxyBtn').show();
     $('#editProxyForm').remove();
   });
+
+  $(document).on('click', '#loadgettingstartedvideo', function() {
+    console.log('getting started video clicked');
+    chrome.runtime.getBackgroundPage(function(backgroundpage) {
+      backgroundpage._gaq.push(['_trackEvent', 'View_getting_started_video', 'clicked']);
+    });
+    chrome.tabs.create({
+      url: 'https://www.youtube.com/watch?v=GYAYyghN_vg'
+    });
+  });
+
+
+
 
   $(document).on('click', '#editProxyForm #deleteProxyBtn', function() {
     chrome.runtime.getBackgroundPage(function(backgroundpage) {
