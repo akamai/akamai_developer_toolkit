@@ -293,11 +293,31 @@ chrome.runtime.onStartup.addListener(function() {
 	initPiezStorageState();
 });
 
+function recordFirsttimeuser(){
+  //console.log('first time user')
+ // $('body').prepend('<div class="ui-widget">\n<div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .2em;"><p><h6 style="margin-left: 5px;"><b>Thank you for installing the extension!</b> If you are a first time user, click <a href="#!" id="loadgettingstartedvideo" style="color: blue;"> here </a> to view the getting started video</h6></p></div></div>');
+//set a local storage item as first time user
+chrome.storage.local.set({'firstTime': 'true'}, function(){
+  console.log('firsttimeuser value is set to true' );
+})
+}
 
 
+function extensionUpdated(){
+  //console.log('let user know that their extension has been updated')
+  chrome.storage.local.set({'updatedU': 'true'}, function(){
+    console.log('updated value is set to true' );
+  })
+}
 
 
-chrome.runtime.onInstalled.addListener(function() {
+chrome.runtime.onInstalled.addListener(function(details) {
+  if (details.reason === 'install'){
+    recordFirsttimeuser();
+  }
+  if (details.reason === 'update'){
+    extensionUpdated();
+  }
   initPiezStorageState();
   chrome.contextMenus.create({
     "id": "akamaidevtoolkit",
@@ -317,6 +337,22 @@ chrome.runtime.onInstalled.addListener(function() {
     "contexts":["all"]
   });
 });
+
+//restart app when new update is available 
+chrome.runtime.onUpdateAvailable.addListener(function(details) {
+  console.log("updating to version " + details.version);
+  chrome.runtime.reload();
+});
+
+/*chrome.runtime.requestUpdateCheck(function(status) {
+  if (status == "update_available") {
+    console.log("update pending...");
+  } else if (status == "no_update") {
+    console.log("no update found");
+  } else if (status == "throttled") {
+    console.log("Oops, I'm asking too frequently - I need to back off.");
+  }
+});*/
 
 chrome.contextMenus.onClicked.addListener(function(event){
   var network = "staging";

@@ -37,20 +37,39 @@ function loadCredentialList() {
 
 
 function loadDialog(){
-  console.log('load dialog is called');
+  //console.log('load dialog is called');
   $('body').prepend('<div class="ui-widget">\n<div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .2em;"><p><h6 style="margin-left: 5px;"><b>Thank you for installing the extension!</b> If you are a first time user, click <a href="#!" id="loadgettingstartedvideo" style="color: blue;"> here </a> to view the getting started video</h6></p></div></div>');
   //unset first time user storage value
+  chrome.runtime.getBackgroundPage(function(backgroundpage) {
+    backgroundpage._gaq.push(['_trackEvent', 'first_time_install', 'updated']);
+  });
+  chrome.storage.local.set({'firstTime': 'false'}, function(){
+   console.log('firsttime value is set to false' );
+  })
 }
 
-function recordFirsttimeuser(){
-  console.log('first time user');
- // $('body').prepend('<div class="ui-widget">\n<div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .2em;"><p><h6 style="margin-left: 5px;"><b>Thank you for installing the extension!</b> If you are a first time user, click <a href="#!" id="loadgettingstartedvideo" style="color: blue;"> here </a> to view the getting started video</h6></p></div></div>');
-//set a local storage item as first time user
+
+function loadUpdateDialog(){
+ // console.log('load update dialog is called');
+  var thisVersion = chrome.runtime.getManifest().version;
+  $('body').prepend('<div class="ui-widget">\n<div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .2em;"><p><h6 style="margin-left: 5px;"><b>Heads up: </b>Your extension has been autoupdated to the latest version ' + thisVersion + '</h6></p></div></div>');
+  //unset first time user storage value
+  chrome.runtime.getBackgroundPage(function(backgroundpage) {
+    backgroundpage._gaq.push(['_trackEvent', 'extension_version', 'updated']);
+  });
+  chrome.storage.local.set({'updatedU': 'false'}, function(){
+    console.log('updated value is set to false' );
+  })
 }
 
+function loadVersionNumber(){
+  // console.log('injecting version number');
+  var thisVersion = chrome.runtime.getManifest().version;
+  $('.versionNumber').append(' ' + thisVersion);
+}
 chrome.runtime.onInstalled.addListener(function() {
-      //adding detection of first time install and show modal
-  recordFirsttimeuser();
+  //adding detection of first time install and show modal
+  //recordFirsttimeuser(); sent this to background.js
   if (localStorage.length > 0) {
     var data = {};
     for (var i = 0; i < localStorage.length; i++) {
@@ -484,12 +503,27 @@ function FindProxyForURL(url, host) { \n
 $(document).ready(function() {
   loadCredentialList();
   loadProxy();
+  loadVersionNumber();
   //get first time user storage value
-  //if the storage value is set true, then load up Loaddialog and unset first time user inside load dialog
-  
+  chrome.storage.local.get('firstTime', function(valueT) {
+    var valueT = valueT['firstTime'];
+    if (valueT == 'true') {
+      loadDialog();
+     // console.log('load dialog done' + valueT);
+    }
+  });
+
+    //get first time user storage value
+  chrome.storage.local.get('updatedU', function(valueU) {
+      var valueU = valueU['updatedU'];
+      if (valueU == 'true') {
+        loadUpdateDialog();
+       // console.log('load update dialog done' + valueU);
+      }
+    });
+
   $(document).on('click', '#addProxyBtn', addProxy);
   $(document).on('click', '#flushdns', function() {
-    loadDialog();
     chrome.runtime.getBackgroundPage(function(backgroundpage) {
       backgroundpage._gaq.push(['_trackEvent', 'flushdns', 'clicked']);
     });
@@ -734,7 +768,7 @@ $(document).ready(function() {
       backgroundpage._gaq.push(['_trackEvent', 'View_getting_started_video', 'clicked']);
     });
     chrome.tabs.create({
-      url: 'https://www.youtube.com/watch?v=GYAYyghN_vg'
+      url: 'https://www.youtube.com/watch?v=6PhU7lwOqHM'
     });
   });
 
