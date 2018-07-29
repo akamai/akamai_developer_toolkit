@@ -72,6 +72,7 @@ var piezCurrentStateOptions = { 'piez-im-simple':
 var piezCurrentStateCached = '';
 
 
+
 beforeSendCallback = function(details) {
 
 
@@ -292,11 +293,31 @@ chrome.runtime.onStartup.addListener(function() {
 	initPiezStorageState();
 });
 
+function recordFirsttimeuser(){
+  //console.log('first time user')
+ // $('body').prepend('<div class="ui-widget">\n<div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .2em;"><p><h6 style="margin-left: 5px;"><b>Thank you for installing the extension!</b> If you are a first time user, click <a href="#!" id="loadgettingstartedvideo" style="color: blue;"> here </a> to view the getting started video</h6></p></div></div>');
+//set a local storage item as first time user
+chrome.storage.local.set({'firstTime': 'true'}, function(){
+  console.log('firsttimeuser value is set to true' );
+})
+}
 
 
+function extensionUpdated(){
+  //console.log('let user know that their extension has been updated')
+  chrome.storage.local.set({'updatedU': 'true'}, function(){
+    console.log('updated value is set to true' );
+  })
+}
 
 
-chrome.runtime.onInstalled.addListener(function() {
+chrome.runtime.onInstalled.addListener(function(details) {
+  if (details.reason === 'install'){
+    recordFirsttimeuser();
+  }
+  if (details.reason === 'update'){
+    extensionUpdated();
+  }
   initPiezStorageState();
   chrome.contextMenus.create({
     "id": "akamaidevtoolkit",
@@ -316,6 +337,22 @@ chrome.runtime.onInstalled.addListener(function() {
     "contexts":["all"]
   });
 });
+
+//restart app when new update is available 
+chrome.runtime.onUpdateAvailable.addListener(function(details) {
+  console.log("updating to version " + details.version);
+  chrome.runtime.reload();
+});
+
+/*chrome.runtime.requestUpdateCheck(function(status) {
+  if (status == "update_available") {
+    console.log("update pending...");
+  } else if (status == "no_update") {
+    console.log("no update found");
+  } else if (status == "throttled") {
+    console.log("Oops, I'm asking too frequently - I need to back off.");
+  }
+});*/
 
 chrome.contextMenus.onClicked.addListener(function(event){
   var network = "staging";
@@ -397,6 +434,38 @@ chrome.webRequest.onBeforeRequest.addListener(function(url){
   }, {urls: ["<all_urls>"]}, ["blocking"]
 );
 
+//trying out a different way to proxy request https requests
+/*var host = "https://www.akamaidevops.com.edgekey-staging.net";
+chrome.webRequest.onBeforeRequest.addListener(
+    function(details) {
+         return {redirectUrl: host + details.url.match(/^https?:\/\/[^\/]+([\S\s]*)/)[1]};
+    },
+    {
+        urls: [
+            "*://akamaidevops.com/*",
+            "*://www.akamaidevops.com/*"
+        ],
+        types: ["main_frame", "sub_frame", "stylesheet", "script", "image", "object", "xmlhttprequest", "other"]
+    },
+    ["blocking"]
+);
+
+chrome.webRequest.onBeforeSendHeaders.addListener(
+  function(details) {
+    for (var i = 0; i < details.requestHeaders.length; ++i) {
+	    var flag=true;
+      if (details.requestHeaders[i].name === 'Host') {
+        details.requestHeaders.splice(i, 1);
+        flag=false;
+	      break;
+      }	
+	if (flag) details.requestHeaders.push({"name":"Host","value":"www.akamaidevops.com"});
+    }
+    return {requestHeaders: details.requestHeaders};
+  },
+  {urls: ["*://www.akamaidevops.com.edgekey-staging.net/*"]},
+  ["blocking", "requestHeaders"]);
+*/
 /* commenting this section out since we rely on Piez pragma header addition to push headers into the request
 chrome.webRequest.onBeforeSendHeaders.addListener(
   function(details) {
