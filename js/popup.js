@@ -3,7 +3,7 @@ chrome.runtime.getBackgroundPage(function(backgroundpage) {
 });
 
 function loadCredentialList() {
-  $('#tokenlist').empty();
+  $('#tokenlist').empty().hide();
   chrome.storage.local.get('tokens', function(data) {
     var arr_tokens = data['tokens'];
     if (typeof arr_tokens === 'undefined' || arr_tokens === null) {
@@ -13,7 +13,7 @@ function loadCredentialList() {
       for (i = 0; i < arr_tokens.length; i++) {
         var api_credential = arr_tokens[i];
         var list_html = '<li class="collection-item avatar disabled">';
-        list_html += '<img src="img/key.png" class="circle key-img" style="display: none;">';
+        list_html += '<i class="material-icons key-img circle teal lighten-2 z-depth-1" style="display: none;">lock_open</i>';
         list_html += '<span class="center" style="font-size: 15px;">' + api_credential.desc + '</span>';
         list_html += '<p>' + api_credential.tokentype + '</p>';
         list_html += '<p class="blue-grey-text">Click on Activate to enable this credential for your requests</p>';
@@ -24,7 +24,9 @@ function loadCredentialList() {
         list_html += '</div></li>';
         $('#tokenlist').append(list_html);
       }
+      // if (arr_tokens.length == 1) {$('#token-activate').trigger('click')};
       $("#apitab-nocredential").hide();
+      $('#tokenlist').show();
     } else {
       $("#apitab-nocredential").show();
       return false;
