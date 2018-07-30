@@ -2,9 +2,6 @@ chrome.runtime.getBackgroundPage(function(backgroundpage) {
   backgroundpage._gaq.push(['_trackEvent', 'Popup_page', 'loaded']);
 });
 
-var piezFound = "false";
-
-
 function loadCredentialList() {
   $('#tokenlist').empty().hide();
   chrome.storage.local.get('tokens', function(data) {
@@ -17,18 +14,18 @@ function loadCredentialList() {
         var api_credential = arr_tokens[i];
         var list_html = '<li class="collection-item avatar disabled">';
         list_html += '<i class="material-icons key-img circle teal lighten-2 z-depth-1" style="display: none;">lock_open</i>';
-        list_html += '<span class="center" style="font-size: 15px;">' + api_credential.desc + '</span>';
+        list_html += '<span class="center" style="font-size: 15px; font-weight: bold">' + api_credential.desc + '</span>';
         list_html += '<p>' + api_credential.tokentype + '</p>';
         list_html += '<p class="blue-grey-text">Click on Activate to enable this credential for your requests</p>';
         list_html += '<div class="secondary-content">';
-        list_html += '<div><a id="token-activate" href="#!" tokenid="' + api_credential.uniqid + '" action="activate">Activate</a></div>';
-        list_html += '<div><a id="token-edit" href="#!" tokenid="' + api_credential.uniqid + '" action="edit">Edit</a></div>';
-        list_html += '<div><a id="token-download" href="#!" tokenid="' + api_credential.uniqid + '" action="download">Download</a></div>';
-        list_html += '<div><a id="token-delete" href="#!" tokenid="' + api_credential.uniqid + '" action="delete">Delete</a></div>';
+        list_html += '<div><a href="#!" tokenid="' + api_credential.uniqid + '" action="activate">Activate</a></div>';
+        list_html += '<div><a href="#!" tokenid="' + api_credential.uniqid + '" action="edit">Edit</a></div>';
+        list_html += '<div><a href="#!" tokenid="' + api_credential.uniqid + '" action="download">Download</a></div>';
+        list_html += '<div><a href="#!" tokenid="' + api_credential.uniqid + '" action="delete">Delete</a></div>';
         list_html += '</div></li>';
         $('#tokenlist').append(list_html);
       }
-      // if (arr_tokens.length == 1) {$('#token-activate').trigger('click')};
+      // if (arr_tokens.length == 1) {$('[action=activate]').trigger('click')};
       $("#apitab-nocredential").hide();
       $('#tokenlist').show();
     } else {
@@ -38,80 +35,88 @@ function loadCredentialList() {
   });
 }
 
-
-function loadDialog(){
-  //console.log('load dialog is called');
-  $('body').prepend('<div class="ui-widget">\n<div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .2em;"><p><h6 style="margin-left: 5px;"><b>Thank you for installing the extension!</b> If you are a first time user, click <a href="#!" id="loadgettingstartedvideo" style="color: blue;"> here </a> to view the getting started video</h6></p></div></div>');
-  //unset first time user storage value
-  chrome.runtime.getBackgroundPage(function(backgroundpage) {
-    backgroundpage._gaq.push(['_trackEvent', 'first_time_install', 'updated']);
+function loadDialog() {
+  chrome.storage.local.get('firstTime', function(valueT) {
+    var valueT = valueT['firstTime'];
+    var msg = '<b>Thank you for installing the extension!</b><br/>If you are a first time user, ';
+    msg +='click <a href="#!" id="loadgettingstartedvideo" style="color: blue;"> here</a>';
+    msg += ' to view the getting started video';
+    if (valueT === 'true') {
+      chrome.runtime.sendMessage({
+        type: "notification", 
+        id: "dialog",
+        body: msg
+      });
+      chrome.runtime.getBackgroundPage(function(backgroundpage) {
+        backgroundpage._gaq.push(['_trackEvent', 'first_time_install', 'updated']);
+      });
+      chrome.storage.local.set({'firstTime': 'false'}, function(){
+        // console.log();
+      });
+    }
   });
-  chrome.storage.local.set({'firstTime': 'false'}, function(){
-   console.log('firsttime value is set to false' );
-  })
 }
 
-
-function loadUpdateDialog(){
- // console.log('load update dialog is called');
-  var thisVersion = chrome.runtime.getManifest().version;
-  $('body').prepend('<div class="ui-widget">\n<div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .2em;"><p><h6 style="margin-left: 5px;"><b>Heads up: </b>Your extension has been autoupdated to the latest version ' + thisVersion + '</h6></p></div></div>');
-  //unset first time user storage value
-  chrome.runtime.getBackgroundPage(function(backgroundpage) {
-    backgroundpage._gaq.push(['_trackEvent', 'extension_version', 'updated']);
+function loadUpdateDialog() {
+  chrome.storage.local.get('updatedU', function(valueU) {
+    var valueU = valueU['updatedU'];
+    if (valueU === 'true') {
+      var thisVersion = chrome.runtime.getManifest().version;
+      var msg = '<b>Heads up: </b>Your extension has been autoupdated to the latest version ' + thisVersion;
+      if (valueU === 'true') {
+        chrome.runtime.sendMessage({
+          type: "notification", 
+          id: "update-dialog",
+          body: msg
+        });
+        chrome.runtime.getBackgroundPage(function(backgroundpage) {
+          backgroundpage._gaq.push(['_trackEvent', 'extension_version', 'updated']);
+        });
+        chrome.storage.local.set({'updatedU': 'false'}, function(){
+          // console.log('updated value is set to false' );
+        })
+      }
+    }
   });
-  chrome.storage.local.set({'updatedU': 'false'}, function(){
-    console.log('updated value is set to false' );
-  })
-}
-
-function loadVersionNumber(){
-  // console.log('injecting version number');
-  var thisVersion = chrome.runtime.getManifest().version;
-  $('.versionNumber').append(' ' + thisVersion);
-  //twitter settings
-window.twttr = (function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0],
-    t = window.twttr || {};
-  if (d.getElementById(id)) return t;
-  js = d.createElement(s);
-  js.id = id;
-  js.src = "https://platform.twitter.com/widgets.js";
-  fjs.parentNode.insertBefore(js, fjs);
-
-  t._e = [];
-  t.ready = function(f) {
-    t._e.push(f);
-  };
-  return t;
-}(document, "script", "twitter-wjs"));
-
 }
 
 function loadTwitter(){
-  $('.twitter-wjs').prepend('<a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=This%20is%20awesome%21%20I%20can%20now%20control%20and%20debug%20Akamai%20features%20directly%20from%20my%20workspace.%20Check%20out%20the%20new%20Akamai%20developer%20toolkit%20chrome%20extension%20https%3A%2F%2Fakamaidevops.page.link%2Fshare%20" data-size="large"> Tweet</a>');
-
+  window.twttr = (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0], t = window.twttr || {};
+    if (d.getElementById(id)) return t;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "https://platform.twitter.com/widgets.js";
+    fjs.parentNode.insertBefore(js, fjs);
+    t._e = [];
+    t.ready = function(f) {
+      t._e.push(f);
+    };
+    return t;
+  }(document, "script", "twitter-wjs"));
+  var atag = document.createElement("a");
+  atag.text = "Tweet";
+  atag.href = "https://twitter.com/intent/tweet?text=This%20is%20awesome%21%20I%20can%20now%20control%20and%20debug%20Akamai%20features%20directly%20from%20my%20workspace.%20Check%20out%20the%20new%20Akamai%20developer%20toolkit%20chrome%20extension%20https%3A%2F%2Fakamaidevops.page.link%2Fshare%20";
+  atag.setAttribute("class", "twitter-share-button");
+  atag.setAttribute("data-size", "large");
+  $('.twitter-wjs').prepend(atag);
 }
 
-function ifPiezisinstalled(){
-  chrome.management.get('npbccjkjemgagjioahfccljgnlkdleod', function(details){
-    //console.log('extension ID found');
-    if(details.name === 'Piez'){
-     // console.log('piez found');
-     // console.log('piez uninstalled');
-      $('.piez-detected').prepend('<div class="ui-widget">\n<div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .2em;"><p><h6 style="margin-left: 5px;"><b>Warning:</b> Looks like you have Piez installed separately, click <a href="#!" id="removePiez" style="color: blue;"> here </a> to uninstall Piez for the optimal experience.</h6></p></div></div>');
-    }
-    else {
-      return;
-      //chrome.management.uninstall('npbccjkjemgagjioahfccljgnlkdleod');
+function ifPiezisinstalled() {
+  chrome.management.get('npbccjkjemgagjioahfccljgnlkdleod', function(details) {
+    if(details.name === 'Piez') {
+      var msg = 'Looks like you have Piez installed separately, click <a href="#!" id="removePiez" style="color: blue;"> here </a> to uninstall Piez for the optimal experience';
+      chrome.runtime.sendMessage({
+        type: "notification", 
+        id: "piez",
+        body: msg,
+        update_target: "piez-notification"
+      });
     }
   });
-
 }
 
 chrome.runtime.onInstalled.addListener(function() {
-  //adding detection of first time install and show modal
-  //recordFirsttimeuser(); sent this to background.js
   if (localStorage.length > 0) {
     var data = {};
     for (var i = 0; i < localStorage.length; i++) {
@@ -124,9 +129,9 @@ chrome.runtime.onInstalled.addListener(function() {
     localStorage.clear();
   }
 
-  chrome.storage.sync.get(null, function(items) {
-    chrome.storage.local.set(items);
-  });
+  // chrome.storage.sync.get(null, function(items) {
+  //   chrome.storage.local.set(items);
+  // });
 
   chrome.storage.local.get('lastProfileId', function(lastProfileIdObj) {
     var lastProfileId = lastProfileIdObj['lastProfileId'];
@@ -141,19 +146,19 @@ chrome.runtime.onInstalled.addListener(function() {
   });
 });
 
-chrome.storage.onChanged.addListener(function(changes, namespace) {
-  var storageToBeChanged = namespace === 'local' ? chrome.storage.sync : chrome.storage.local;
-  for (key in changes) {
-    var storageChange = changes[key];
-    if (isEmpty(storageChange.newValue)) {
-      storageToBeChanged.remove(key);
-    } else {
-      var obj = {};
-      obj[key] = storageChange.newValue;
-      storageToBeChanged.set(obj);
-    }
-  }
-});
+// chrome.storage.onChanged.addListener(function(changes, namespace) {
+//   var storageToBeChanged = namespace === 'local' ? chrome.storage.sync : chrome.storage.local;
+//   for (key in changes) {
+//     var storageChange = changes[key];
+//     if (isEmpty(storageChange.newValue)) {
+//       storageToBeChanged.remove(key);
+//     } else {
+//       var obj = {};
+//       obj[key] = storageChange.newValue;
+//       storageToBeChanged.set(obj);
+//     }
+//   }
+// });
 
 chrome.runtime.onStartup.addListener(function() {
   chrome.storage.local.get('lastProfileId', function(lastProfileIdObj) {
@@ -180,9 +185,10 @@ function downloadToken(objToken) {
       body += field_names[each] + " = " + objToken[each] + "\n\n";
     }
   }
+  var filename = objToken.desc.replace(/\s+/g, '-');
   var atag = document.createElement('a');
   atag.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(body));
-  atag.setAttribute('download', 'credential.txt');
+  atag.setAttribute('download', filename);
   atag.style.display = 'none';
   document.body.appendChild(atag);
   atag.click();
@@ -545,26 +551,12 @@ function FindProxyForURL(url, host) { \n
 $(document).ready(function() {
   loadCredentialList();
   loadProxy();
-  loadVersionNumber();
   loadTwitter();
   ifPiezisinstalled()
-  //get first time user storage value
-  chrome.storage.local.get('firstTime', function(valueT) {
-    var valueT = valueT['firstTime'];
-    if (valueT == 'true') {
-      loadDialog();
-     // console.log('load dialog done' + valueT);
-    }
-  });
+  loadDialog();
+  loadUpdateDialog();
+  $('.versionNumber').attr("data-badge-caption", "V" + chrome.runtime.getManifest().version);
 
-    //get first time user storage value
-  chrome.storage.local.get('updatedU', function(valueU) {
-      var valueU = valueU['updatedU'];
-      if (valueU == 'true') {
-        loadUpdateDialog();
-       // console.log('load update dialog done' + valueU);
-      }
-    });
   $(document).on('click', '#addProxyBtn', addProxy);
   $(document).on('click', '#flushdns', function() {
     chrome.runtime.getBackgroundPage(function(backgroundpage) {
@@ -806,7 +798,6 @@ $(document).ready(function() {
   });
 
   $(document).on('click', '#loadgettingstartedvideo', function() {
-   // console.log('getting started video clicked');
     chrome.runtime.getBackgroundPage(function(backgroundpage) {
       backgroundpage._gaq.push(['_trackEvent', 'View_getting_started_video', 'clicked']);
     });
@@ -814,6 +805,7 @@ $(document).ready(function() {
       url: 'https://www.youtube.com/watch?v=6PhU7lwOqHM'
     });
   });
+
   $(document).on('click', '#removePiez', function() {
     console.log('user consent provided for removing piez');
     chrome.runtime.getBackgroundPage(function(backgroundpage) {
@@ -821,10 +813,6 @@ $(document).ready(function() {
     });
     chrome.management.uninstall('npbccjkjemgagjioahfccljgnlkdleod');
   });
-
-
-
-
 
   $(document).on('click', '#editProxyForm #deleteProxyBtn', function() {
     chrome.runtime.getBackgroundPage(function(backgroundpage) {
@@ -889,7 +877,6 @@ $(document).ready(function() {
       update_type: type
     });
   });
-
 
   $("#updatetype-debugheaders").change(function() {
     chrome.runtime.getBackgroundPage(function(backgroundpage) {
@@ -1134,57 +1121,55 @@ $(document).ready(function() {
     }
   });
 
+  //piez config
+  document.getElementById("piez-off").onclick = function() {
+    //console.log ('clicked on disabled piez');
+    chrome.runtime.sendMessage({
+      type: "piez-off"
+    });
+  };
 
-//piez config
-document.getElementById("piez-off").onclick = function() {
-  //console.log ('clicked on disabled piez');
-  chrome.runtime.sendMessage({
-    type: "piez-off"
-  });
-};
+  document.getElementById("piez-im-simple").onclick = function() {
+    chrome.runtime.sendMessage({
+      type: "piez-im-simple"
+    });
+  };
 
-document.getElementById("piez-im-simple").onclick = function() {
-  chrome.runtime.sendMessage({
-    type: "piez-im-simple"
-  });
-};
+  document.getElementById("piez-im-advanced").onclick = function() {
+    chrome.runtime.sendMessage({
+      type: "piez-im-advanced"
+    });
+  };
 
-document.getElementById("piez-im-advanced").onclick = function() {
-  chrome.runtime.sendMessage({
-    type: "piez-im-advanced"
-  });
-};
+  document.getElementById("piez-a2").onclick = function() {
+    chrome.runtime.sendMessage({
+      type: "piez-a2"
+    });
+  };
 
-document.getElementById("piez-a2").onclick = function() {
-  chrome.runtime.sendMessage({
-    type: "piez-a2"
-  });
-};
+  document.getElementById("piez-ro-simple").onclick = function() {
+    chrome.runtime.sendMessage({
+      type: "piez-ro-simple"
+    });
+  };
 
-document.getElementById("piez-ro-simple").onclick = function() {
-  chrome.runtime.sendMessage({
-    type: "piez-ro-simple"
-  });
-};
+  document.getElementById("piez-ro-advanced").onclick = function() {
+    chrome.runtime.sendMessage({
+      type: "piez-ro-advanced"
+    });
+  };
 
-document.getElementById("piez-ro-advanced").onclick = function() {
-  chrome.runtime.sendMessage({
-    type: "piez-ro-advanced"
-  });
-};
+  document.getElementById("piez-3pm").onclick = function() {
+    chrome.runtime.sendMessage({
+      type: "piez-3pm"
+    });
+  };
 
-document.getElementById("piez-3pm").onclick = function() {
-  chrome.runtime.sendMessage({
-    type: "piez-3pm"
-  });
-};
+  var setFormField = function(piezSettings) {
+    chrome.storage.local.get("piezCurrentState", function(result) {
+      document.getElementById(result["piezCurrentState"]).checked = true;
+    });
+  };
 
-var setFormField = function(piezSettings) {
-  chrome.storage.local.get("piezCurrentState", function(result) {
-    document.getElementById(result["piezCurrentState"]).checked = true;
-  });
-};
-
-setFormField();
+  setFormField();
 });
-

@@ -9,10 +9,13 @@ var non_akamai_header = {
   "value": ""
 }
 
-/**
- * Adding google analytics to track only clicks within the extension, this will help us improve services that are most used, feel free to email ajayapra@akamai.com in case you would like to get a non-analytics version of our extension
+/*
+ * Adding google analytics to track only clicks within the extension, 
+ * this will help us improve services that are most used, feel free to email ajayapra@akamai.com in case 
+ * you would like to get a non-analytics version of our extension
  * Source https://chromium.googlesource.com/chromium/src/+/master/chrome/common/extensions/docs/examples/tutorials/analytics/popup.js
  */
+
 /* dev analytics tracker */
 var _AnalyticsCode = 'UA-116652320-3';
 // var _AnalyticsCode = 'UA-116652320-3---';
@@ -291,35 +294,23 @@ var initPiezStorageState = function() {
 //get the URL that the tab is navigating to
 chrome.runtime.onStartup.addListener(function() {
   initPiezStorageState();
-  
 });
-
-function recordFirsttimeuser(){
-  //console.log('first time user')
- // $('body').prepend('<div class="ui-widget">\n<div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .2em;"><p><h6 style="margin-left: 5px;"><b>Thank you for installing the extension!</b> If you are a first time user, click <a href="#!" id="loadgettingstartedvideo" style="color: blue;"> here </a> to view the getting started video</h6></p></div></div>');
-//set a local storage item as first time user
-chrome.storage.local.set({'firstTime': 'true'}, function(){
-  console.log('firsttimeuser value is set to true' );
-})
-}
-
-
-function extensionUpdated(){
-  //console.log('let user know that their extension has been updated')
-  chrome.storage.local.set({'updatedU': 'true'}, function(){
-    console.log('updated value is set to true' );
-  })
-}
-
 
 chrome.runtime.onInstalled.addListener(function(details) {
   if (details.reason === 'install'){
-    recordFirsttimeuser();
+    chrome.storage.local.set({'firstTime': 'true'}, function(){
+      console.log('firsttimeuser value is set to true' );
+    });
   }
+
   if (details.reason === 'update'){
-    extensionUpdated();
+    chrome.storage.local.set({'updatedU': 'true'}, function(){
+      console.log('updated value is set to true' );
+    })
   }
+
   initPiezStorageState();
+
   chrome.contextMenus.create({
     "id": "akamaidevtoolkit",
     "title": "Purge this URL", 
@@ -344,16 +335,6 @@ chrome.runtime.onUpdateAvailable.addListener(function(details) {
   console.log("updating to version " + details.version);
   chrome.runtime.reload();
 });
-
-/*chrome.runtime.requestUpdateCheck(function(status) {
-  if (status == "update_available") {
-    console.log("update pending...");
-  } else if (status == "no_update") {
-    console.log("no update found");
-  } else if (status == "throttled") {
-    console.log("Oops, I'm asking too frequently - I need to back off.");
-  }
-});*/
 
 chrome.contextMenus.onClicked.addListener(function(event){
   var network = "staging";
