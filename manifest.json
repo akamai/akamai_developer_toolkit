@@ -28,7 +28,7 @@
     "48":"img/icons-128.png"
   },
   "manifest_version":2,
-  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com https://platform.twitter.com; object-src 'self'",
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com https://platform.twitter.com https://www.gstatic.com; object-src 'self'",
   "name":"Akamai Developer Toolkit",
   "permissions":[
     "alarms",
@@ -44,10 +44,11 @@
     "chrome://net-internals/*",
     "proxy",
     "webRequest",
-    "webRequestBlocking"
+    "webRequestBlocking",
+    "management"
   ],
   "update_url":"https://clients2.google.com/service/update2/crx",
-  "version":"1.0.24",
+  "version":"1.0.25",
   "web_accessible_resources":[
     "fonts/*.*",
     "js/jquery-3.1.1.min.js",
