@@ -95,10 +95,10 @@ function loadTwitter(){
 
 function ifPiezisinstalled(){
   chrome.management.get('npbccjkjemgagjioahfccljgnlkdleod', function(details){
-    console.log('extension ID found');
+    //console.log('extension ID found');
     if(details.name === 'Piez'){
-      console.log('piez found');
-      console.log('piez uninstalled');
+     // console.log('piez found');
+     // console.log('piez uninstalled');
       $('.piez-detected').prepend('<div class="ui-widget">\n<div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .2em;"><p><h6 style="margin-left: 5px;"><b>Warning:</b> Looks like you have Piez installed separately, click <a href="#!" id="removePiez" style="color: blue;"> here </a> to uninstall Piez for the optimal experience.</h6></p></div></div>');
     }
     else {
@@ -806,7 +806,7 @@ $(document).ready(function() {
   });
 
   $(document).on('click', '#loadgettingstartedvideo', function() {
-    console.log('getting started video clicked');
+   // console.log('getting started video clicked');
     chrome.runtime.getBackgroundPage(function(backgroundpage) {
       backgroundpage._gaq.push(['_trackEvent', 'View_getting_started_video', 'clicked']);
     });
