@@ -2,6 +2,7 @@ chrome.runtime.getBackgroundPage(function(backgroundpage) {
   backgroundpage._gaq.push(['_trackEvent', 'Popup_page', 'loaded']);
 });
 
+var piezFound = "false";
 
 
 function loadCredentialList() {
@@ -91,6 +92,23 @@ function loadTwitter(){
   $('.twitter-wjs').prepend('<a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=This%20is%20awesome%21%20I%20can%20now%20control%20and%20debug%20Akamai%20features%20directly%20from%20my%20workspace.%20Check%20out%20the%20new%20Akamai%20developer%20toolkit%20chrome%20extension%20https%3A%2F%2Fakamaidevops.page.link%2Fshare%20" data-size="large"> Tweet</a>');
 
 }
+
+function ifPiezisinstalled(){
+  chrome.management.get('npbccjkjemgagjioahfccljgnlkdleod', function(details){
+    console.log('extension ID found');
+    if(details.name === 'Piez'){
+      console.log('piez found');
+      console.log('piez uninstalled');
+      $('.piez-detected').prepend('<div class="ui-widget">\n<div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .2em;"><p><h6 style="margin-left: 5px;"><b>Warning:</b> Looks like you have Piez installed separately, click <a href="#!" id="removePiez" style="color: blue;"> here </a> to uninstall Piez for the optimal experience.</h6></p></div></div>');
+    }
+    else {
+      return;
+      //chrome.management.uninstall('npbccjkjemgagjioahfccljgnlkdleod');
+    }
+  });
+
+}
+
 chrome.runtime.onInstalled.addListener(function() {
   //adding detection of first time install and show modal
   //recordFirsttimeuser(); sent this to background.js
@@ -529,6 +547,7 @@ $(document).ready(function() {
   loadProxy();
   loadVersionNumber();
   loadTwitter();
+  ifPiezisinstalled()
   //get first time user storage value
   chrome.storage.local.get('firstTime', function(valueT) {
     var valueT = valueT['firstTime'];
@@ -795,6 +814,14 @@ $(document).ready(function() {
       url: 'https://www.youtube.com/watch?v=6PhU7lwOqHM'
     });
   });
+  $(document).on('click', '#removePiez', function() {
+    console.log('user consent provided for removing piez');
+    chrome.runtime.getBackgroundPage(function(backgroundpage) {
+      backgroundpage._gaq.push(['_trackEvent', 'Original_piez_user_uninstalled', 'clicked']);
+    });
+    chrome.management.uninstall('npbccjkjemgagjioahfccljgnlkdleod');
+  });
+
 
 
 
