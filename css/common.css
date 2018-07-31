@@ -82,3 +82,35 @@ li.disabled {
 textarea.materialize-textarea {
   padding: 1.5rem 0 0 0 !important;
 }
+
+/* card alert */
+.card-alert {
+  margin: 0.5rem 0 0rem 0;
+}
+.card-content.card-alert-content {
+  padding: 10px;
+  display: table;
+}
+.card-alert p {
+  top: 16px;
+  font-size: 14px;
+  padding-left: 6px;
+  display: table-cell;
+  vertical-align: middle;
+}
+.card-alert i {
+  font-size: 30px;
+  display: table-cell;
+  vertical-align: middle;
+}
+.card-alert .clearmark {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #03a9f4;
+  cursor: pointer;
+  position: absolute;
+  top: 15px;
+  right: 10px;
+}
+

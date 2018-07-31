@@ -12,7 +12,7 @@
       "js/purge.js",
       "js/debugurls.js",
       "js/background.js",
-      "js/jquery-ui.min.js"
+      "js/notification.js"
     ]
   },
   "browser_action":{
@@ -39,20 +39,18 @@
     "cookies",
     "webNavigation",
     "contextMenus",
+    "management",
     "https://*/*",
     "http://*/*",
-    "chrome://net-internals/*",
     "proxy",
     "webRequest",
-    "webRequestBlocking",
-    "management"
+    "webRequestBlocking"
   ],
   "update_url":"https://clients2.google.com/service/update2/crx",
   "version":"1.0.25",
   "web_accessible_resources":[
     "fonts/*.*",
     "js/jquery-3.1.1.min.js",
-    "js/jquery-ui.min.js",
     "css/font-awesome.min.css",
     "css/HoldOn.min.css",
     "js/HoldOn.min.js"
