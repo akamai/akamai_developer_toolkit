@@ -9,11 +9,13 @@
       "js/hmac-sha256.js",
       "js/common.js",
       "js/edgegrid.js",
-      "js/purge.js",
       "js/background.js",
       "js/notification.js",
+      "js/google-analytics.js",
       "cmanager/cmanager-bg.js",
-      "js/debugurls.js"
+      "fastpurge/fastpurge-bg.js",
+      "debugreq/debugreq-bg.js",
+      "piez/piez-bg.js"
     ]
   },
   "browser_action":{
@@ -54,7 +56,6 @@
     "js/jquery-3.1.1.min.js",
     "css/font-awesome.min.css",
     "css/HoldOn.min.css",
-    "js/HoldOn.min.js",
-    "js/flush.js"
+    "js/HoldOn.min.js"
   ]
 }

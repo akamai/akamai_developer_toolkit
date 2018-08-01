@@ -41,3 +41,53 @@ var markActiveToken = function() {
     }
   });
 }
+
+$('#deletealltoken').click(function() {
+  chrome.runtime.sendMessage({type: "gaq", target: "Delete_all_tokens", behavior: "clicked"});
+  chrome.runtime.sendMessage({type: "cmanager", action: "deleteall",});
+  $("#tokenlist").hide();
+  $("#apitab-nocredential").show();
+});
+
+$('#addnewtoken, #addnewtokenlink').click(function() {
+  chrome.runtime.sendMessage({type: "gaq", target: "Add_new_credential", behavior: "clicked"});
+  chrome.tabs.create({
+    url: 'cmanager/credential.html'
+  });
+});
+
+$(document).on('click', '#tokenlist li a', function(event) {
+  var button_type = $(this).attr('action');
+  var token_id = $(this).attr('tokenid');
+  switch (button_type) {
+    case "edit":
+      chrome.tabs.create({url: 'cmanager/credential.html?id=' + token_id});
+      chrome.runtime.sendMessage({type: "gaq", target: "Editing_an_api_token", behavior: "clicked"});
+      break;
+    case "delete":
+      $(this).closest("li.avatar").fadeOut("normal", function() {
+        if ($(this).parent("ul").children().length === 1) {
+          $("#tokenlist").hide();
+          $("#apitab-nocredential").show();
+        }
+        $(this).remove();
+      });
+      chrome.runtime.sendMessage({type: "cmanager", action: "delete", token_id: token_id});
+      chrome.runtime.sendMessage({type: "gaq", target: "Deleting_an_api_token", behavior: "clicked"});
+      break;
+    case "activate":
+      $(".key-img").hide();
+      $(this).closest("li.avatar").find(".key-img").fadeToggle();
+      $('.collection-item.avatar').addClass("disabled");
+      $(this).closest("li.avatar").removeClass("disabled");
+      chrome.runtime.sendMessage({type: "cmanager", action: "activate", token_id: token_id});
+      chrome.runtime.sendMessage({type: "gaq", target: "Activating_an_api_token", behavior: "clicked"});
+      break;
+    case "download":
+      chrome.runtime.sendMessage({type: "cmanager", action: "download", token_id: token_id});
+      chrome.runtime.sendMessage({type: "gaq", target: "Downloading_an_api_token", behavior: "clicked"});
+      break;
+    default:
+      break;
+  }
+});

@@ -94,14 +94,10 @@ $(document).ready(function(){
 
   loadHistory();
 
-  chrome.runtime.getBackgroundPage(function (backgroundpage){
-    backgroundpage._gaq.push(['_trackEvent', 'Debug_history_page', 'loaded']);
-   });
+  chrome.runtime.sendMessage({type: "gaq", target: "Debug_history_page", behavior: "loaded"});
 
     $('#cleardebugHistoryButton').click(function(){
-      chrome.runtime.getBackgroundPage(function (backgroundpage){
-        backgroundpage._gaq.push(['_trackEvent', 'Debug_history_page_clearhistory', 'clicked']);
-       });
+      chrome.runtime.sendMessage({type: "gaq", target: "Debug_history_page_clearhistory", behavior: "clicked"});
       chrome.storage.local.get(null, function(data) {
         var arr_history = [];
         for (var key in data) {
@@ -121,23 +117,17 @@ $(document).ready(function(){
     });*/
 
     $(document).on('click', '.learnmore_debug', function(){
-      chrome.runtime.getBackgroundPage(function (backgroundpage){
-        backgroundpage._gaq.push(['_trackEvent', 'Debug_history_page_learnmore', 'clicked']);
-       });
+      chrome.runtime.sendMessage({type: "gaq", target: "Debug_history_page_learnmore", behavior: "clicked"});
       chrome.tabs.create({url: 'https://learn.akamai.com/en-us/api/core_features/diagnostic_tools/v2.html#errorcodes'});
     });
 
     $(document).on('click', '.see-more-link', function(obj){
-      chrome.runtime.getBackgroundPage(function (backgroundpage){
-        backgroundpage._gaq.push(['_trackEvent', 'Debug_history_page_seemore', 'clicked']);
-       });
-      chrome.tabs.create({url: 'debugdetails.html?id=' + $(this).attr('requestId')});
+      chrome.runtime.sendMessage({type: "gaq", target: "Debug_history_page_seemore", behavior: "clicked"});
+      chrome.tabs.create({url: 'debugreq/debugreq-details.html?id=' + $(this).attr('requestId')});
     });
 
     $('#closeButton').click(function(){ 
-      chrome.runtime.getBackgroundPage(function (backgroundpage){
-        backgroundpage._gaq.push(['_trackEvent', 'Debug_history_page_closebtn', 'clicked']);
-       });
+      chrome.runtime.sendMessage({type: "gaq", target: "Debug_history_page_closebtn", behavior: "clicked"});
       closeCurrentTab(); 
      }); 
 
