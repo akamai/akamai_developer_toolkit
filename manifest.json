@@ -10,9 +10,10 @@
       "js/common.js",
       "js/edgegrid.js",
       "js/purge.js",
-      "js/debugurls.js",
       "js/background.js",
-      "js/notification.js"
+      "js/notification.js",
+      "cmanager/cmanager-bg.js",
+      "js/debugurls.js"
     ]
   },
   "browser_action":{

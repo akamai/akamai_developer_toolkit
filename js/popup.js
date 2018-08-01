@@ -2,39 +2,6 @@ chrome.runtime.getBackgroundPage(function(backgroundpage) {
   backgroundpage._gaq.push(['_trackEvent', 'Popup_page', 'loaded']);
 });
 
-function loadCredentialList() {
-  $('#tokenlist').empty().hide();
-  chrome.storage.local.get('tokens', function(data) {
-    var arr_tokens = data['tokens'];
-    if (typeof arr_tokens === 'undefined' || arr_tokens === null) {
-      arr_tokens = [];
-    }
-    if (arr_tokens.length > 0) {
-      for (i = 0; i < arr_tokens.length; i++) {
-        var api_credential = arr_tokens[i];
-        var list_html = '<li class="collection-item avatar disabled">';
-        list_html += '<i class="material-icons key-img circle teal lighten-2 z-depth-1" style="display: none;">lock_open</i>';
-        list_html += '<span class="center" style="font-size: 15px; font-weight: bold">' + api_credential.desc + '</span>';
-        list_html += '<p>' + api_credential.tokentype + '</p>';
-        list_html += '<p class="blue-grey-text">Click on Activate to enable this credential for your requests</p>';
-        list_html += '<div class="secondary-content">';
-        list_html += '<div><a href="#!" tokenid="' + api_credential.uniqid + '" action="activate">Activate</a></div>';
-        list_html += '<div><a href="#!" tokenid="' + api_credential.uniqid + '" action="edit">Edit</a></div>';
-        list_html += '<div><a href="#!" tokenid="' + api_credential.uniqid + '" action="download">Download</a></div>';
-        list_html += '<div><a href="#!" tokenid="' + api_credential.uniqid + '" action="delete">Delete</a></div>';
-        list_html += '</div></li>';
-        $('#tokenlist').append(list_html);
-      }
-      // if (arr_tokens.length == 1) {$('[action=activate]').trigger('click')};
-      $("#apitab-nocredential").hide();
-      $('#tokenlist').show();
-    } else {
-      $("#apitab-nocredential").show();
-      return false;
-    }
-  });
-}
-
 function loadDialog() {
   chrome.storage.local.get('firstTime', function(valueT) {
     var valueT = valueT['firstTime'];
@@ -168,34 +135,6 @@ chrome.runtime.onStartup.addListener(function() {
     setProxy(lastProfileId);
   });
 });
-
-function downloadToken(objToken) {
-  var body = "";
-  var field_names = {
-    baseurl: "host",
-    clienttoken: "client_token",
-    accesstoken: "access_token",
-    secret: "client_secret",
-    desc: "credential_desc",
-    tokentype: "credential_type"
-  };
-  for (var each in field_names) {
-    if (each === "baseurl") {
-      var url = objToken[each].replace('https://', '');
-      body += field_names[each] + " = " + url + "\n\n";
-    } else {
-      body += field_names[each] + " = " + objToken[each] + "\n\n";
-    }
-  }
-  var filename = objToken.desc.replace(/\s+/g, '-');
-  var atag = document.createElement('a');
-  atag.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(body));
-  atag.setAttribute('download', filename);
-  atag.style.display = 'none';
-  document.body.appendChild(atag);
-  atag.click();
-  document.body.removeChild(atag);
-}
 
 function closeOtherForms() {
   $('[id="editProxyBtn"]').show();
@@ -554,7 +493,7 @@ $(document).ready(function() {
   loadCredentialList();
   loadProxy();
   loadTwitter();
-  ifPiezisinstalled()
+  ifPiezisinstalled();
   loadDialog();
   loadUpdateDialog();
   $('.versionNumber').attr("data-badge-caption", "v" + chrome.runtime.getManifest().version);
@@ -836,14 +775,6 @@ $(document).ready(function() {
     });
   });
 
-  // Mark active token
-  chrome.storage.local.get('active_token', function(data) {
-    var active_token = data['active_token'];
-    if (typeof active_token != 'undefined' || active_token != null) {
-      $("a[tokenid='" + active_token.uniqid + "'][action='activate']").trigger('click');
-    }
-  });
-
   chrome.storage.local.get('update_type', function(data) {
     var type = data['update_type'];
     if (typeof type == 'undefined' || type == null) {
@@ -886,7 +817,10 @@ $(document).ready(function() {
     chrome.runtime.getBackgroundPage(function(backgroundpage) {
       backgroundpage._gaq.push(['_trackEvent', 'Delete_all_tokens', 'clicked']);
     });
-    chrome.storage.local.remove(['tokens', 'active_token']);
+    chrome.runtime.sendMessage({
+      type: "cmanager",
+      action: "deleteall",
+    });
     $("#tokenlist").hide();
     $("#apitab-nocredential").show();
   });
@@ -896,7 +830,7 @@ $(document).ready(function() {
       backgroundpage._gaq.push(['_trackEvent', 'Add_new_credential', 'clicked']);
     });
     chrome.tabs.create({
-      url: 'credential.html'
+      url: 'cmanager/credential.html'
     });
   });
 
@@ -985,45 +919,27 @@ $(document).ready(function() {
   $(document).on('click', '#tokenlist li a', function(event) {
     var button_type = $(this).attr('action');
     var token_id = $(this).attr('tokenid');
-
     switch (button_type) {
       case "edit":
-        chrome.tabs.create({
-          url: 'credential.html?id=' + token_id
-        });
+        chrome.tabs.create({url: 'cmanager/credential.html?id=' + token_id});
         chrome.runtime.getBackgroundPage(function(backgroundpage) {
           backgroundpage._gaq.push(['_trackEvent', 'Editing_an_api_token', 'clicked']);
         });
         break;
       case "delete":
         $(this).closest("li.avatar").fadeOut("normal", function() {
+          if ($(this).parent("ul").children().length === 1) {
+            loadCredentialList();
+          }
           $(this).remove();
+        });
+        chrome.runtime.sendMessage({
+          type: "cmanager",
+          action: "delete",
+          token_id: token_id
         });
         chrome.runtime.getBackgroundPage(function(backgroundpage) {
           backgroundpage._gaq.push(['_trackEvent', 'Deleting_an_api_token', 'clicked']);
-        });
-        chrome.storage.local.get(['tokens', 'active_token'], function(data) {
-          var arr_tokens = data['tokens'];
-          var active_token = data['active_token'];
-          var token_index_to_delete = 0;
-          for (var i = 0; i < arr_tokens.length; i++) {
-            if (arr_tokens[i].uniqid == token_id) {
-              token_index_to_delete = i;
-            }
-            // delete token == current active token
-            if (active_token != null || typeof active_token != 'undefined') {
-              if (token_id == active_token.uniqid) {
-                chrome.storage.local.remove('active_token');
-              }
-            }
-          }
-          arr_tokens.splice(token_index_to_delete, 1);
-          chrome.storage.local.set({
-            'tokens': arr_tokens
-          });
-          if (arr_tokens.length == 0) {
-            loadCredentialList();
-          }
         });
         break;
       case "activate":
@@ -1031,28 +947,23 @@ $(document).ready(function() {
         $(this).closest("li.avatar").find(".key-img").fadeToggle();
         $('.collection-item.avatar').addClass("disabled");
         $(this).closest("li.avatar").removeClass("disabled");
+        chrome.runtime.sendMessage({
+          type: "cmanager",
+          action: "activate",
+          token_id: token_id
+        });
         chrome.runtime.getBackgroundPage(function(backgroundpage) {
           backgroundpage._gaq.push(['_trackEvent', 'Activating_an_api_token', 'clicked']);
         });
-        chrome.storage.local.get('tokens', function(tokens) {
-          var arr_tokens = tokens['tokens'];
-          for (var i = 0; i < arr_tokens.length; i++) {
-            if (arr_tokens[i].uniqid == token_id) {
-              updateActiveToken(arr_tokens[i]);
-              break;
-            }
-          }
-        });
         break;
       case "download":
-        chrome.storage.local.get('tokens', function(tokens) {
-          var arr_tokens = tokens['tokens'];
-          for (var i = 0; i < arr_tokens.length; i++) {
-            if (arr_tokens[i].uniqid == token_id) {
-              downloadToken(arr_tokens[i]);
-              break;
-            }
-          }
+        chrome.runtime.sendMessage({
+          type: "cmanager",
+          action: "download",
+          token_id: token_id
+        });
+        chrome.runtime.getBackgroundPage(function(backgroundpage) {
+          backgroundpage._gaq.push(['_trackEvent', 'Downloading_an_api_token', 'clicked']);
         });
         break;
       default:
