@@ -94,7 +94,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 beforeSendCallback = function(details) {
-  if(/^[^:]*:(?:\/\/)?(?:[^\/]*\.)?akamaiapis.net\/.*$/.test(details.url)) {
+  if(/^[^:]*:(?:\/\/)?(?:[^\/]*\.)?akamaiapis.net\/.*$/.test(details.url) || /^https:\/\/ac\.akamai\.com\/.*/.test(details.url)) {
     return;
   }
   if (akamaiDebugHeaderSwitchStateCached === 'ON' && details.url.indexOf('http') != -1) {
