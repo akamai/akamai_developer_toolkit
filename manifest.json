@@ -47,7 +47,7 @@
     "webRequestBlocking"
   ],
   "update_url":"https://clients2.google.com/service/update2/crx",
-  "version":"1.0.25",
+  "version":"1.0.26",
   "web_accessible_resources":[
     "fonts/*.*",
     "js/jquery-3.1.1.min.js",
