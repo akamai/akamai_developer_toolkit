@@ -17,7 +17,7 @@ var non_akamai_header = {
  */
 
 /* dev analytics tracker */
-var _AnalyticsCode = 'UA-116652320-2';
+var _AnalyticsCode = 'UA-116652320-3';
 // var _AnalyticsCode = 'UA-116652320-3---';
 
 var _gaq = _gaq || [];
