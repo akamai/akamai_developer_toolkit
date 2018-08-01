@@ -53,6 +53,7 @@
     "js/jquery-3.1.1.min.js",
     "css/font-awesome.min.css",
     "css/HoldOn.min.css",
-    "js/HoldOn.min.js"
+    "js/HoldOn.min.js",
+    "js/flush.js"
   ]
 }
