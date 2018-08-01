@@ -69,22 +69,22 @@ var piezCurrentStateOptions = {
 };
 
 var piezCurrentStateCached = '';
-var akamaiDebugHeaderSwitchCached = '';
+var akamaiDebugHeaderSwitchStateCached = '';
 
 var initDebugHeaderSwitchState = function() {
-  chrome.storage.local.get('akamaidebugheader', function(data) {
-    var type = data['akamaidebugheader'];
+  chrome.storage.local.get('akamaiDebugHeaderSwitch', function(data) {
+    var type = data['akamaiDebugHeaderSwitch'];
     if (typeof type == 'undefined' || type == null) {
-      chrome.storage.local.set({akamaidebugheader: 'OFF'});
-      akamaiDebugHeaderSwitchCached = 'OFF';
+      chrome.storage.local.set({akamaiDebugHeaderSwitch: 'OFF'});
+      akamaiDebugHeaderSwitchStateCached = 'OFF';
     }
   });
 }
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  if (request.type === "browser-akamaidebugheader") {
-    chrome.storage.local.get('akamaidebugheader', function(data){
-      akamaiDebugHeaderSwitchCached =  (data['akamaidebugheader'] === 'ON') ? 'ON' : 'OFF';
+  if (request.type === "browser-akamaidebugheaderswitch") {
+    chrome.storage.local.get('akamaiDebugHeaderSwitch', function(data){
+      akamaiDebugHeaderSwitchStateCached = (data['akamaiDebugHeaderSwitch'] === 'ON') ? 'ON' : 'OFF';
     });
   }
 });
@@ -93,7 +93,7 @@ beforeSendCallback = function(details) {
   if(/^[^:]*:(?:\/\/)?(?:[^\/]*\.)?akamaiapis.net\/.*$/.test(details.url)) {
     return;
   }
-  if (akamaiDebugHeaderSwitchCached === 'ON' && details.url.indexOf('http') != -1) {
+  if (akamaiDebugHeaderSwitchStateCached === 'ON' && details.url.indexOf('http') != -1) {
     switch(piezCurrentStateCached) {
       case "piez-off":
         details.requestHeaders.push({name: 'pragma', value: akamai_debug_headers});
@@ -109,7 +109,7 @@ beforeSendCallback = function(details) {
         details.requestHeaders.push({name: 'x-akamai-a2-disable', value: 'on'});
         break;
     }
-  } else if (akamaiDebugHeaderSwitchCached === 'OFF' && details.url.indexOf('http') != -1) {
+  } else if (akamaiDebugHeaderSwitchStateCached === 'OFF' && details.url.indexOf('http') != -1) {
       switch(piezCurrentStateCached) {
         case "piez-off":
           break;

@@ -104,14 +104,16 @@ function loadTwitter(){
 
 function ifPiezisinstalled() {
   chrome.management.get('npbccjkjemgagjioahfccljgnlkdleod', function(details) {
-    if(details.name === 'Piez') {
-      var msg = 'Looks like you have Piez installed separately, click <a href="#!" id="removePiez" style="color: blue;"> here </a> to uninstall Piez for the optimal experience';
-      chrome.runtime.sendMessage({
-        type: "notification", 
-        id: "piez",
-        body: msg,
-        update_target: "piez-notification"
-      });
+    if(details) {
+      if(details.name === 'Piez') {
+        var msg = 'Looks like you have Piez installed separately, click <a href="#!" id="removePiez" style="color: blue;"> here </a> to uninstall Piez for the optimal experience';
+        chrome.runtime.sendMessage({
+          type: "notification", 
+          id: "piez",
+          body: msg,
+          update_target: "piez-notification"
+        });
+      }
     }
   });
 }
@@ -864,8 +866,8 @@ $(document).ready(function() {
     });
   });
 
-  chrome.storage.local.get('akamaidebugheader', function(data) {
-    var type = data['akamaidebugheader'];
+  chrome.storage.local.get('akamaiDebugHeaderSwitch', function(data) {
+    var type = data['akamaiDebugHeaderSwitch'];
     $("#updatetype-debugheaders").prop('checked', (type == 'OFF') ? false : true);
   });
 
@@ -874,10 +876,10 @@ $(document).ready(function() {
       backgroundpage._gaq.push(['_trackEvent', 'toggle_debug_headers', 'clicked']);
     });
     var type = $(this).prop("checked") ? "ON" : "OFF";
-    chrome.storage.local.set({akamaidebugheader: type}, function() {
-      console.log("akamai-debug-header: "+type);
+    chrome.storage.local.set({akamaiDebugHeaderSwitch: type}, function() {
+      console.log("akamai-debug-header-switch: "+type);
       chrome.runtime.sendMessage({
-        type: "browser-akamaidebugheader",
+        type: "browser-akamaidebugheaderswitch",
         body: type
       });
     });
