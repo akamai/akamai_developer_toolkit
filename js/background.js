@@ -43,24 +43,24 @@ chrome.runtime.onInstalled.addListener(function(details) {
 
   initPiezStorageState();
   initDebugHeaderSwitchState();
+});
 
-  chrome.contextMenus.create({
-    "id": "akamaidevtoolkit",
-    "title": "Purge this URL", 
-    "contexts":["all"]
-  });
-  chrome.contextMenus.create({
-    "id": "akamaidevtoolkitchild1",
-    "title": "Purge Staging Network", 
-    "parentId": "akamaidevtoolkit",
-    "contexts":["all"]
-  });
-  chrome.contextMenus.create({
-    "id": "akamaidevtoolkitchild2",
-    "title": "Purge Production Network", 
-    "parentId": "akamaidevtoolkit",
-    "contexts":["all"]
-  });
+chrome.contextMenus.create({
+  "id": "akamaidevtoolkit",
+  "title": "Purge this URL", 
+  "contexts":["all"]
+});
+chrome.contextMenus.create({
+  "id": "akamaidevtoolkitchild1",
+  "title": "Purge Staging Network", 
+  "parentId": "akamaidevtoolkit",
+  "contexts":["all"]
+});
+chrome.contextMenus.create({
+  "id": "akamaidevtoolkitchild2",
+  "title": "Purge Production Network", 
+  "parentId": "akamaidevtoolkit",
+  "contexts":["all"]
 });
 
 chrome.contextMenus.onClicked.addListener(function(event){
