@@ -45,15 +45,12 @@ function loadHistory() {
 }
 
 $(document).ready(function(){
+  chrome.runtime.sendMessage({type: "gaq", target: "Purge_history_page", behavior: "loaded"});
+
   loadHistory();
 
-  chrome.runtime.getBackgroundPage(function (backgroundpage){
-    backgroundpage._gaq.push(['_trackEvent', 'Purge_history_page', 'loaded']);
-   });
   $('#clearHistoryButton').click(function(){
-    chrome.runtime.getBackgroundPage(function (backgroundpage){
-      backgroundpage._gaq.push(['_trackEvent', 'Purge_history_page_clearhistory', 'clicked']);
-     });
+    chrome.runtime.sendMessage({type: "gaq", target: "Purge_history_page_clearhistory", behavior: "clicked"});
     chrome.storage.local.get(null, function(data) {
       var arr_history = [];
       for (var key in data) {
@@ -69,15 +66,12 @@ $(document).ready(function(){
   });
 
   $(document).on('click', '[requestId]', function(obj){
-    chrome.runtime.getBackgroundPage(function (backgroundpage){
-      backgroundpage._gaq.push(['_trackEvent', 'Purge_history_page_seemore', 'clicked']);
-     });
-    chrome.tabs.create({url: 'purgedetails.html?id=' + $(this).attr('requestId')});
+    chrome.runtime.sendMessage({type: "gaq", target: "Purge_history_page_seemore", behavior: "clicked"});
+    chrome.tabs.create({url: 'fastpurge/fastpurge-details.html?id=' + $(this).attr('requestId')});
   });
 
   $('#closeButton').click(function(){ 
-    chrome.runtime.getBackgroundPage(function (backgroundpage){
-      backgroundpage._gaq.push(['_trackEvent', 'Purge_history_page_closebtn', 'clicked']);
-     });
-    closeCurrentTab(); }); 
+    chrome.runtime.sendMessage({type: "gaq", target: "Purge_history_page_closebtn", behavior: "clicked"});
+    closeCurrentTab(); 
+  }); 
 });

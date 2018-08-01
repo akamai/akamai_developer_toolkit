@@ -1,40 +1,3 @@
-chrome.runtime.getBackgroundPage(function(backgroundpage) {
-  backgroundpage._gaq.push(['_trackEvent', 'Popup_page', 'loaded']);
-});
-
-function loadCredentialList() {
-  $('#tokenlist').empty().hide();
-  chrome.storage.local.get('tokens', function(data) {
-    var arr_tokens = data['tokens'];
-    if (typeof arr_tokens === 'undefined' || arr_tokens === null) {
-      arr_tokens = [];
-    }
-    if (arr_tokens.length > 0) {
-      for (i = 0; i < arr_tokens.length; i++) {
-        var api_credential = arr_tokens[i];
-        var list_html = '<li class="collection-item avatar disabled">';
-        list_html += '<i class="material-icons key-img circle teal lighten-2 z-depth-1" style="display: none;">lock_open</i>';
-        list_html += '<span class="center" style="font-size: 15px; font-weight: bold">' + api_credential.desc + '</span>';
-        list_html += '<p>' + api_credential.tokentype + '</p>';
-        list_html += '<p class="blue-grey-text">Click on Activate to enable this credential for your requests</p>';
-        list_html += '<div class="secondary-content">';
-        list_html += '<div><a href="#!" tokenid="' + api_credential.uniqid + '" action="activate">Activate</a></div>';
-        list_html += '<div><a href="#!" tokenid="' + api_credential.uniqid + '" action="edit">Edit</a></div>';
-        list_html += '<div><a href="#!" tokenid="' + api_credential.uniqid + '" action="download">Download</a></div>';
-        list_html += '<div><a href="#!" tokenid="' + api_credential.uniqid + '" action="delete">Delete</a></div>';
-        list_html += '</div></li>';
-        $('#tokenlist').append(list_html);
-      }
-      // if (arr_tokens.length == 1) {$('[action=activate]').trigger('click')};
-      $("#apitab-nocredential").hide();
-      $('#tokenlist').show();
-    } else {
-      $("#apitab-nocredential").show();
-      return false;
-    }
-  });
-}
-
 function loadDialog() {
   chrome.storage.local.get('firstTime', function(valueT) {
     var valueT = valueT['firstTime'];
@@ -42,17 +5,9 @@ function loadDialog() {
     msg +='click <a href="#!" id="loadgettingstartedvideo" style="color: blue;"> here</a>';
     msg += ' to view the getting started video';
     if (valueT === 'true') {
-      chrome.runtime.sendMessage({
-        type: "notification", 
-        id: "dialog",
-        body: msg
-      });
-      chrome.runtime.getBackgroundPage(function(backgroundpage) {
-        backgroundpage._gaq.push(['_trackEvent', 'first_time_install', 'updated']);
-      });
-      chrome.storage.local.set({'firstTime': 'false'}, function(){
-        // console.log();
-      });
+      chrome.runtime.sendMessage({type: "notification", id: "dialog", body: msg});
+      chrome.runtime.sendMessage({type: "gaq", target: "first_time_install", behavior: "updated"});
+      chrome.storage.local.set({'firstTime': 'false'});
     }
   });
 }
@@ -64,17 +19,9 @@ function loadUpdateDialog() {
       var thisVersion = chrome.runtime.getManifest().version;
       var msg = '<b>Heads up: </b>Your extension has been autoupdated to the latest version ' + thisVersion;
       if (valueU === 'true') {
-        chrome.runtime.sendMessage({
-          type: "notification", 
-          id: "update-dialog",
-          body: msg
-        });
-        chrome.runtime.getBackgroundPage(function(backgroundpage) {
-          backgroundpage._gaq.push(['_trackEvent', 'extension_version', 'updated']);
-        });
-        chrome.storage.local.set({'updatedU': 'false'}, function(){
-          // console.log('updated value is set to false' );
-        })
+        chrome.runtime.sendMessage({type: "notification", id: "update-dialog", body: msg});
+        chrome.runtime.sendMessage({type: "gaq", target: "extension_version", behavior: "updated"});
+        chrome.storage.local.set({'updatedU': 'false'});
       }
     }
   });
@@ -169,34 +116,6 @@ chrome.runtime.onStartup.addListener(function() {
   });
 });
 
-function downloadToken(objToken) {
-  var body = "";
-  var field_names = {
-    baseurl: "host",
-    clienttoken: "client_token",
-    accesstoken: "access_token",
-    secret: "client_secret",
-    desc: "credential_desc",
-    tokentype: "credential_type"
-  };
-  for (var each in field_names) {
-    if (each === "baseurl") {
-      var url = objToken[each].replace('https://', '');
-      body += field_names[each] + " = " + url + "\n\n";
-    } else {
-      body += field_names[each] + " = " + objToken[each] + "\n\n";
-    }
-  }
-  var filename = objToken.desc.replace(/\s+/g, '-');
-  var atag = document.createElement('a');
-  atag.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(body));
-  atag.setAttribute('download', filename);
-  atag.style.display = 'none';
-  document.body.appendChild(atag);
-  atag.click();
-  document.body.removeChild(atag);
-}
-
 function closeOtherForms() {
   $('[id="editProxyBtn"]').show();
   $('[id="editProxyForm"]').remove();
@@ -205,9 +124,7 @@ function closeOtherForms() {
 }
 
 function addProxy() {
-  chrome.runtime.getBackgroundPage(function(backgroundpage) {
-    backgroundpage._gaq.push(['_trackEvent', 'Add_new_proxy_btn', 'clicked']);
-  });
+  chrome.runtime.sendMessage({type: "gaq", target: "Add_new_proxy_btn", behavior: "clicked"});
 
   closeOtherForms();
 
@@ -551,19 +468,18 @@ function FindProxyForURL(url, host) { \n
 }
 
 $(document).ready(function() {
+  chrome.runtime.sendMessage({type: "gaq", target: "Popup_page", behavior: "loaded"});
+  $('.versionNumber').attr("data-badge-caption", "v" + chrome.runtime.getManifest().version);
   loadCredentialList();
   loadProxy();
   loadTwitter();
-  ifPiezisinstalled()
+  ifPiezisinstalled();
   loadDialog();
   loadUpdateDialog();
-  $('.versionNumber').attr("data-badge-caption", "v" + chrome.runtime.getManifest().version);
 
   $(document).on('click', '#addProxyBtn', addProxy);
   $(document).on('click', '#flushdns', function() {
-    chrome.runtime.getBackgroundPage(function(backgroundpage) {
-      backgroundpage._gaq.push(['_trackEvent', 'flushdns', 'clicked']);
-    });
+    chrome.runtime.sendMessage({type: "gaq", target: "flushdns", behavior: "clicked"});
     chrome.tabs.query({}, function(tabs) {
       var needCreate = true;
       for (var i = 0; i < tabs.length; i++) {
@@ -619,9 +535,7 @@ $(document).ready(function() {
   });
 
   $(document).on('click', '#addProxy #submitBtn', function() {
-    chrome.runtime.getBackgroundPage(function(backgroundpage) {
-      backgroundpage._gaq.push(['_trackEvent', 'Add_new_proxy_savebtn', 'clicked']);
-    });
+    chrome.runtime.sendMessage({type: "gaq", target: "Add_new_proxy_savebtn", behavior: "clicked"});
 
     var profileId = $(this).data('profileid');
     var profileName = $('#txtProfileName').prop('value');
@@ -688,9 +602,7 @@ $(document).ready(function() {
   });
 
   $(document).on('click', '#proxyList #editProxyBtn', function() {
-    chrome.runtime.getBackgroundPage(function(backgroundpage) {
-      backgroundpage._gaq.push(['_trackEvent', 'Edit_existing_proxy_btn', 'clicked']);
-    });
+    chrome.runtime.sendMessage({type: "gaq", target: "Edit_existing_proxy_btn", behavior: "clicked"});
 
     closeOtherForms();
 
@@ -753,9 +665,7 @@ $(document).ready(function() {
   });
 
   $(document).on('click submit', '#editProxyForm #submitBtn', function() {
-    chrome.runtime.getBackgroundPage(function(backgroundpage) {
-      backgroundpage._gaq.push(['_trackEvent', 'saving_edits_in_existing_proxy_form', 'clicked']);
-    });
+    chrome.runtime.sendMessage({type: "gaq", target: "saving_edits_in_existing_proxy_form", behavior: "clicked"});
 
     var profileId = $(this).data('profileid');
     var profileName = $('#txtProfileName').prop('value');
@@ -792,34 +702,25 @@ $(document).ready(function() {
   });
 
   $(document).on('click', '#editProxyForm #cancelBtn', function() {
-    chrome.runtime.getBackgroundPage(function(backgroundpage) {
-      backgroundpage._gaq.push(['_trackEvent', 'cancelling_edits_in_existing_proxy_form', 'clicked']);
-    });
+    chrome.runtime.sendMessage({type: "gaq", target: "cancelling_edits_in_existing_proxy_form", behavior: "clicked"});
     $('#editProxyForm').prev('#editProxyBtn').show();
     $('#editProxyForm').remove();
   });
 
   $(document).on('click', '#loadgettingstartedvideo', function() {
-    chrome.runtime.getBackgroundPage(function(backgroundpage) {
-      backgroundpage._gaq.push(['_trackEvent', 'View_getting_started_video', 'clicked']);
-    });
+    chrome.runtime.sendMessage({type: "gaq", target: "View_getting_started_video", behavior: "clicked"});
     chrome.tabs.create({
       url: 'https://www.youtube.com/watch?v=6PhU7lwOqHM'
     });
   });
 
   $(document).on('click', '#removePiez', function() {
-    console.log('user consent provided for removing piez');
-    chrome.runtime.getBackgroundPage(function(backgroundpage) {
-      backgroundpage._gaq.push(['_trackEvent', 'Original_piez_user_uninstalled', 'clicked']);
-    });
+    chrome.runtime.sendMessage({type: "gaq", target: "Original_piez_user_uninstalled", behavior: "clicked"});
     chrome.management.uninstall('npbccjkjemgagjioahfccljgnlkdleod');
   });
 
   $(document).on('click', '#editProxyForm #deleteProxyBtn', function() {
-    chrome.runtime.getBackgroundPage(function(backgroundpage) {
-      backgroundpage._gaq.push(['_trackEvent', 'deleting_edits_in_existing_proxy_form', 'clicked']);
-    });
+    chrome.runtime.sendMessage({type: "gaq", target: "deleting_edits_in_existing_proxy_form", behavior: "clicked"});
 
     var profileId = $(this).data('profileid');
     chrome.storage.local.get('lastProfileId', function(lastProfileIdObj) {
@@ -836,308 +737,31 @@ $(document).ready(function() {
     });
   });
 
-  // Mark active token
-  chrome.storage.local.get('active_token', function(data) {
-    var active_token = data['active_token'];
-    if (typeof active_token != 'undefined' || active_token != null) {
-      $("a[tokenid='" + active_token.uniqid + "'][action='activate']").trigger('click');
-    }
-  });
-
-  chrome.storage.local.get('update_type', function(data) {
-    var type = data['update_type'];
-    if (typeof type == 'undefined' || type == null) {
-      chrome.storage.local.set({
-        update_type: 'invalidate'
-      }, function() {
-        $("#updatetype-switch").prop('checked', false);
-      });
-    }
-    $("#updatetype-switch").prop('checked', (type == 'invalidate') ? false : true);
-  });
-
-  $("#updatetype-switch").change(function() {
-    chrome.runtime.getBackgroundPage(function(backgroundpage) {
-      backgroundpage._gaq.push(['_trackEvent', 'toggle_purge_type', 'clicked']);
-    });
-    var type = $(this).prop("checked") ? "delete" : "invalidate";
-    chrome.storage.local.set({
-      update_type: type
-    });
-  });
-
-  chrome.storage.local.get('akamaiDebugHeaderSwitch', function(data) {
-    var type = data['akamaiDebugHeaderSwitch'];
-    $("#updatetype-debugheaders").prop('checked', (type == 'OFF') ? false : true);
-  });
-
-  $("#updatetype-debugheaders").change(function() {
-    chrome.runtime.getBackgroundPage(function(backgroundpage) {
-      backgroundpage._gaq.push(['_trackEvent', 'toggle_debug_headers', 'clicked']);
-    });
-    var type = $(this).prop("checked") ? "ON" : "OFF";
-    chrome.runtime.sendMessage({
-      type: "browser-akamaidebugheaderswitch",
-      body: type
-    });
-  });
-
-  $('#deletealltoken').click(function() {
-    chrome.runtime.getBackgroundPage(function(backgroundpage) {
-      backgroundpage._gaq.push(['_trackEvent', 'Delete_all_tokens', 'clicked']);
-    });
-    chrome.storage.local.remove(['tokens', 'active_token']);
-    $("#tokenlist").hide();
-    $("#apitab-nocredential").show();
-  });
-
-  $('#addnewtoken, #addnewtokenlink').click(function() {
-    chrome.runtime.getBackgroundPage(function(backgroundpage) {
-      backgroundpage._gaq.push(['_trackEvent', 'Add_new_credential', 'clicked']);
-    });
-    chrome.tabs.create({
-      url: 'credential.html'
-    });
-  });
-
-  $('#purgehistorydetails, #purgehistorydetailslink').click(function() {
-    chrome.runtime.getBackgroundPage(function(backgroundpage) {
-      backgroundpage._gaq.push(['_trackEvent', 'View_purge_history', 'clicked']);
-    });
-    chrome.tabs.create({
-      url: 'purge-history.html'
-    });
-  });
-
-  $('#debughistorydetails, #debughistorydetailslink').click(function() {
-    chrome.runtime.getBackgroundPage(function(backgroundpage) {
-      backgroundpage._gaq.push(['_trackEvent', 'View_debug_history', 'clicked']);
-    });
-    chrome.tabs.create({
-      url: 'debug-history.html'
-    });
-  });
-
   $('#feedbackform, #feedbackformlink').click(function() {
-    chrome.runtime.getBackgroundPage(function(backgroundpage) {
-      backgroundpage._gaq.push(['_trackEvent', 'View_feedback_form', 'clicked']);
-    });
+    chrome.runtime.sendMessage({type: "gaq", target: "View_feedback_form", behavior: "clicked"});
     chrome.tabs.create({
       url: 'https://goo.gl/forms/7ZaZ7XMATVQ8xEyu1'
     });
   });
 
   $('#apicredstutorial').click(function(){
-		chrome.runtime.getBackgroundPage(function (backgroundpage){
-			backgroundpage._gaq.push(['_trackEvent', 'View_api_creds_tutorial', 'clicked']);
-		});
+    chrome.runtime.sendMessage({type: "gaq", target: "View_api_creds_tutorial", behavior: "clicked"});
 		chrome.tabs.create({url: 'https://youtu.be/6PhU7lwOqHM'});
 	});
 
   $('#fastpurgetutorial').click(function(){
-    chrome.runtime.getBackgroundPage(function (backgroundpage){
-      backgroundpage._gaq.push(['_trackEvent', 'View_fast_purge_tutorial', 'clicked']);
-    });
+    chrome.runtime.sendMessage({type: "gaq", target: "View_fast_purge_tutorial", behavior: "clicked"});
     chrome.tabs.create({url: 'https://youtu.be/kk9RDQaARxw'});
   });
 
   $('#debugtutorial').click(function(){
-    chrome.runtime.getBackgroundPage(function (backgroundpage){
-      backgroundpage._gaq.push(['_trackEvent', 'View_debug_reqests_tutorial', 'clicked']);
-      });
+    chrome.runtime.sendMessage({type: "gaq", target: "View_debug_reqests_tutorial", behavior: "clicked"});
     chrome.tabs.create({url: 'https://youtu.be/8NW0M7PyW68'});
   });
 
   $('#browsersettingstutorial').click(function(){
-    chrome.runtime.getBackgroundPage(function (backgroundpage){
-      backgroundpage._gaq.push(['_trackEvent', 'View_browser_settings_tutorial', 'clicked']);
-      });
+    chrome.runtime.sendMessage({type: "gaq", target: "View_browser_settings_tutorial", behavior: "clicked"});
     chrome.tabs.create({url: 'https://youtu.be/YZsaQZzMtmM'});
   });
 
-  $('#submitButton-stg, #submitButton-pro').click(function(obj) {
-    chrome.runtime.getBackgroundPage(function(backgroundpage) {
-      backgroundpage._gaq.push(['_trackEvent', 'Submit_purge_req', 'clicked']);
-    });
-    var arr_purge_targets = $('#purgeurls').val().split("\n");
-    var network = $(this).attr('network');
-    for (i = 0; i < arr_purge_targets.length; i++) {
-      arr_purge_targets[i] = arr_purge_targets[i].trim().replace(/\s+/g, '');
-    }
-    if (arr_purge_targets.filter(Boolean).length == 0) {
-      Materialize.toast('Please enter Cpcode/Tag/URL to purge', 1500);
-      return false;
-    } else {
-      var submit_buttons = $('#submitButton-stg, #submitButton-pro');
-      var this_obj = $(this);
-      var this_html = $(this).html();
-      submit_buttons.addClass("disabled");
-      this_obj.html('<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>');
-      chrome.runtime.getBackgroundPage(function(backgroundpage) {
-        backgroundpage.makePurgeRequest(arr_purge_targets.filter(Boolean), network, function(request_result) {
-          submit_buttons.removeClass("disabled").blur();
-          this_obj.html(this_html);
-        });
-      });
-    }
-  });
-
-  $(document).on('click', '#tokenlist li a', function(event) {
-    var button_type = $(this).attr('action');
-    var token_id = $(this).attr('tokenid');
-
-    switch (button_type) {
-      case "edit":
-        chrome.tabs.create({
-          url: 'credential.html?id=' + token_id
-        });
-        chrome.runtime.getBackgroundPage(function(backgroundpage) {
-          backgroundpage._gaq.push(['_trackEvent', 'Editing_an_api_token', 'clicked']);
-        });
-        break;
-      case "delete":
-        $(this).closest("li.avatar").fadeOut("normal", function() {
-          $(this).remove();
-        });
-        chrome.runtime.getBackgroundPage(function(backgroundpage) {
-          backgroundpage._gaq.push(['_trackEvent', 'Deleting_an_api_token', 'clicked']);
-        });
-        chrome.storage.local.get(['tokens', 'active_token'], function(data) {
-          var arr_tokens = data['tokens'];
-          var active_token = data['active_token'];
-          var token_index_to_delete = 0;
-          for (var i = 0; i < arr_tokens.length; i++) {
-            if (arr_tokens[i].uniqid == token_id) {
-              token_index_to_delete = i;
-            }
-            // delete token == current active token
-            if (active_token != null || typeof active_token != 'undefined') {
-              if (token_id == active_token.uniqid) {
-                chrome.storage.local.remove('active_token');
-              }
-            }
-          }
-          arr_tokens.splice(token_index_to_delete, 1);
-          chrome.storage.local.set({
-            'tokens': arr_tokens
-          });
-          if (arr_tokens.length == 0) {
-            loadCredentialList();
-          }
-        });
-        break;
-      case "activate":
-        $(".key-img").hide();
-        $(this).closest("li.avatar").find(".key-img").fadeToggle();
-        $('.collection-item.avatar').addClass("disabled");
-        $(this).closest("li.avatar").removeClass("disabled");
-        chrome.runtime.getBackgroundPage(function(backgroundpage) {
-          backgroundpage._gaq.push(['_trackEvent', 'Activating_an_api_token', 'clicked']);
-        });
-        chrome.storage.local.get('tokens', function(tokens) {
-          var arr_tokens = tokens['tokens'];
-          for (var i = 0; i < arr_tokens.length; i++) {
-            if (arr_tokens[i].uniqid == token_id) {
-              updateActiveToken(arr_tokens[i]);
-              break;
-            }
-          }
-        });
-        break;
-      case "download":
-        chrome.storage.local.get('tokens', function(tokens) {
-          var arr_tokens = tokens['tokens'];
-          for (var i = 0; i < arr_tokens.length; i++) {
-            if (arr_tokens[i].uniqid == token_id) {
-              downloadToken(arr_tokens[i]);
-              break;
-            }
-          }
-        });
-        break;
-      default:
-        break;
-    }
-  });
-
-  $('#debugdata').click(function() {
-    chrome.runtime.getBackgroundPage(function(backgroundpage) {
-      backgroundpage._gaq.push(['_trackEvent', 'Fetch_logs', 'clicked']);
-    });
-    // _gaq.push(['_trackEvent', 'Fetch_logs', 'clicked']);
-
-    var arr_target_debugdata = $('#debugurls').val().split("\n");
-    var arr_target_ghostIP = $('#ghostIp').val().split("\n");
-    var submit_buttons = $('#debugdata');
-
-    //enter code to differentiate between error code and request ID
-    //throws error when nothing is entered
-    if (arr_target_debugdata.filter(Boolean).length == 0) {
-      Materialize.toast('Please enter valid error codes or request ID', 1500);
-      return false;
-    } else {
-      var this_obj = $(this);
-      var this_html = $(this).html();
-      submit_buttons.addClass("disabled");
-      this_obj.html('<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>');
-      chrome.runtime.getBackgroundPage(function(backgroundpage) {
-        backgroundpage.makeErrorRefReq(arr_target_debugdata.filter(Boolean), arr_target_ghostIP.filter(Boolean), function(request_result) {
-          submit_buttons.removeClass("disabled").blur();
-          this_obj.html(this_html);
-        });
-      });
-    }
-  });
-
-  //piez config
-  document.getElementById("piez-off").onclick = function() {
-    //console.log ('clicked on disabled piez');
-    chrome.runtime.sendMessage({
-      type: "piez-off"
-    });
-  };
-
-  document.getElementById("piez-im-simple").onclick = function() {
-    chrome.runtime.sendMessage({
-      type: "piez-im-simple"
-    });
-  };
-
-  document.getElementById("piez-im-advanced").onclick = function() {
-    chrome.runtime.sendMessage({
-      type: "piez-im-advanced"
-    });
-  };
-
-  document.getElementById("piez-a2").onclick = function() {
-    chrome.runtime.sendMessage({
-      type: "piez-a2"
-    });
-  };
-
-  document.getElementById("piez-ro-simple").onclick = function() {
-    chrome.runtime.sendMessage({
-      type: "piez-ro-simple"
-    });
-  };
-
-  document.getElementById("piez-ro-advanced").onclick = function() {
-    chrome.runtime.sendMessage({
-      type: "piez-ro-advanced"
-    });
-  };
-
-  document.getElementById("piez-3pm").onclick = function() {
-    chrome.runtime.sendMessage({
-      type: "piez-3pm"
-    });
-  };
-
-  var setFormField = function(piezSettings) {
-    chrome.storage.local.get("piezCurrentState", function(result) {
-      document.getElementById(result["piezCurrentState"]).checked = true;
-    });
-  };
-
-  setFormField();
 });

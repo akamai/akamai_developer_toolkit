@@ -10,11 +10,11 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
       html += '</div>';
       html += '<i id="'+ message.id + '_close" class="material-icons clearmark">clear</i>';
       html += '</div>';
+      var target_dom = message.update_target === undefined ? "notification" : message.update_target;
+      popup.$("#"+target_dom).prepend(html);
+      popup.$("#"+message.id+"_close").on("click", function(){
+        popup.$("#"+message.id).slideUp();
+      });
     }
-    var target_dom = message.update_target === undefined ? "notification" : message.update_target;
-    popup.$("#"+target_dom).prepend(html);
-    popup.$("#"+message.id+"_close").on("click", function(){
-      popup.$("#"+message.id).slideUp();
-    });
   }
 });

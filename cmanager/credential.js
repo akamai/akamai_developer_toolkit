@@ -125,7 +125,9 @@ $(document).ready(function(){
       chrome.storage.local.get('active_token', function(data) {
         var active_token = data['active_token'];
         if (active_token.uniqid == passedId) {
-          updateActiveToken(token_data);
+          chrome.runtime.getBackgroundPage(function(background) {
+            background.updateActiveToken(token_data);
+          });
         }
       });
     }
