@@ -104,14 +104,16 @@ function loadTwitter(){
 
 function ifPiezisinstalled() {
   chrome.management.get('npbccjkjemgagjioahfccljgnlkdleod', function(details) {
-    if(details.name === 'Piez') {
-      var msg = 'Looks like you have Piez installed separately, click <a href="#!" id="removePiez" style="color: blue;"> here </a> to uninstall Piez for the optimal experience';
-      chrome.runtime.sendMessage({
-        type: "notification", 
-        id: "piez",
-        body: msg,
-        update_target: "piez-notification"
-      });
+    if(details) {
+      if(details.name === 'Piez') {
+        var msg = 'Looks like you have Piez installed separately, click <a href="#!" id="removePiez" style="color: blue;"> here </a> to uninstall Piez for the optimal experience';
+        chrome.runtime.sendMessage({
+          type: "notification", 
+          id: "piez",
+          body: msg,
+          update_target: "piez-notification"
+        });
+      }
     }
   });
 }
@@ -210,50 +212,50 @@ function addProxy() {
   closeOtherForms();
 
   var profileId = 'profile-' + $.now();
-  $('#addProxyBtn').after('<form id="addProxyForm"><fieldset>\n' +
-    '<legend>Add Proxy</legend>\n' +
-    '<table align="center">\n' +
-    '	<tr>\n' +
-    '		<td><label id="lblProfileName">Profile Name:</label></td>\n' +
-    '		<td><input type="text" placeholder="(placeholder)Akamai staging NonSecure" id="txtProfileName" /></td>\n' +
-    '	</tr>\n' +
-    '	<tr>\n' +
-    '		<td><label id="lblProxyScheme">Scheme:</label></td>\n' +
-    '		<td><select id="txtProxyScheme">\n' +
-    '			<option selected value="http">http</option>\n' +
-    '			<option value="https">https</option>\n' +
-    '			<option value="socks4">socks4</option>\n' +
-    '			<option value="socks5">socks5</option>\n' +
-    '			<option value="pac">pac</option>\n' +
-    '		</select></td>\n' +
-    '	</tr>\n' +
-    '	<tr>\n' +
-    '		<td><label id="lblProxyHost">Proxy Host:</label></td>\n' +
-    '		<td><input type="text" placeholder="www.example.edgesuite-staging.net" id="txtProxyHost" /></td>\n' +
-    '	</tr>\n' +
-    '	<tr>\n' +
-    '		<td><label id="lblProxyPort">Port:</label></td>\n' +
-    '		<td><input type="text" placeholder="(placeholder)80" id="txtProxyPort" /></td>\n' +
-    '	</tr>\n' +
-    '	<tr>\n' +
-    '		<td><label id="lblProxyUsername">(Optional) Username: </label></td>\n' +
-    '		<td><input type="text" id="txtProxyUsername" /></td>\n' +
-    '	</tr>\n' +
-    '	<tr>\n' +
-    '    	<td><label id="lblProxyPassword">(Optional) Password:</label></td>\n' +
-    '    	<td><input type="password" id="txtProxyPassword" /></td>\n' +
-    '	</tr>\n' +
+  $('#addProxyBtn').after('<form id="addProxyForm"><fieldset>' +
+    '<legend>Add Proxy</legend>' +
+    '<table align="center">' +
+    '	<tr>' +
+    '		<td><label id="lblProfileName">Profile Name:</label></td>' +
+    '		<td><input type="text" placeholder="(placeholder)Akamai staging NonSecure" id="txtProfileName" /></td>' +
+    '	</tr>' +
+    '	<tr>' +
+    '		<td><label id="lblProxyScheme">Scheme:</label></td>' +
+    '		<td><select id="txtProxyScheme">' +
+    '			<option selected value="http">http</option>' +
+    '			<option value="https">https</option>' +
+    '			<option value="socks4">socks4</option>' +
+    '			<option value="socks5">socks5</option>' +
+    '			<option value="pac">pac</option>' +
+    '		</select></td>' +
+    '	</tr>' +
+    '	<tr>' +
+    '		<td><label id="lblProxyHost">Proxy Host:</label></td>' +
+    '		<td><input type="text" placeholder="www.example.edgesuite-staging.net" id="txtProxyHost" /></td>' +
+    '	</tr>' +
+    '	<tr>' +
+    '		<td><label id="lblProxyPort">Port:</label></td>' +
+    '		<td><input type="text" placeholder="(placeholder)80" id="txtProxyPort" /></td>' +
+    '	</tr>' +
+    '	<tr>' +
+    '		<td><label id="lblProxyUsername">(Optional) Username: </label></td>' +
+    '		<td><input type="text" id="txtProxyUsername" /></td>' +
+    '	</tr>' +
+    '	<tr>' +
+    '    	<td><label id="lblProxyPassword">(Optional) Password:</label></td>' +
+    '    	<td><input type="password" id="txtProxyPassword" /></td>' +
+    '	</tr>' +
     /* '	<tr id="trSmart">\n'+
 	    '    	<td><input type="checkbox" id="checkSmartRules" /><div id="lblRulesUrl">Smart Rules:<ul id="smartRulesTooltip"><li>Compatible with AutoProxy rules and Adblock Plus rules.</li><li>Rules are either Base64-encoded or plaintext (one rule per line).</li><li>Please fill in the rules url and select the checkbox.</li></ul></div></td>\n'+
 	    '    	<td><input type="url" id="txtRulesUrl" /></td>\n'+
         '	</tr>\n'+*/
-    '	<tr>\n' +
-    '<td><a id="submitBtn" href="#flushdns" data-profileid="' + profileId + '" class="btn light-blue hoverable">Submit</a></td>\n' +
+    '	<tr>' +
+    '<td><a id="submitBtn" href="#flushdns" data-profileid="' + profileId + '" class="btn light-blue hoverable">Submit</a></td>' +
     //	'		<td><button type="submit" id="submitBtn" data-profileid="'+profileId+'">Save</button></td>\n'+
-    '<td><a id="cancelBtn" href="#flushdns"class="btn blue-grey lighten-5 blue-grey-text text-darken-3 hoverable">Cancel</a></td>\n' +
+    '<td><a id="cancelBtn" href="#flushdns"class="btn blue-grey lighten-5 blue-grey-text text-darken-3 hoverable">Cancel</a></td>' +
     //'		<td><button id="cancelBtn">Cancel</button></td>\n'+
-    '	</tr>\n' +
-    '</table>\n' +
+    '	</tr>' +
+    '</table>' +
     '</fieldset></form>');
   $('#addProxyBtn').hide();
 }
@@ -555,7 +557,7 @@ $(document).ready(function() {
   ifPiezisinstalled()
   loadDialog();
   loadUpdateDialog();
-  $('.versionNumber').attr("data-badge-caption", "V" + chrome.runtime.getManifest().version);
+  $('.versionNumber').attr("data-badge-caption", "v" + chrome.runtime.getManifest().version);
 
   $(document).on('click', '#addProxyBtn', addProxy);
   $(document).on('click', '#flushdns', function() {
@@ -854,63 +856,29 @@ $(document).ready(function() {
     $("#updatetype-switch").prop('checked', (type == 'invalidate') ? false : true);
   });
 
-  chrome.storage.local.get('update_type_debug', function(data) {
-    var type = data['update_type_debug'];
-    //console.log("Get type: " + type);
-    if (typeof type == 'undefined' || type == null) {
-      chrome.storage.local.set({
-        update_type_debug: 'OFF'
-      }, function() {
-        $("#updatetype-debugheaders").prop('checked', false);
-      });
-    }
-    $("#updatetype-debugheaders").prop('checked', (type == 'OFF') ? false : true);
-  });
-
   $("#updatetype-switch").change(function() {
     chrome.runtime.getBackgroundPage(function(backgroundpage) {
       backgroundpage._gaq.push(['_trackEvent', 'toggle_purge_type', 'clicked']);
     });
-
     var type = $(this).prop("checked") ? "delete" : "invalidate";
     chrome.storage.local.set({
       update_type: type
     });
   });
 
+  chrome.storage.local.get('akamaiDebugHeaderSwitch', function(data) {
+    var type = data['akamaiDebugHeaderSwitch'];
+    $("#updatetype-debugheaders").prop('checked', (type == 'OFF') ? false : true);
+  });
+
   $("#updatetype-debugheaders").change(function() {
     chrome.runtime.getBackgroundPage(function(backgroundpage) {
       backgroundpage._gaq.push(['_trackEvent', 'toggle_debug_headers', 'clicked']);
     });
-
     var type = $(this).prop("checked") ? "ON" : "OFF";
-    chrome.storage.local.set({
-      update_type_debug: type
-    }, function() {
-      console.log("type: " + type);
-      chrome.tabs.query({}, function(tabs) {
-        var needCreate = true;
-        for (var i = 0; i < tabs.length; i++) {
-          if (tabs[i].url == 'chrome://net-internals/#dns') {
-            chrome.tabs.executeScript(tabs[i].id, {
-              file: "js/socketflush.js"
-            });
-            needCreate = false;
-            break;
-          }
-        }
-
-        if (needCreate) {
-          chrome.tabs.create({
-            url: 'chrome://net-internals/#dns',
-            active: false
-          }, function(tab) {
-            chrome.tabs.executeScript(tab.id, {
-              file: "js/socketflush.js"
-            });
-          });
-        }
-      });
+    chrome.runtime.sendMessage({
+      type: "browser-akamaidebugheaderswitch",
+      body: type
     });
   });
 
