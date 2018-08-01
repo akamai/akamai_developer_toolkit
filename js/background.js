@@ -75,8 +75,9 @@ var initDebugHeaderSwitchState = function() {
   chrome.storage.local.get('akamaiDebugHeaderSwitch', function(data) {
     var type = data['akamaiDebugHeaderSwitch'];
     if (typeof type == 'undefined' || type == null) {
-      chrome.storage.local.set({akamaiDebugHeaderSwitch: 'OFF'});
-      akamaiDebugHeaderSwitchStateCached = 'OFF';
+      chrome.storage.local.set({akamaiDebugHeaderSwitch: 'OFF'}, function(){
+        akamaiDebugHeaderSwitchStateCached = 'OFF';
+      });
     } else {
       akamaiDebugHeaderSwitchStateCached = type;
     }
