@@ -876,12 +876,9 @@ $(document).ready(function() {
       backgroundpage._gaq.push(['_trackEvent', 'toggle_debug_headers', 'clicked']);
     });
     var type = $(this).prop("checked") ? "ON" : "OFF";
-    chrome.storage.local.set({akamaiDebugHeaderSwitch: type}, function() {
-      console.log("akamai-debug-header-switch: "+type);
-      chrome.runtime.sendMessage({
-        type: "browser-akamaidebugheaderswitch",
-        body: type
-      });
+    chrome.runtime.sendMessage({
+      type: "browser-akamaidebugheaderswitch",
+      body: type
     });
   });
 

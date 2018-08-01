@@ -77,14 +77,17 @@ var initDebugHeaderSwitchState = function() {
     if (typeof type == 'undefined' || type == null) {
       chrome.storage.local.set({akamaiDebugHeaderSwitch: 'OFF'});
       akamaiDebugHeaderSwitchStateCached = 'OFF';
+    } else {
+      akamaiDebugHeaderSwitchStateCached = type;
     }
   });
 }
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.type === "browser-akamaidebugheaderswitch") {
-    chrome.storage.local.get('akamaiDebugHeaderSwitch', function(data){
-      akamaiDebugHeaderSwitchStateCached = (data['akamaiDebugHeaderSwitch'] === 'ON') ? 'ON' : 'OFF';
+    chrome.storage.local.set({akamaiDebugHeaderSwitch: request.body}, function() {
+      console.log("akamai-debug-header-switch: "+request.body);
+      akamaiDebugHeaderSwitchStateCached = request.body;
     });
   }
 });
