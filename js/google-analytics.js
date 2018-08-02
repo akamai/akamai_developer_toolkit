@@ -7,7 +7,7 @@
 
 // dev analytics tracker 
 // var _AnalyticsCode = 'UA-116652320-3';
-var _AnalyticsCode = 'UA-116652320-3----------------------------------------------------------------';
+var _AnalyticsCode = 'UA-116652320-3';
 
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', _AnalyticsCode]);
