@@ -1,10 +1,8 @@
 $(document).ready(function(){
   $('select').material_select();
-  $('.initialized').hide(); //materialize bug
+  $('.initialized').hide(); // materialize bug
 
-  chrome.runtime.getBackgroundPage(function (backgroundpage){
-    backgroundpage._gaq.push(['_trackEvent', 'Add_new_credentials_page', 'loaded']);
-  });
+  chrome.runtime.sendMessage({type: "gaq", target: "Add_new_credentials_page", behavior: "loaded"});
 
   var credentialType = function(domain) {
     if (domain.match(/.*\.luna\.akamaiapis\.net\/?$/i)) {
@@ -22,31 +20,33 @@ $(document).ready(function(){
   var edit_mode = false;
 
   if (passedId != '') {
-    chrome.storage.local.get('tokens', function(tokens) {
-      var arr_tokens = tokens['tokens'];
-      var edit_token = "";
-      for(var i=0; i < arr_tokens.length; i++) {
-        if (arr_tokens[i].uniqid == passedId) {
-          edit_token = arr_tokens[i];
-          edit_mode = true;
-          break;
+    chrome.runtime.getBackgroundPage(function(background) {
+      chrome.storage.local.get('tokens', function(tokens) {
+        var arr_tokens = tokens['tokens'];
+        var edit_token = "";
+        for(var i=0; i < arr_tokens.length; i++) {
+          var de_token = background.b(arr_tokens[i]);
+          if (de_token.uniqid == passedId) {
+            edit_token = de_token;
+            edit_mode = true;
+            break;
+          }
         }
-      }
-      for (var i=0; i < apiTokenIds.length; i++) {
-        $('#'+apiTokenIds[i]).val(edit_token[apiTokenIds[i]]);
-        if (apiTokenIds[i] == 'credential_desc') {
-          $('#credential_desc').val(edit_token.desc);
+        for (var i=0; i < apiTokenIds.length; i++) {
+          $('#'+apiTokenIds[i]).val(edit_token[apiTokenIds[i]]);
+          if (apiTokenIds[i] == 'credential_desc') {
+            $('#credential_desc').val(edit_token.desc);
+          }
         }
-      }
-      $('select').material_select();
+        $('select').material_select();
+      });
     });
   }
 
-  $('#submitButton').click(function() {
-    chrome.runtime.getBackgroundPage(function (backgroundpage) {
-      backgroundpage._gaq.push(['_trackEvent', 'New_credentials_page_save_btn', 'clicked']);
-    });
+  $('#submitButton, #submitButton-add').click(function() {
+    chrome.runtime.sendMessage({type: "gaq", target: "New_credentials_page_save_btn", behavior: "clicked"});
 
+    var button_id = $(this).attr('id'); 
     var desc = $("#credential_desc").val().trim();
     var baseurl = $("#baseurl").val().trim();
     var accesstoken = $("#accesstoken").val().trim();
@@ -119,59 +119,62 @@ $(document).ready(function(){
       'uniqid': new Date().getTime().toString()
     }
 
-    // edit mode, update active_token if it was active.
-    if (edit_mode) {
-      token_data.uniqid = passedId;
-      chrome.storage.local.get('active_token', function(data) {
-        var active_token = data['active_token'];
-        if (active_token.uniqid == passedId) {
-          chrome.runtime.getBackgroundPage(function(background) {
+    chrome.runtime.getBackgroundPage(function(background) {
+      // edit mode, update active_token if it was active.
+      if (edit_mode) {
+        token_data.uniqid = passedId;
+        chrome.storage.local.get('active_token', function(data) {
+          var active_token = background.b(data['active_token']);
+          if (active_token.uniqid == passedId) {
             background.updateActiveToken(token_data);
-          });
-        }
-      });
-    }
-
-    chrome.storage.local.get('tokens', function(tokens) {
-      var arr_tokens = tokens['tokens'];
-      if (typeof arr_tokens != 'undefined' && arr_tokens != 'null') {
-        if (edit_mode) {
-          for (var i=0; i < arr_tokens.length; i++) {
-            if(arr_tokens[i].uniqid == passedId) {
-              arr_tokens[i] = token_data;
-            }
           }
-        } else {
-          arr_tokens.unshift(token_data);
-        }
-      } else {
-        arr_tokens = [token_data];
-      }
-
-      if (arr_tokens.length > 20) {
-        alert("You can only add up to 20 credentials");
-        return false;
-      }
-
-      chrome.storage.local.set({'tokens': arr_tokens} , function() { 
-        alert('Saved Successfully');
-        chrome.runtime.getBackgroundPage(function (backgroundpage){
-          backgroundpage._gaq.push(['_trackEvent', 'New_credentials_page_save_successful', 'yes']);
         });
-        closeCurrentTab();
-      });
-    });
+      }
+
+      var en_token_data = background.a(token_data);
+
+			chrome.storage.local.get('tokens', function(tokens) {
+				var arr_tokens = tokens['tokens'];
+				if (typeof arr_tokens != 'undefined' && arr_tokens != 'null') {
+					if (edit_mode) {
+						for (var i=0; i < arr_tokens.length; i++) {
+              var de_token = background.b(arr_tokens[i]);
+							if(de_token.uniqid == passedId) {
+								arr_tokens[i] = en_token_data;
+							}
+						}
+					} else {
+						arr_tokens.unshift(en_token_data);
+					}
+				} else {
+					arr_tokens = [en_token_data];
+				}
+
+				if (arr_tokens.length > 20) {
+					alert("You can only add up to 20 credentials");
+					return false;
+				}
+
+				chrome.storage.local.set({'tokens': arr_tokens} , function() { 
+					alert('Saved Successfully');
+					chrome.runtime.sendMessage({type: "gaq", target: "New_credentials_page_save_successful", behavior: "yes"});
+          if (button_id == "submitButton-add") { 
+            $("#clearButton").trigger('click');
+          } else if (button_id == "submitButton") {
+            closeCurrentTab();
+          }
+				});
+			});
+		});
   });
 
   $('#clearButton').click(function() {
-    chrome.runtime.getBackgroundPage(function (backgroundpage){
-      backgroundpage._gaq.push(['_trackEvent', 'New_credentials_page_reset_btn', 'clicked']);
-    });
-
+    chrome.runtime.sendMessage({type: "gaq", target: "New_credentials_page_reset_btn", behavior: "clicked"});
     for (var i=0; i < apiTokenIds.length; i++) {
       obj_input = $('#'+apiTokenIds[i]).val(null);
     }
-
+    $(".file-path").val(''); 
+    $(":file").val(''); 
     Materialize.updateTextFields();
     $('select').material_select();
   });

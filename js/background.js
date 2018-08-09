@@ -15,12 +15,14 @@ var akamai_debug_headers = [
 chrome.runtime.onStartup.addListener(function() {
   initPiezStorageState();
   initDebugHeaderSwitchState();
+  initStorageTemp(); 
 });
 
 // Fires when user clicks disable / enable button in extension page
 window.onload = function() {
   initPiezStorageState();
   initDebugHeaderSwitchState();
+  initStorageTemp(); 
 };
 
 // restart app when new update is available 
@@ -40,9 +42,9 @@ chrome.runtime.onInstalled.addListener(function(details) {
       console.log('updated value is set to true' );
     })
   }
-
   initPiezStorageState();
   initDebugHeaderSwitchState();
+  initStorageTemp(); 
 });
 
 chrome.contextMenus.create({
@@ -126,6 +128,38 @@ chrome.webRequest.onAuthRequired.addListener(
   }, {urls: ["<all_urls>"]}, ['asyncBlocking']
 );
 
+// This is Temporary. will be removed in next version
+var initStorageTemp = function() {
+  chrome.storage.sync.clear();
+  chrome.storage.local.get(['active_token', 'tokens'], function(data) {
+    var active_token = data['active_token'];
+    var arr_tokens = data['tokens'];
+    if (active_token != undefined || active_token != null) {
+      if (typeof active_token == "object")  {
+        var encrypted = a(active_token);
+        console.log("Active token encrpyted");
+        chrome.storage.local.set({'active_token': encrypted});
+      }
+    }
+
+    let flag = 0;
+    for(var i=0; i < arr_tokens.length; i++) {
+      if (typeof arr_tokens[i] == "object") {
+        var encrypt = a(arr_tokens[i]);
+        arr_tokens[i] = encrypt;
+        flag = 1;
+      }
+    }
+    if (flag === 1) {
+      console.log("Token list encrpyted");
+      chrome.storage.local.set({'tokens': arr_tokens});
+    }
+  });
+}
+
+
+
+
 //trying out a different way to proxy request https requests
 /*var host = "https://www.akamaidevops.com.edgekey-staging.net";
 chrome.webRequest.onBeforeRequest.addListener(
@@ -195,5 +229,4 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
   }, {urls: ["<all_urls>"]}, ["blocking", "requestHeaders"]
 );
 */
-
 
