@@ -5,6 +5,7 @@ colour pallette:
 2C2C2C
 000000
 030202
+F2F3F4
 */
 
 *,
@@ -20,9 +21,9 @@ colour pallette:
 }
 body {
 	margin: 0;
-	background-color: #FFFFFF;
-	font-size: 30px;
-	color:#04A9F4;
+	background-color: #222222;
+	font-size: 20px;
+	color: F2F3F4;
 	font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 h1 {
@@ -30,12 +31,12 @@ h1 {
 	text-align: center;
 	font-size: 30px;
 	font-weight: 400;
-	color: #000000;
+	color: F2F3F4;
 }
 h3 {
 	font-size: 25px;
 	font-weight: 600;
-	color: #575757;
+	color: F2F3F4;
 	text-align: center;
 }
 [class*="row-"] {
@@ -49,12 +50,12 @@ h3 {
 [class*="col-"] {
 	margin-right: 0px;
 	float: left;
-	border: 1px solid #04A9F4;
+	border: 1px solid #030202;
 	padding: 25px 12px;
 	text-align: center;
 	display: table-cell;
 	vertical-align: middle;
-	background-color: rgb(255, 255, 255);
+	background-color: #2C2C2C;
 }
 [class*="col-"]:last-child {
 	margin-right: 0;
@@ -83,7 +84,7 @@ h3 {
 }
 [class*='detailed-results'] {
 	margin: 0px auto;
-	color: #656565;
+	color: F2F3F4;
 }
 [class*='detailed-results'] th {
 	padding: 10px;
@@ -108,10 +109,10 @@ h3 {
 	color: red;
 }
 .warning {
-	color: rgb(255, 162, 0);
+	color: #FFDE00;
 }
 .success {
-	color: rgb(3, 140, 3);
+	color: lightgreen;
 }
 .imageCompareTable {
 	margin: 0px auto;
@@ -126,68 +127,68 @@ h3 {
 	min-width: 300px;
 }
 .urlInfo:hover {
-	background-color: rgb(255, 237, 177);
+	background-color: black;
 }
 .imageToggleBoxMessage {
 	margin-top:10px;
 	margin-bottom:20px;
-	color: #7b7b7b;
+	color: #eee9e9;
 }
 .imageCompareViewer {
 	margin-top: 20px;
 	margin-bottom: 20px;
 }
 a:link {
-	color: #356cf5;
+	color: F2F3F4;
 }
 a:hover {
-	color: #356cf5;
+	color: yellow;
 }
 a:visited {
-	color: #393939;
+	color: F2F3F4;
 }
 .piezConfigMessageHeader {
 	font-size: 25px;
-	color: orange;
+	color: yellow;
 	text-align: center;
 	width: 50%;
 	margin: auto;
 }
 .piezConfigMessageSteps ol {
-	list-style-position: outside;
-	font-size: 20px;
-	color: orange;
+	list-style-position: inside;
+	font-size: 15px;
+	color: yellow;
 	text-align: left;
-	width: 50%;
+	width: 30%;
 	margin: auto;
 }
 .selectedImage {
-	border: solid 4px orange;
-	color: orange;
+	border: solid 4px green;
+	color: green;
 	padding:10px;
 }
 .unselectedImage {
-	color: #a2a2a2;
-	border: solid 4px #a2a2a2;
+	color: F2F3F4;
+	border: solid 4px #2C2C2C;
 	padding:10px;
 }
 .selectedImage:hover {
 	cursor: pointer;
-	color: rgb(255, 255, 255);
-	background-color: orange;
+	color: F2F3F4;
+	background-color: black;
 }
 .unselectedImage:hover {
 	cursor: pointer;
-	color: rgb(75, 75, 75);
-	background-color: #a2a2a2;
+	color: F2F3F4;
+	background-color: black;
 }
 .toggleOriginalImage 	{
 	position: absolute;
-	border: 1px solid #504f4f;
+	border: 1px solid #999797;
 	}
 .toggleTransformedImage {
 	position: relative;
-	border: 1px solid #343434;
+	border: 1px solid #999797;
 }
 .imageToggleBox {
 	margin-bottom: 20px;
@@ -198,10 +199,10 @@ a:visited {
 .ajaxLoader {
 	width: 60px;
 	height: 60px;
-	border: 1px solid rgb(0, 0, 0);
+	border: 1px solid #FFFFFF;
 	border-right-color: transparent;
 	border-radius: 50%;
-	box-shadow: 0 0 25px 2px #9f9f9f;
+	box-shadow: 0 0 25px 2px #000000;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 40px;
@@ -245,15 +246,15 @@ td {
 	h1 {
 		 margin-bottom: 12px;
 		 text-align: center;
-		 font-size: 30px;
+		 font-size: 20px;
 		 font-weight: 400;
-		 color: #000000;
+		 color: #999797;
 		 min-height: 48px;
 	}
 	h3 {
-		 font-size: 30px;
+		 font-size: 17px;
 		 font-weight: 600;
-		 color: #525252;
+		 color: F2F3F4;
 		 text-align: center;
 	}
 	table {
@@ -262,12 +263,12 @@ td {
 	[class*="col-"] {
 		margin-right: 0px;
 		float: left;
-		border: 1px solid #04A9F4;
+		border: 1px solid #030202;
 		padding: 0px 12px;
 		text-align: center;
 		display: table-cell;
 		vertical-align: middle;
-		background-color: rgb(250, 250, 250);
+		background-color: #2C2C2C;
 	}
 	.detailed-results td.urlData {
 		max-width:700px;
@@ -277,9 +278,9 @@ td {
 @media all and ( max-width: 1200px ) {
 	h1 {
 		 text-align: center;
-		 font-size: 30px;
+		 font-size: 16px;
 		 font-weight: 400;
-		 color: #000000;
+		 color: #999797;
 		 min-height: 33px;
 	}
 	[class*="col-"] {
@@ -287,9 +288,9 @@ td {
 		vertical-align: middle;
 	}
 	h3 {
-		 font-size: 30px;
+		 font-size: 15px;
 		 font-weight: 600;
-		 color: #525252;
+		 color: F2F3F4;
 		 text-align: center;
 	}
 	table {
@@ -317,7 +318,7 @@ td {
 		text-align: center;
 		display: table-cell;
 		vertical-align: middle;
-		background-color: rgb(255, 255, 255);
+		background-color: #2C2C2C;
 	}
 	.col-4-box {
 		min-height: 180px;
