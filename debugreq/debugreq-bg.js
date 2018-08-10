@@ -200,13 +200,13 @@ function onDebugSuccess(debug_result, arr_ghostIP, arr_errorrefdata) {
 function makeErrorRefReq(arr_errorrefdata, arr_ghostIP, callback) {
     chrome.storage.local.get(['active_token', 'update_type'], function(data) { 
       var update_type = data['update_type'];
-      var active_token = $.extend({}, data['active_token']); 
-      var original_token = data['active_token'];
+      var active_token = b(data['active_token']); 
+      var original_token = { desc: active_token.desc };
       var timestamp_debug = getTimeStampInUtcUrlencoded();
 
   
       if (jQuery.isEmptyObject(active_token)) {
-        showBasicNotification('noactivetoken', 'No Active Token', 'Please activate a credential', true, img_fail);
+        showBasicNotification('No Active Token', 'Please activate a credential', img_fail);
         callback("fail");
         return false;
       }

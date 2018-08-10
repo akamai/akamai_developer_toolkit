@@ -131,8 +131,8 @@ function inputParser(arr_purge_targets) {
 function makePurgeRequest(arr_purge_targets, network, callback) {
   chrome.storage.local.get(['active_token', 'update_type'], function(data) { 
     var update_type = data['update_type'];
-    var active_token = $.extend({}, data['active_token']); 
-    var original_token = data['active_token'];
+    var active_token = b(data['active_token']); 
+    var token_info = { desc: active_token.desc };
 
     if (jQuery.isEmptyObject(active_token)) {
       showBasicNotification('No Active Token', 'Please activate a credential', img_fail);
@@ -186,7 +186,7 @@ function makePurgeRequest(arr_purge_targets, network, callback) {
 
     if (purge_requests.length > 0) {
       for (i=0; i < purge_requests.length; i++) {
-        sendPurgeRequest(purge_requests[i], network, update_type, original_token, callback);
+        sendPurgeRequest(purge_requests[i], network, update_type, token_info, callback);
       }
     } else {
       showBasicNotification('Input Error', 'Please check entered purge targets are correct', img_fail);
@@ -196,7 +196,7 @@ function makePurgeRequest(arr_purge_targets, network, callback) {
   });
 }
 
-function sendPurgeRequest(obj_request, network, update_type, original_token, callback) {
+function sendPurgeRequest(obj_request, network, update_type, token_info, callback) {
   $.ajax({
     url: obj_request.baseurl,
     contentType: "application/json",
@@ -210,7 +210,7 @@ function sendPurgeRequest(obj_request, network, update_type, original_token, cal
         response: response,
         request_objects: JSON.parse(obj_request.body_data).objects,
         network: network,
-        token: original_token,
+        token: token_info,
         update_type: update_type,
         requestId: obj_request.requestId,
         purge_type: obj_request.purge_type
@@ -222,7 +222,7 @@ function sendPurgeRequest(obj_request, network, update_type, original_token, cal
         status: status,
         request_objects: JSON.parse(obj_request.body_data).objects,
         network: network,
-        token: original_token,
+        token: token_info,
         update_type: update_type,
         requestId: obj_request.requestId,
         purge_type: obj_request.purge_type
