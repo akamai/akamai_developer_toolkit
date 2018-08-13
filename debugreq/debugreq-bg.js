@@ -198,9 +198,9 @@ function onDebugSuccess(debug_result, arr_ghostIP, arr_errorrefdata) {
 
 
 function makeErrorRefReq(arr_errorrefdata, arr_ghostIP, callback) {
-    chrome.storage.local.get(['active_token', 'update_type'], function(data) { 
+    chrome.storage.local.get('update_type', function(data) { 
       var update_type = data['update_type'];
-      var active_token = b(data['active_token']); 
+      var active_token = jQuery.extend(true, {}, activatedTokenCache);
       var original_token = { desc: active_token.desc };
       var timestamp_debug = getTimeStampInUtcUrlencoded();
 
@@ -212,7 +212,7 @@ function makeErrorRefReq(arr_errorrefdata, arr_ghostIP, callback) {
       }
 
       if (active_token.tokentype !== "General OPEN APIs") {
-        showBasicNotification('Credential Type Mismatch', 'Please activate Fast Purge credential', img_fail);
+        showBasicNotification('Credential Type Mismatch', 'Please activate General OPEN APIs credential', img_fail);
         callback("fail");
         return false;
       }

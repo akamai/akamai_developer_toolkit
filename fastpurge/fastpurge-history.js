@@ -3,6 +3,8 @@ $(document).ready(function() {
 
   loadHistory(function(){
     initDataTable();
+    var passedId = getUrlParameter('id');
+    $("[requestId="+passedId+"]").trigger('click');
   });
 
   $('#clearHistoryButton').click(function(){
@@ -48,7 +50,7 @@ function initDataTable() {
   $('#purge-table').DataTable({
     "columnDefs": [ {
       "targets"  : 'no-sort',
-      "orderable": false,
+      "orderable": false
     }],
     "order":[
       [0, 'dsc']
@@ -58,7 +60,6 @@ function initDataTable() {
 
 function loadHistory(callback) {
   $("#historylist").empty();
-
   chrome.storage.local.get(null, function(data) {
     var arr_history = [];
     for (var key in data) {
@@ -66,7 +67,6 @@ function loadHistory(callback) {
         arr_history.push(data[key]); 
       }
     }
-
     for (var i=0; i < arr_history.length; i++) {
       var obj_history = arr_history[i];
       tbody_html = "<tr>"; 
@@ -83,7 +83,6 @@ function loadHistory(callback) {
       tbody_html += "</tr>";
       $("#historylist").append(tbody_html);
     }
-    
     callback();
   });
 }

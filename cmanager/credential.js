@@ -20,16 +20,21 @@ $(document).ready(function(){
   var edit_mode = false;
 
   if (passedId != '') {
-    chrome.runtime.getBackgroundPage(function(background) {
+    chrome.runtime.getBackgroundPage(function(backgroundpage) {
       chrome.storage.local.get('tokens', function(tokens) {
         var arr_tokens = tokens['tokens'];
         var edit_token = "";
         for(var i=0; i < arr_tokens.length; i++) {
-          var de_token = background.b(arr_tokens[i]);
-          if (de_token.uniqid == passedId) {
-            edit_token = de_token;
-            edit_mode = true;
-            break;
+          var de_token = backgroundpage.b(arr_tokens[i]);
+          if (de_token) {
+            if (de_token.uniqid == passedId) {
+              edit_token = de_token;
+              edit_mode = true;
+              break;
+            }
+          } else {
+            alert("Failed to load the credential");
+            return;
           }
         }
         for (var i=0; i < apiTokenIds.length; i++) {
@@ -119,41 +124,42 @@ $(document).ready(function(){
       'uniqid': new Date().getTime().toString()
     }
 
-    chrome.runtime.getBackgroundPage(function(background) {
+    chrome.runtime.getBackgroundPage(function(backgroundpage) {
+
       // edit mode, update active_token if it was active.
       if (edit_mode) {
-        token_data.uniqid = passedId;
-        chrome.storage.local.get('active_token', function(data) {
-          var active_token = background.b(data['active_token']);
-          if (active_token.uniqid == passedId) {
-            background.updateActiveToken(token_data);
-          }
-        });
+        if (backgroundpage.activatedTokenCache.uniqid == passedId) {
+          backgroundpage.updateActiveToken(token_data);
+        }
       }
 
-      var en_token_data = background.a(token_data);
+      var en_token_data = backgroundpage.a(token_data);
+      if (!en_token_data) {
+        alert("Encryption failed. Please try again");
+        return false;
+      }
 
 			chrome.storage.local.get('tokens', function(tokens) {
 				var arr_tokens = tokens['tokens'];
-				if (typeof arr_tokens != 'undefined' && arr_tokens != 'null') {
+				if (arr_tokens.length != 0) {
 					if (edit_mode) {
 						for (var i=0; i < arr_tokens.length; i++) {
-              var de_token = background.b(arr_tokens[i]);
-							if(de_token.uniqid == passedId) {
-								arr_tokens[i] = en_token_data;
-							}
+              var de_token = backgroundpage.b(arr_tokens[i]);
+              if (de_token) {
+                if(de_token.uniqid == passedId) {
+                  arr_tokens[i] = en_token_data;
+                }
+              }
 						}
 					} else {
 						arr_tokens.unshift(en_token_data);
 					}
-				} else {
+				} else if (arr_tokens.length > 20) {
+          alert("You can only add up to 20 credentials");
+          return false;
+        } else {
 					arr_tokens = [en_token_data];
-				}
-
-				if (arr_tokens.length > 20) {
-					alert("You can only add up to 20 credentials");
-					return false;
-				}
+        }
 
 				chrome.storage.local.set({'tokens': arr_tokens} , function() { 
 					alert('Saved Successfully');

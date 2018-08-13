@@ -11,18 +11,21 @@ var akamai_debug_headers = [
   "akamai-x-get-client-id"
 ].join(",");
 
+
 // Fires when Chrome starts or when user clicks refresh button in extension page
 chrome.runtime.onStartup.addListener(function() {
+  initStorageTemp(); 
   initPiezStorageState();
   initDebugHeaderSwitchState();
-  initStorageTemp(); 
+  initCmanagerStorageState();
 });
 
 // Fires when user clicks disable / enable button in extension page
 window.onload = function() {
+  initStorageTemp(); 
   initPiezStorageState();
   initDebugHeaderSwitchState();
-  initStorageTemp(); 
+  initCmanagerStorageState();
 };
 
 // restart app when new update is available 
@@ -42,9 +45,10 @@ chrome.runtime.onInstalled.addListener(function(details) {
       console.log('updated value is set to true' );
     })
   }
+  initStorageTemp(); 
   initPiezStorageState();
   initDebugHeaderSwitchState();
-  initStorageTemp(); 
+  initCmanagerStorageState();
 });
 
 chrome.contextMenus.create({
@@ -103,7 +107,7 @@ chrome.notifications.onClicked.addListener(function(event){
     chrome.tabs.create({url: 'debugreq/debugreq-details.html?id=' + event});
   }
   if(event.startsWith("Purge")){
-    chrome.tabs.create({url: 'fastpurge/fastpurge-details.html?id=' + event});
+    chrome.tabs.create({url: 'fastpurge/fastpurge-history.html?id=' + event});
   }
   chrome.notifications.clear(event);
 });
@@ -128,6 +132,7 @@ chrome.webRequest.onAuthRequired.addListener(
   }, {urls: ["<all_urls>"]}, ['asyncBlocking']
 );
 
+
 // This is Temporary. will be removed in next version
 var initStorageTemp = function() {
   chrome.storage.sync.clear();
@@ -143,11 +148,13 @@ var initStorageTemp = function() {
     }
 
     let flag = 0;
-    for(var i=0; i < arr_tokens.length; i++) {
-      if (typeof arr_tokens[i] == "object") {
-        var encrypt = a(arr_tokens[i]);
-        arr_tokens[i] = encrypt;
-        flag = 1;
+    if (arr_tokens != undefined || arr_tokens != null) {
+      for(var i=0; i < arr_tokens.length; i++) {
+        if (typeof arr_tokens[i] == "object") {
+          var encrypt = a(arr_tokens[i]);
+          arr_tokens[i] = encrypt;
+          flag = 1;
+        }
       }
     }
     if (flag === 1) {
@@ -159,74 +166,4 @@ var initStorageTemp = function() {
 
 
 
-
-//trying out a different way to proxy request https requests
-/*var host = "https://www.akamaidevops.com.edgekey-staging.net";
-chrome.webRequest.onBeforeRequest.addListener(
-    function(details) {
-         return {redirectUrl: host + details.url.match(/^https?:\/\/[^\/]+([\S\s]*)/)[1]};
-    },
-    {
-        urls: [
-            "*://akamaidevops.com/*",
-            "*://www.akamaidevops.com/*"
-        ],
-        types: ["main_frame", "sub_frame", "stylesheet", "script", "image", "object", "xmlhttprequest", "other"]
-    },
-    ["blocking"]
-);
-
-chrome.webRequest.onBeforeSendHeaders.addListener(
-  function(details) {
-    for (var i = 0; i < details.requestHeaders.length; ++i) {
-      var flag=true;
-      if (details.requestHeaders[i].name === 'Host') {
-        details.requestHeaders.splice(i, 1);
-        flag=false;
-        break;
-      } 
-  if (flag) details.requestHeaders.push({"name":"Host","value":"www.akamaidevops.com"});
-    }
-    return {requestHeaders: details.requestHeaders};
-  },
-  {urls: ["*://www.akamaidevops.com.edgekey-staging.net/*"]},
-  ["blocking", "requestHeaders"]);
-*/
-/* commenting this section out since we rely on Piez pragma header addition to push headers into the request
-chrome.webRequest.onBeforeSendHeaders.addListener(
-  function(details) {
-    //console.log("enabled is :" + enabled);
-    if(enabled){
-      var pragma_exists = false
-      for (var i = 0; i < details.requestHeaders.length; ++i) {
-        if (details.requestHeaders[i].name === 'Pragma') {
-          details.requestHeaders[i].value = details.requestHeaders[i].value.concat(", ",debug_headers)
-          pragma_exists = true
-         // console.log("pragma" + pragma_exists);
-          break;
-        }
-      }
-      if(!pragma_exists) {
-        details.requestHeaders.push(akamai_header)
-        //console.log("Akamai headers added to: " + details.url);
-      }
-    } else {
-      //console.log("I am in the else loop" + enabled);
-      var pragma_exists = false
-      for (var i = 0; i < details.requestHeaders.length; ++i) {
-        if (details.requestHeaders[i].name === 'Pragma') {
-          details.requestHeaders.splice(i, 1);
-          //console.log("Pragma removed: " + details.url);
-          break;
-        }
-      }
-      if(!pragma_exists) {
-        //details.requestHeaders.push(non_akamai_header)
-        //console.log("do nothing: " + details.url);
-      }
-    }
-    return {requestHeaders: details.requestHeaders};
-  }, {urls: ["<all_urls>"]}, ["blocking", "requestHeaders"]
-);
-*/
 

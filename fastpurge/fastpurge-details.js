@@ -58,5 +58,3 @@ function loadDetails(purge_req_id, callback) {
 		callback(html);
 	});
 }
-
-

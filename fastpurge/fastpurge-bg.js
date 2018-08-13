@@ -129,16 +129,17 @@ function inputParser(arr_purge_targets) {
 }
 
 function makePurgeRequest(arr_purge_targets, network, callback) {
-  chrome.storage.local.get(['active_token', 'update_type'], function(data) { 
+  chrome.storage.local.get('update_type', function(data) {
+   
+    var active_token = jQuery.extend(true, {}, activatedTokenCache);
     var update_type = data['update_type'];
-    var active_token = b(data['active_token']); 
     var token_info = { desc: active_token.desc };
 
     if (jQuery.isEmptyObject(active_token)) {
       showBasicNotification('No Active Token', 'Please activate a credential', img_fail);
       callback("fail");
       return false;
-    }
+    } 
 
     if (active_token.tokentype !== "Fast Purge APIs") {
       showBasicNotification('Credential Type Mismatch', 'Please activate Fast Purge credential', img_fail);
