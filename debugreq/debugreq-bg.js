@@ -198,26 +198,29 @@ function onDebugSuccess(debug_result, arr_ghostIP, arr_errorrefdata) {
 
 
 function makeErrorRefReq(arr_errorrefdata, arr_ghostIP, callback) {
-  var active_token = jQuery.extend(true, {}, activatedTokenCache);
-  var original_token = { desc: active_token.desc };
-  var timestamp_debug = getTimeStampInUtcUrlencoded();
+    chrome.storage.local.get('update_type', function(data) { 
+      var update_type = data['update_type'];
+      var active_token = jQuery.extend(true, {}, activatedTokenCache);
+      var original_token = { desc: active_token.desc };
+      var timestamp_debug = getTimeStampInUtcUrlencoded();
 
-  if (jQuery.isEmptyObject(active_token)) {
-    showBasicNotification('No Active Token', 'Please activate a credential', img_fail);
-    callback("fail");
-    return false;
-  }
-
-  if (active_token.tokentype !== "General OPEN APIs") {
-    showBasicNotification('Credential Type Mismatch', 'Please activate General OPEN APIs credential', img_fail);
-    callback("fail");
-    return false;
-  }
   
-  var urlparser = document.createElement('a');
-  urlparser = active_token['baseurl'];
+      if (jQuery.isEmptyObject(active_token)) {
+        showBasicNotification('No Active Token', 'Please activate a credential', img_fail);
+        callback("fail");
+        return false;
+      }
 
-  //set endtime for 
+      if (active_token.tokentype !== "General OPEN APIs") {
+        showBasicNotification('Credential Type Mismatch', 'Please activate General OPEN APIs credential', img_fail);
+        callback("fail");
+        return false;
+      }
+  
+      var urlparser = document.createElement('a');
+      urlparser = active_token['baseurl'];
+
+      //set endtime for 
 
       if (jQuery.isEmptyObject(arr_ghostIP)){
         console.log ('no arr_ghostIP');
@@ -272,6 +275,7 @@ function makeErrorRefReq(arr_errorrefdata, arr_ghostIP, callback) {
         }
       });
   
+    });
 }
 
 function showListNotificationdebug(title, debug_result, arr_ghostIP, arr_errorrefdata) {

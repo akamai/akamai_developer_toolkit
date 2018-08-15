@@ -15,6 +15,15 @@ var img_success = "img/success_icon.png",
     img_fail = "img/fail_icon.png", 
     img_info = "img/info_icon.jpg";
 
+var showBasicNotification = function(title, message, img = img_info) {
+  chrome.notifications.create(getCurrentDatetimeUTC(), {
+    type: "basic",
+    iconUrl: img,
+    title: title,
+    message: message
+  });
+}
+
 // Fires when Chrome starts or when user clicks refresh button in extension page
 chrome.runtime.onStartup.addListener(function() {
   initFastPurgeStorage();

@@ -8,15 +8,6 @@ var initFastPurgeStorage = function() {
   });
 }
 
-function showBasicNotification(title, message, img = img_info) {
-  chrome.notifications.create(getCurrentDatetimeUTC(), {
-    type: "basic",
-    iconUrl: img,
-    title: title,
-    message: message
-  });
-}
-
 function saveHistory(purge_result) {
   var purgeId = 'Unknown';
   var history_data = { 
