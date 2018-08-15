@@ -14,6 +14,7 @@ var akamai_debug_headers = [
 
 // Fires when Chrome starts or when user clicks refresh button in extension page
 chrome.runtime.onStartup.addListener(function() {
+  initFastPurgeStorage();
   initStorageTemp(); 
   initPiezStorageState();
   initDebugHeaderSwitchState();
@@ -22,6 +23,7 @@ chrome.runtime.onStartup.addListener(function() {
 
 // Fires when user clicks disable / enable button in extension page
 window.onload = function() {
+  initFastPurgeStorage();
   initStorageTemp(); 
   initPiezStorageState();
   initDebugHeaderSwitchState();
@@ -45,6 +47,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
       console.log('updated value is set to true' );
     })
   }
+  initFastPurgeStorage();
   initStorageTemp(); 
   initPiezStorageState();
   initDebugHeaderSwitchState();
@@ -136,6 +139,8 @@ chrome.webRequest.onAuthRequired.addListener(
 // This is Temporary. will be removed in next version
 var initStorageTemp = function() {
   chrome.storage.sync.clear();
+
+  // for credential (active, tokens) encryption
   chrome.storage.local.get(['active_token', 'tokens'], function(data) {
     var active_token = data['active_token'];
     var arr_tokens = data['tokens'];
@@ -162,8 +167,33 @@ var initStorageTemp = function() {
       chrome.storage.local.set({'tokens': arr_tokens});
     }
   });
+
+  // for fastpurge records migration - temporary
+	chrome.storage.local.get(null, function(data) {
+		var arr_history = [];
+    var arr_history_keys = [];
+		for (var key in data) {
+			if (key.startsWith("H_")) {
+				arr_history.push(data[key]);
+        arr_history_keys.push(key);
+			}
+		}
+    if (arr_history_keys.length > 0) {
+      chrome.storage.local.remove(arr_history_keys, function(){
+        console.log("Removed old format purge records");
+      });
+    }
+    if (arr_history.length > 0) {
+      chrome.storage.local.get('purgeHistory', function(purgedata) { 
+        var obj_records = purgedata['purgeHistory']; 
+        for (var i=0; i < arr_history.length; i++) {
+          var key = arr_history[i].requestId;
+          obj_records[key] = arr_history[i];
+        }
+        chrome.storage.local.set({ purgeHistory: obj_records }, function() {
+          console.log("Purge records migrated to purgeHistory");
+        });
+      });
+    }
+	});
 }
-
-
-
-

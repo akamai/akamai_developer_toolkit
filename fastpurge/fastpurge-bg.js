@@ -3,6 +3,15 @@ var img_success = "img/success_icon.png",
   img_fail = "img/fail_icon.png",
   img_info = "img/info_icon.jpg";
 
+var initFastPurgeStorage = function() {
+  console.log("initializing FastPurge Storage");
+  chrome.storage.local.get("purgeHistory", function(result) {
+    if(result['purgeHistory'] == undefined) {
+      chrome.storage.local.set({'purgeHistory': {}});
+    }  
+  });
+}
+
 function showBasicNotification(title, message, img = img_info) {
   chrome.notifications.create(getCurrentDatetimeUTC(), {
     type: "basic",
@@ -27,10 +36,12 @@ function saveHistory(purge_result) {
     'update_type': purge_result.update_type,
     'requestId': purge_result.requestId
   };
-  var save_obj = {};
-  var key = 'H_' + purge_result.requestId;
-  save_obj[key] = history_data;
-  chrome.storage.local.set(save_obj);
+  chrome.storage.local.get('purgeHistory', function(records) {
+    var purge_history = records['purgeHistory'];
+    purge_history[history_data.requestId] = history_data;  
+    chrome.storage.local.set({ purgeHistory: purge_history });
+    console.log("New purge record added");
+  });
 }
 
 function showListNotification(title, purge_result) {

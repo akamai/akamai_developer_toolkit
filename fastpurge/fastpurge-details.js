@@ -1,19 +1,7 @@
 function loadDetails(purge_req_id, callback) {
-  chrome.storage.local.get(null, function(data) {
-    var arr_history = [];
-    var history_data = {};
-
-    for (var key in data) {
-      if (key.startsWith("H_")) {
-        arr_history.push(data[key]);
-      }
-    }
-
-    for(var j=0; j < arr_history.length; j++) {
-      if (arr_history[j].requestId == purge_req_id) {
-        history_data = arr_history[j];
-      }
-    }
+  chrome.storage.local.get('purgeHistory', function(data) {
+    var obj_records = data['purgeHistory'];
+    var history_data = obj_records[purge_req_id];
 
     var html = '<tr class="shown">';
     html += '<td colspan="10">';
