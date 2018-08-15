@@ -80,16 +80,22 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
           chrome.storage.local.get(['tokens'], function(data) {
             var arr_tokens = data['tokens'];
             var token_index_to_delete;
-            for (var i=0; i < arr_tokens.length; i++) {
-              var de_token = b(arr_tokens[i]);
-              if (de_token.uniqid == token_id) {
-                token_index_to_delete = i;
-              }
-              // delete token == current active token
-              if (!jQuery.isEmptyObject(activatedTokenCache)) {
-                if (token_id == activatedTokenCache.uniqid) {
-                  activatedTokenCache = {};
-                  chrome.storage.local.set({'active_token': ""});
+            // for the case when decryption failed. token_id is index of token list
+            var num_token_id = parseInt(token_id);
+            if (num_token_id < 1000) {
+              token_index_to_delete = num_token_id;
+            } else {
+              for (var i=0; i < arr_tokens.length; i++) {
+                var de_token = b(arr_tokens[i]);
+                if (de_token.uniqid == token_id) {
+                  token_index_to_delete = i;
+                }
+                // delete token == current active token
+                if (!jQuery.isEmptyObject(activatedTokenCache)) {
+                  if (token_id == activatedTokenCache.uniqid) {
+                    activatedTokenCache = {};
+                    chrome.storage.local.set({'active_token': ""});
+                  }
                 }
               }
             }

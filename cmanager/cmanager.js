@@ -6,7 +6,7 @@ var loadCredentialList = function () {
       if (arr_tokens.length > 0) {
         for (i = 0; i < arr_tokens.length; i++) {
           var api_credential = backgroundpage.b(arr_tokens[i]);
-          if (!api_credential) { api_credential = {desc: "Failed to load", tokentype: "Please delete and register again"}; }
+          if (!api_credential) { api_credential = {desc: "Failed to load", tokentype: "Please delete and register again", uniqid: i}; }
           var list_html = '<li class="collection-item avatar disabled">';
           list_html += '<i class="material-icons key-img circle teal lighten-2 z-depth-1" style="display: none;">lock_open</i>';
           list_html += '<span class="center" style="font-size: 15px; font-weight: bold">' + api_credential.desc + '</span>';

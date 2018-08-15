@@ -11,6 +11,9 @@ var akamai_debug_headers = [
   "akamai-x-get-client-id"
 ].join(",");
 
+var img_success = "img/success_icon.png", 
+    img_fail = "img/fail_icon.png", 
+    img_info = "img/info_icon.jpg";
 
 // Fires when Chrome starts or when user clicks refresh button in extension page
 chrome.runtime.onStartup.addListener(function() {

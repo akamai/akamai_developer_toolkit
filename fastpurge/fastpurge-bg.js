@@ -1,8 +1,4 @@
 //Ricky Yu owns this page, please do comment out the section you edit or added so he is aware of the changes
-var img_success = "img/success_icon.png",
-  img_fail = "img/fail_icon.png",
-  img_info = "img/info_icon.jpg";
-
 var initFastPurgeStorage = function() {
   console.log("initializing FastPurge Storage");
   chrome.storage.local.get("purgeHistory", function(result) {
