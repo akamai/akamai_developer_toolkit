@@ -1,14 +1,12 @@
 var loadCredentialList = function () {
   $('#tokenlist').empty().hide();
-  chrome.runtime.getBackgroundPage(function(background) {
+  chrome.runtime.getBackgroundPage(function(backgroundpage) {
     chrome.storage.local.get('tokens', function(data) {
       var arr_tokens = data['tokens'];
-      if (typeof arr_tokens === 'undefined' || arr_tokens === null) {
-        arr_tokens = [];
-      }
       if (arr_tokens.length > 0) {
         for (i = 0; i < arr_tokens.length; i++) {
-          var api_credential = background.b(arr_tokens[i]);
+          var api_credential = backgroundpage.b(arr_tokens[i]);
+          if (!api_credential) { api_credential = {desc: "Failed to load", tokentype: "Please delete and register again", uniqid: i}; }
           var list_html = '<li class="collection-item avatar disabled">';
           list_html += '<i class="material-icons key-img circle teal lighten-2 z-depth-1" style="display: none;">lock_open</i>';
           list_html += '<span class="center" style="font-size: 15px; font-weight: bold">' + api_credential.desc + '</span>';
@@ -36,13 +34,8 @@ var loadCredentialList = function () {
 
 // Mark current active_token
 var markActiveToken = function() {
-  chrome.runtime.getBackgroundPage(function(background) {
-    chrome.storage.local.get('active_token', function(data) {
-      var active_token = background.b(data['active_token']);
-      if (typeof active_token != 'undefined' || active_token != null) {
-        $("a[tokenid='" + active_token.uniqid + "'][action='activate']").trigger('click');
-      }
-    });
+  chrome.runtime.getBackgroundPage(function(backgroundpage) {
+    $("a[tokenid='" + backgroundpage.activatedTokenCache.uniqid + "'][action='activate']").trigger('click');
   });
 }
 

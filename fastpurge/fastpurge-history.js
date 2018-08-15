@@ -1,32 +1,71 @@
-//Ricky Yu owns this page, please do comment out the section you edit or added so he is aware of the changes
-function loadHistory() {
-  $("#historylist").empty();
+$(document).ready(function() {
+  chrome.runtime.sendMessage({type: "gaq", target: "Purge_history_page", behavior: "loaded"});
 
-  chrome.storage.local.get(null, function(data) {
-    var arr_history = [];
-    for (var key in data) {
-      if (key.startsWith("H_")) {
-        arr_history.push(data[key]); 
+  loadHistory(function(){
+    initDataTable();
+    var passedId = getUrlParameter('id'); 
+    if (passedId){
+      $("[requestId="+passedId+"]").trigger('click');
+    }
+  });
+
+  $('#clearHistoryButton').click(function(){
+    chrome.runtime.sendMessage({type: "gaq", target: "Purge_history_page_clearhistory", behavior: "clicked"});
+    removeHistoryRecord();
+  });
+
+  $('#closeButton').click(function(){ 
+    chrome.runtime.sendMessage({type: "gaq", target: "Purge_history_page_closebtn", behavior: "clicked"});
+    closeCurrentTab(); 
+  }); 
+
+  $('body').on('click', '.show-more [requestId]', function () {
+    var td = $(this);
+    var tr = td.closest('tr');
+    var tr_next = tr.next('tr');
+    var purge_req_id = td.attr('requestId');
+    td.children("i").text("expand_less");
+    loadDetails(purge_req_id, function(data){
+      if (tr_next.attr('class') == "shown") {
+        td.children("i").text("expand_more");
+        tr_next.hide();
+        tr_next.remove();
+      } else {
+        tr.after(data);
       }
-    }
-  
-    if (arr_history.length == 0) {
-      $('#historytab').hide();
-      $('#historytab-nohistory').show();
-      return false;
-    }
-
-    arr_history.sort(function(a, b){
-      var c = new Date(a.requestedTime);
-      var d = new Date(b.requestedTime);
-      return c - d;
     });
+  });
 
-    arr_history.reverse();
+  $('body').on('click', '.delete-record [requestId]', function () {
+    var td = $(this);
+    var tr = td.closest('tr');
+    var purge_req_id = td.attr('requestId');
+    removeHistoryRecord(purge_req_id);
+    tr.hide();
+  });
+});
 
-    for (var i=0; i < arr_history.length; i++) {
-      var obj_history = arr_history[i];
+function initDataTable() {
+  $('#purge-table').DataTable({
+    "columnDefs": [ {
+      "targets"  : 'no-sort',
+      "orderable": false
+    }],
+    "order":[
+      [1, 'dsc']
+    ]
+  });
+}
+
+function loadHistory(callback) {
+  $("#historylist").empty();
+  chrome.storage.local.get('purgeHistory', function(purgedata) {
+    var obj_records = purgedata['purgeHistory'];
+    for (var purgeReqId in obj_records) {
+      var obj_history = obj_records[purgeReqId];
       tbody_html = "<tr>"; 
+      tbody_html += "<td class='show-more'><a href='#!' requestId='" + obj_history.requestId + "'>";
+      tbody_html += "<i class='material-icons'>expand_more</i></a></td>"; 
       tbody_html += "<td>" + obj_history.requestedTime + "</td>"; 
       tbody_html += "<td>" + obj_history.token_used.desc.capitalize() + "</td>"; 
       tbody_html += "<td>" + obj_history.update_type.capitalize() + "</td>"; 
@@ -35,43 +74,30 @@ function loadHistory() {
       tbody_html += "<td>" + obj_history.purge_objects.length + "</td>"; 
       tbody_html += "<td>" + obj_history.network.capitalize() + "</td>"; 
       tbody_html += "<td>" + obj_history.purge_request_accepted.capitalize() + "</td>"; 
-      tbody_html += "<td class='see-more-link'><a href='#!' requestId='" + obj_history.requestId + "'>See more</a></td>"; 
+      tbody_html += "<td class='delete-record'><a href='#!' requestId='" + obj_history.requestId + "'>";
+      tbody_html += "<i class='material-icons'>delete</i></a></td>"; 
       tbody_html += "</tr>";
       $("#historylist").append(tbody_html);
     }
-    $('#historytab').show();
-    $('#historytab-nohistory').hide();
+    callback();
   });
 }
 
-$(document).ready(function(){
-  chrome.runtime.sendMessage({type: "gaq", target: "Purge_history_page", behavior: "loaded"});
-
-  loadHistory();
-
-  $('#clearHistoryButton').click(function(){
-    chrome.runtime.sendMessage({type: "gaq", target: "Purge_history_page_clearhistory", behavior: "clicked"});
-    chrome.storage.local.get(null, function(data) {
-      var arr_history = [];
-      for (var key in data) {
-        if (key.startsWith("H_")) {
-          arr_history.push(key); 
-        }
+function removeHistoryRecord(purgeRecordId) {
+  chrome.storage.local.get('purgeHistory', function(data) {
+    var obj_records = data['purgeHistory'];
+    if (purgeRecordId == null) {
+      for (key in obj_records) {
+        delete obj_records[key];
       }
-      chrome.storage.local.remove(arr_history, function(){
-        $('#historytab').hide();
-        $('#historytab-nohistory').show();
-      });
-    });  
+    } else {
+      delete obj_records[purgeRecordId];
+    }
+    chrome.storage.local.set({'purgeHistory': obj_records}, function(){
+      if (Object.keys(obj_records).length == 0) {
+        $('#purge-table').DataTable().clear().destroy();
+        initDataTable();
+      } 
+    });
   });
-
-  $(document).on('click', '[requestId]', function(obj){
-    chrome.runtime.sendMessage({type: "gaq", target: "Purge_history_page_seemore", behavior: "clicked"});
-    chrome.tabs.create({url: 'fastpurge/fastpurge-details.html?id=' + $(this).attr('requestId')});
-  });
-
-  $('#closeButton').click(function(){ 
-    chrome.runtime.sendMessage({type: "gaq", target: "Purge_history_page_closebtn", behavior: "clicked"});
-    closeCurrentTab(); 
-  }); 
-});
+}
