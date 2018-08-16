@@ -118,3 +118,26 @@ textarea.materialize-textarea {
 .twitter-wjs {
   /* display: inline; */
 }
+
+/* table inside table - history table */
+tr.shown:hover {
+  background-color: unset !important;
+}
+.history-table {
+  font-size: 14px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.history-table tbody tr {
+  background-color: #E7F2FE !important;
+}
+.history-table td {
+  text-align: left !important;
+  padding-left: 20px !important;
+}
+.show-more {
+  width: 1%;
+}
+.delete-record {
+  width: 1%;
+}

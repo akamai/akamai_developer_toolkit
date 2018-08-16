@@ -1,14 +1,10 @@
 //Ricky Yu owns this page, please do comment out the section you edit or added so he is aware of the changes
-var img_success = "img/success_icon.png",
-  img_fail = "img/fail_icon.png",
-  img_info = "img/info_icon.jpg";
-
-function showBasicNotification(title, message, img = img_info) {
-  chrome.notifications.create(getCurrentDatetimeUTC(), {
-    type: "basic",
-    iconUrl: img,
-    title: title,
-    message: message
+var initFastPurgeStorage = function() {
+  console.log("initializing FastPurge Storage");
+  chrome.storage.local.get("purgeHistory", function(result) {
+    if(result['purgeHistory'] == undefined) {
+      chrome.storage.local.set({'purgeHistory': {}});
+    }  
   });
 }
 
@@ -27,10 +23,12 @@ function saveHistory(purge_result) {
     'update_type': purge_result.update_type,
     'requestId': purge_result.requestId
   };
-  var save_obj = {};
-  var key = 'H_' + purge_result.requestId;
-  save_obj[key] = history_data;
-  chrome.storage.local.set(save_obj);
+  chrome.storage.local.get('purgeHistory', function(records) {
+    var purge_history = records['purgeHistory'];
+    purge_history[history_data.requestId] = history_data;  
+    chrome.storage.local.set({ purgeHistory: purge_history });
+    console.log("New purge record added");
+  });
 }
 
 function showListNotification(title, purge_result) {
@@ -129,16 +127,17 @@ function inputParser(arr_purge_targets) {
 }
 
 function makePurgeRequest(arr_purge_targets, network, callback) {
-  chrome.storage.local.get(['active_token', 'update_type'], function(data) { 
+  chrome.storage.local.get('update_type', function(data) {
+   
+    var active_token = jQuery.extend(true, {}, activatedTokenCache);
     var update_type = data['update_type'];
-    var active_token = b(data['active_token']); 
     var token_info = { desc: active_token.desc };
 
     if (jQuery.isEmptyObject(active_token)) {
       showBasicNotification('No Active Token', 'Please activate a credential', img_fail);
       callback("fail");
       return false;
-    }
+    } 
 
     if (active_token.tokentype !== "Fast Purge APIs") {
       showBasicNotification('Credential Type Mismatch', 'Please activate Fast Purge credential', img_fail);
