@@ -5,7 +5,7 @@ $(document).ready(function() {
     initDataTable();
     var passedId = getUrlParameter('id'); 
     if (passedId){
-      $("[requestId="+passedId+"]").trigger('click');
+      $(".show-more [requestId="+passedId+"]").trigger('click');
     }
   });
 
