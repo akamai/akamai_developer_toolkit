@@ -1,4 +1,3 @@
-//Ricky Yu owns this page, please do comment out the section you edit or added so he is aware of the changes
 var initFastPurgeStorage = function() {
   console.log("initializing FastPurge Storage");
   chrome.storage.local.get("purgeHistory", function(result) {
