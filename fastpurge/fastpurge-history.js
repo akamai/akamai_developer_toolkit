@@ -84,6 +84,7 @@ function loadHistory(callback) {
 }
 
 function removeHistoryRecord(purgeRecordId) {
+  console.log('remove record was called')
   chrome.storage.local.get('purgeHistory', function(data) {
     var obj_records = data['purgeHistory'];
     if (purgeRecordId == null) {
