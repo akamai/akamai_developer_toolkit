@@ -1,11 +1,30 @@
+var purgeUpdateTypeCache = "";
+
 var initFastPurgeStorage = function() {
   console.log("initializing FastPurge Storage");
-  chrome.storage.local.get("purgeHistory", function(result) {
+  chrome.storage.local.get(["purgeHistory", "update_type"], function(result) {
     if(result['purgeHistory'] == undefined) {
       chrome.storage.local.set({'purgeHistory': {}});
     }  
+    if(result['update_type'] == undefined) {
+      chrome.storage.local.set({update_type: 'invalidate'}, function() {
+        purgeUpdateTypeCache = 'invalidate';
+      });
+    } else {
+      purgeUpdateTypeCache = result['update_type'];
+    }
   });
 }
+
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+  if (message.type == "fastpurge") {
+    if (message.update_type != undefined)
+    chrome.storage.local.set({'update_type': message.update_type}, function() {
+      purgeUpdateTypeCache = message.update_type;
+      console.log("Fastpurge: update_type was updated to " + message.update_type);
+    });
+  }
+});
 
 function saveHistory(purge_result) {
   var purgeId = 'Unknown';

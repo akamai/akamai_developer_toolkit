@@ -154,19 +154,21 @@
             </div>
           </div>
 
+
           <!-- Debug Requests -->
           <div class="card hoverable">
             <div class="card-content black-text">
               <div class="row">
-                <div class="col s8">
+                <div class="col s10">
                   <span class="card-title black-text">Debug Requests
                     <a href="#!" id="debugtutorial" class="tooltipped" data-position="bottom" data-tooltip="Video tutorial on how to use this section">
                       <i class="material-icons blue-grey-text text-darken-2 tutorial-video-icon">play_circle_outline</i>
                     </a>
                   </span>
                 </div>
-                <div class="col s4 right-align">
-                  <a id='debughistorydetails' href="#!" class="btn blue-grey lighten-5 hoverable tooltipped blue-grey-text text-darken-3" data-position="bottom" data-tooltip="Click here to view the results of your latest request">Debug History</a>
+                <div class="col s2">
+                  <a id='debughistorydetails' href="#!" class="btn blue-grey lighten-5 hoverable tooltipped blue-grey-text text-darken-3" data-position="bottom" data-tooltip="Click here to view the results of your latest request">
+                    <i class="material-icons blue-grey-text text-darken-2">history</i></a>
                 </div>
               </div>
               <div class="row">
@@ -175,17 +177,36 @@
                 </div>
               </div>
               <div class="row">
+                <div class="col s9">
+                  <div class="input-field">
+                    <input type="text" id="debug-errorcode"  placeholder="9.6f64d440.1318965461.2f2b078"></input>
+                    <label for="debug-errorcode">Error Reference Code</label>
+                  </div>
+                </div>
+                <div class="col s3">
+                  <a id="debug-errorcode-btn" href="#!" class="btn light-blue hoverable debug-card-btn">Translate</a>  
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s3">
+                  <div class="input-field">
+                    <input type="text" id="debug-ipaddr" placeholder="104.90.115.100"></input>
+                    <label for="debug-ipaddr">Edge IP Address</label>
+                  </div>
+                </div>
+                <div class="col s6">
+                  <div class="input-field">
+                    <input type="text" id="debug-hostname" placeholder="www.akamai.com"></input>
+                    <label for="debug-hostname">Hostname</label>
+                  </div>
+                </div>
+                <div class="col s3">
+                  <a id="debugdata" href="#!" class="btn light-blue hoverable debug-card-btn">Fetch Logs</a>  
+                </div>
+              </div>
+              <div class="row">
                 <div class="col s12">
-                  <div class="input-field">
-                    <textarea id="debugurls"  placeholder="9.01233r453ftvfer OR www.example.com"  class="materialize-textarea"></textarea>
-                    <label for="debugurls">Enter Error Reference Code OR Request hostname</label>
-                  </div>
-                  <div class="input-field">
-                    <textarea id="ghostIp" placeholder="104.90.115.100" class="materialize-textarea"></textarea>
-                    <label for="ghostIp">Enter Ghost IP (<b>Only</b> required if you enter a hostname above)</label>
-                  </div>
-                  <a id="debugdata" href="#!" class="btn light-blue hoverable submit-button" style="width: 20%;">Fetch Logs</a>  
-                  <p class="padding-top"><i>Need more debugging features? <a href="#!" id="feedbackformlink" class="orange-text">click here </a> to request them</i></p>
+                  <i>Need more debugging features? <a href="#!" id="feedbackformlink" class="orange-text">click here </a> to request them</i>
                 </div>
               </div>
             </div>
