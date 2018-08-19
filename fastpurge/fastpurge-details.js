@@ -32,8 +32,6 @@ function loadDetails(purge_req_id, callback) {
         for(var k=0; k < history_data[key].length; k++) {
           text += "<p>" + history_data[key][k] + "</p>";
         }
-      } else if (key == 'token_used') {
-        text = history_data[key].desc;
       } else {
         text = history_data[key];
       }
