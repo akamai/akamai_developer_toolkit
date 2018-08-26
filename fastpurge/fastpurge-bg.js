@@ -43,40 +43,6 @@ function savePurgeResult(purge_result) {
   });
 }
 
-function showListNotification(title, purge_result) {
-  switch (purge_result.purge_request_accepted) {
-    case "success":
-      icon_url = img_success;
-      break;
-    case "fail":
-      icon_url = img_fail;
-      break;
-    case "connect-fail":
-      icon_url = img_fail;
-      break;
-    default:
-      icon_url = img_info;
-      break;
-  }
-  var obj_raw_response = purge_result.raw_response;
-  var display_items = [];
-  display_fields = ['httpStatus', 'purgeId', 'detail', 'estimatedSeconds', 'title'];
-  for(var key in obj_raw_response) {
-    if (display_fields.indexOf(key) >= 0) {
-      each_item = {title: key.capitalize(), message: obj_raw_response[key].toString()};
-      display_items.push(each_item);
-    }
-  }
-  chrome.notifications.create(purge_result.requestId, {
-    type: "list",
-    iconUrl: icon_url,
-    title: purge_result.token_used + ": " + title,
-    message: "",
-    items: display_items,
-    contextMessage: purge_result.purge_type.toUpperCase() + " Purge" + " - " + purge_result.purge_request_accepted.capitalize()
-  }); 
-}
-
 var onPurgeSuccess = function(response, status, obj_request) {
   _gaq.push(['_trackEvent', 'Purge_req_successful', 'yes']);
   var purge_result = {
@@ -93,7 +59,7 @@ var onPurgeSuccess = function(response, status, obj_request) {
     'requestId': obj_request.requestId
   };
   savePurgeResult(purge_result);
-  showListNotification("Purge Success", purge_result);
+  showListNotification("purge", "Purge Success", purge_result, img_success);
 }
 
 var onPurgeError = function(xhr, status, error, obj_request) {
@@ -124,7 +90,7 @@ var onPurgeError = function(xhr, status, error, obj_request) {
     _gaq.push(['_trackEvent', 'Purge_req_failure_reason', 'Request Failed']);
   }
   savePurgeResult(purge_result);
-  showListNotification(title, purge_result);
+  showListNotification("purge", title, purge_result, img_fail);
 }
 
 function inputParser(arr_purge_targets) {
@@ -153,24 +119,17 @@ function inputParser(arr_purge_targets) {
 }
 
 function makePurgeRequest(arr_purge_targets, network, callback) {
-  if (jQuery.isEmptyObject(activatedTokenCache)) {
-    showBasicNotification('No Active Token', 'Please activate a credential', img_fail);
-    callback("fail");
-    return false;
-  } else if (activatedTokenCache.tokentype !== "Fast Purge APIs") {
-    showBasicNotification('Credential Type Mismatch', 'Please activate Fast Purge credential', img_fail);
-    callback("fail");
-    return false;
+  if(!checkActiveCredential("purge")) {
+    callback();
+    return;
   }
 
   var active_token = jQuery.extend(true, {}, activatedTokenCache);
   var obj_purge_targets = inputParser(arr_purge_targets);
   var purge_requests = [];
-  var urlparser = document.createElement('a');
-  urlparser.href = active_token['baseurl'];
 
   if (obj_purge_targets.urls.length > 0) {
-    active_token.baseurl = urlparser.origin + '/ccu/v3/' + purgeUpdateTypeCache + '/url/' + network; 
+    active_token.baseurl += '/ccu/v3/' + purgeUpdateTypeCache + '/url/' + network; 
     purge_requests.push({
       baseurl: active_token.baseurl,
       body_data: createPostBody(obj_purge_targets.urls),
@@ -185,7 +144,7 @@ function makePurgeRequest(arr_purge_targets, network, callback) {
   } 
   
   if (obj_purge_targets.cpcodes.length > 0) {
-    active_token.baseurl = urlparser.origin + '/ccu/v3/' + purgeUpdateTypeCache + '/cpcode/' + network; 
+    active_token.baseurl += '/ccu/v3/' + purgeUpdateTypeCache + '/cpcode/' + network; 
     purge_requests.push({
       baseurl: active_token.baseurl,
       body_data: createPostBody(obj_purge_targets.cpcodes),
@@ -200,7 +159,7 @@ function makePurgeRequest(arr_purge_targets, network, callback) {
   } 
   
   if (obj_purge_targets.tags.length > 0) {
-    active_token.baseurl = urlparser.origin + '/ccu/v3/' + purgeUpdateTypeCache + '/tag/' + network; 
+    active_token.baseurl += '/ccu/v3/' + purgeUpdateTypeCache + '/tag/' + network; 
     purge_requests.push({
       baseurl: active_token.baseurl,
       body_data: createPostBody(obj_purge_targets.tags),

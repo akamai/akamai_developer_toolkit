@@ -4,7 +4,8 @@ function loadDetails(purge_req_id, callback) {
     var history_data = obj_records[purge_req_id];
 
     var html = '<tr class="shown">';
-    html += '<td colspan="10">';
+    html += '<td></td>';
+    html += '<td colspan="9">';
     html += '<table class="history-table">';
     
     var better_title = {

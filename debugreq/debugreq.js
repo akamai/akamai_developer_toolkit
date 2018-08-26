@@ -12,35 +12,55 @@ $("#updatetype-debugheaders").change(function() {
   });
 });
 
-$('#debughistorydetails, #debughistorydetailslink').click(function() {
+$('#debughistorydetails').click(function() {
   chrome.runtime.sendMessage({type: "gaq", target: "View_debug_history", behavior: "clicked"});
   chrome.tabs.create({
     url: 'debugreq/debugreq-history.html'
   });
 });
 
-$('#debugdata').click(function() {
-  chrome.runtime.sendMessage({type: "gaq", target: "Fetch_logs", behavior: "clicked"});
-
-  var arr_target_debugdata = $('#debugurls').val().split("\n");
-  var arr_target_ghostIP = $('#ghostIp').val().split("\n");
-  var submit_buttons = $('#debugdata');
-
-  //enter code to differentiate between error code and request ID
-  //throws error when nothing is entered
-  if (arr_target_debugdata.filter(Boolean).length == 0) {
-    Materialize.toast('Please enter valid error codes or request ID', 1500);
+$('#debug-errorcode-btn').click(function() {
+  var errorcode = $('#debug-errorcode').val().trim();
+  if (errorcode.split(".").length != 4) {
+    Materialize.toast('Error Reference Code is not in the right format', 1500);
+    $('#debug-errorcode').focus();
     return false;
-  } else {
-    var this_obj = $(this);
-    var this_html = $(this).html();
-    submit_buttons.addClass("disabled");
-    this_obj.html('<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>');
-    chrome.runtime.getBackgroundPage(function(backgroundpage) {
-      backgroundpage.makeErrorRefReq(arr_target_debugdata.filter(Boolean), arr_target_ghostIP.filter(Boolean), function(request_result) {
-        submit_buttons.removeClass("disabled").blur();
-        this_obj.html(this_html);
-      });
-    });
   }
+  var this_obj = $(this);
+  var this_html = $(this).html();
+  this_obj.addClass("disabled");
+  this_obj.html('<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>');
+  chrome.runtime.getBackgroundPage(function(backgroundpage) {
+    backgroundpage.translateErrorCode(errorcode, function(request_result) {
+      this_obj.removeClass("disabled").blur();
+      this_obj.html(this_html);
+    });
+  });
 });
+
+$('#debug-fetchlog-btn').click(function() {
+  var debug_ipaddr = $("#debug-ipaddr").val().trim();
+  var debug_hostname = $("#debug-hostname").val().trim();
+
+  if(isEmpty(debug_ipaddr) || !isValidIPv4(debug_ipaddr)) {
+    Materialize.toast('Please enter valid IP address', 1500);
+    $("#debug-ipaddr").focus();
+    return false;
+  } else if(isEmpty(debug_hostname) || !isValidDomain(debug_hostname)) {
+    Materialize.toast('Please enter valid Hostname', 1500);
+    $("#debug-hostname").focus();
+    return false;
+  }
+
+  var this_obj = $(this);
+  var this_html = $(this).html();
+  this_obj.addClass("disabled");
+  this_obj.html('<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>');
+  chrome.runtime.getBackgroundPage(function(backgroundpage) {
+    backgroundpage.getLogLinesFromIP({ipaddr: debug_ipaddr, hostname: debug_hostname}, function(request_result) {
+      this_obj.removeClass("disabled").blur();
+      this_obj.html(this_html);
+    });
+  });
+});
+

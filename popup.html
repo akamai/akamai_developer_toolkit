@@ -173,13 +173,13 @@
               </div>
               <div class="row">
                 <div class="col s12">
-                  <span>Allows you to fetch ghost logs for an error or for a successful request from Akamai servers. If you received an error, then simply enter the Error Reference Code and click submit. If you wish to pull logs for a succcessful transaction, then enter the <b>hostname</b> and the <b>Akamai server IP</b> below and click submit</span>
+                  <span>Allows you to fetch ghost logs for an error or for a successful request from Akamai servers. If you received an error, then simply enter the <b>Error Reference Code</b> and click submit. If you wish to pull logs for a succcessful transaction, then enter the <b>hostname</b> and the <b>Akamai server IP</b> below and click submit. Log data is generally available for <b>48 hours</b> after the traffic occurs.</span>
                 </div>
               </div>
               <div class="row">
                 <div class="col s9">
                   <div class="input-field">
-                    <input type="text" id="debug-errorcode"  placeholder="9.6f64d440.1318965461.2f2b078"></input>
+                    <input type="text" id="debug-errorcode"  placeholder="#9.6f64d440.1318965461.2f2b078"></input>
                     <label for="debug-errorcode">Error Reference Code</label>
                   </div>
                 </div>
@@ -201,7 +201,7 @@
                   </div>
                 </div>
                 <div class="col s3">
-                  <a id="debugdata" href="#!" class="btn light-blue hoverable debug-card-btn">Fetch Logs</a>  
+                  <a id="debug-fetchlog-btn" href="#!" class="btn blue-grey lighten-5 blue-grey-text text-darken-3 hoverable debug-card-btn">Fetch Logs</a>  
                 </div>
               </div>
               <div class="row">
@@ -263,20 +263,22 @@
             </div>
             <div class="card white hoverable grey lighten-1">
               <div class="card-content black-text">
-                <span class="card-title black-text">Developer Points of Presence <a href="#!" id="devpopstutorial" class="tooltipped" data-position="bottom" data-tooltip="video tutorial on how to use this section"><i class="material-icons blue-grey-text text-darken-2 tutorial-video-icon">play_circle_outline</i></a></span>
+                <span class="card-title black-text">Developer Points of Presence 
+                  <a href="#!" id="devpopstutorial" class="tooltipped" data-position="bottom" data-tooltip="video tutorial on how to use this section">
+                    <i class="material-icons blue-grey-text text-darken-2 tutorial-video-icon">play_circle_outline</i>
+                  </a>
+                </span>
                 <p>Manage your Akamai sandboxes and debug issues going through the sandbox</p>
-                </br></br>
+                <br/><br/>
                 <div id="devpops-nosandbox" class="center-align" style="font-size: 13px;">
                   <p>Looks like you have no sandboxes created, <a id="createsandboxlink" href="#">click here</a> to create one.</p>
                   <p>Note: you will need to have aleast PAPI api tokens configured or devpops API tokens configured</p>
-                  </br>
+                  <br/>
                 </div>
                 <a id="deleteallsandbox" href="#" class="btn blue-grey lighten-5 hoverable tooltipped disabled" data-position="top" data-tooltip="Delete all sandboxes"><i class="material-icons blue-grey-text text-darken-2">delete</i></a>
                 <a id="addnewsandbox" href="#" class="btn light-blue hoverable tooltipped disabled" data-position="top" data-tooltip="Create a new Akamai sandbox"><i class="material-icons">add</i></a> 
               </div>
             </div>
-            <p></p>
-            </br>
           </div>
           <!--upcoming section div is closed here-->
 
