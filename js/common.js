@@ -6,6 +6,14 @@ function isEmpty(val) {
   return val === null || val === '' || jQuery.isEmptyObject(val);
 }
 
+function sleep(milisec, callback) {
+  setTimeout(function(){ 
+    if (typeof callback != 'undefined') {
+      callback();
+    }
+  }, milisec);
+}
+
 function getUrlParameter(name) {
   name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
   var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -19,7 +27,7 @@ function closeCurrentTab() {
   });
 }
 
-function getTimeStampInUtcUrlencoded() {
+function getCurrentDatetimeUTC(format) {
   obj_date = new Date();
   year = obj_date.getUTCFullYear();
   month = obj_date.getUTCMonth() + 1;
@@ -33,52 +41,19 @@ function getTimeStampInUtcUrlencoded() {
       temp_arr[i] = '0' + temp_arr[i];
     }
   }
-  return temp_arr[0] + '-' + temp_arr[1] + '-' + temp_arr[2] + 'T' + temp_arr[3] + '%3A' + temp_arr[4] + '%3A' + temp_arr[5] + 'Z';
+  if(format == "ISO-8601") {
+    return temp_arr[0] + '-' + temp_arr[1] + '-' + temp_arr[2] + 'T' + temp_arr[3] + ':' + temp_arr[4] + ':' + temp_arr[5] + 'Z';
+  } else {
+    return temp_arr[0] + '/' + temp_arr[1] + '/' + temp_arr[2] + ' ' + temp_arr[3] + ':' + temp_arr[4] + ':' + temp_arr[5];
+  }
 }
 
-function getCurrentDatetimeUTC() {
-  obj_date = new Date();
-  year = obj_date.getUTCFullYear();
-  month = obj_date.getUTCMonth() + 1;
-  date = obj_date.getUTCDate();
-  hours = obj_date.getUTCHours();
-  minutes = obj_date.getUTCMinutes();
-  seconds = obj_date.getUTCSeconds();
-  temp_arr = [year, month, date, hours, minutes, seconds]
-  for (i = 0; i < temp_arr.length; i++) {
-    if (temp_arr[i] < 10) {
-      temp_arr[i] = '0' + temp_arr[i];
-    }
-  }
-  return temp_arr[0] + '/' + temp_arr[1] + '/' + temp_arr[2] + ' ' + temp_arr[3] + ':' + temp_arr[4] + ':' + temp_arr[5];
+function isValidIPv4(ip) {
+  var ipre = /^(\d|[1-9]\d|1\d\d|2([0-4]\d|5[0-5]))\.(\d|[1-9]\d|1\d\d|2([0-4]\d|5[0-5]))\.(\d|[1-9]\d|1\d\d|2([0-4]\d|5[0-5]))\.(\d|[1-9]\d|1\d\d|2([0-4]\d|5[0-5]))$/g;
+  return ipre.test(ip);
 }
 
-function createLiHtml(field_data) {
-  var html = "";
-
-  if(jQuery.type(field_data) == 'object') {
-    var inhtml = "";
-    for (var each in field_data){
-      inhtml += '<li><div class="row">';
-      inhtml += '<div class="col s4">' + each.capitalize() + '</div>';
-      inhtml += '<div class="col s8">' + field_data[each] + '</div>';
-      inhtml += '</div></li>';
-    }
-    inhtml = '<ul>' + inhtml + '</ul>';
-    field_data = inhtml;
-  } else if(jQuery.type(field_data) == 'array') {
-    var inhtml = "";
-    for (var j=0; j<field_data.length; j++){
-      inhtml += '<li>' + field_data[j] + '</li>';
-    }
-    inhtml = '<ul>' + inhtml + '</ul>';
-    field_data = inhtml;
-  }
-
-  var html = "<li class='collection-item'><div class='row'>";
-  html += '<div class="col s4">' + field_name + '</div>'; 
-  html += '<div class="col s8">' + field_data + '</div>';
-  html += "</div></li>";
-
-  return html;
+function isValidDomain(domain) {
+  var domainre= /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+/g;
+  return domainre.test(domain);
 }

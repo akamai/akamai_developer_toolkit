@@ -20,6 +20,14 @@ var initCmanagerStorageState = function() {
   });
 }
 
+var updateActiveTokenCache = function(token) {
+  var urlparser = document.createElement('a');
+  urlparser.href = token.baseurl;
+  activatedTokenCache = token;
+  activatedTokenCache.baseurl = urlparser.origin;
+  console.log("ActiveTokenCache updated");
+}
+
 var updateActiveToken = function(token) {
   var en_token = a(token);
   chrome.storage.local.get("active_token", function(data) {
@@ -28,16 +36,16 @@ var updateActiveToken = function(token) {
       if (active_token && active_token.uniqid != token.uniqid) {
         if (en_token) {
           chrome.storage.local.set({'active_token': en_token}, function() {
-            activatedTokenCache = token;
-            console.log('Active Token, Cache Updated: ' + token.desc);
+            updateActiveTokenCache(token);
+            console.log('Active Token Updated: ' + token.desc);
           });
         }
       }
     } else {
       if (en_token) {
         chrome.storage.local.set({'active_token': en_token}, function() {
-          activatedTokenCache = token;
-          console.log('Active Token, Cache Updated: ' + token.desc);
+          updateActiveTokenCache(token);
+          console.log('Active Token Updated: ' + token.desc);
         });
       }
     }

@@ -1,153 +1,54 @@
-$(document).ready(function(){
-  chrome.runtime.sendMessage({type: "gaq", target: "Debug_details_page", behavior: "loaded"});
+function loadDebugReqResultDetails(debug_req_id, callback) {
+  var loadTarget = "";
 
-    var passedId = getUrlParameter('id');
-  
-    if (passedId == '' || passedId == null) {
-      closeCurrentTab();
-      return false;
+  if(debug_req_id.startsWith("DebugErrCode")) {
+    loadTarget = "translateErrorCodeHistory";
+  } else if(debug_req_id.startsWith("DebugFetchLog")) {
+    loadTarget = "fetchLogByIpHistory";
+  }
+
+  chrome.storage.local.get(loadTarget, function(data) {
+    var obj_records = data[loadTarget];
+    var history_data = obj_records[debug_req_id];
+
+    var html = '<tr class="shown">';
+    html += '<td></td>';
+    html += '<td colspan="6">';
+    html += '<table class="history-table">';
+    
+    var better_title = {
+      lastupdated: "Last Updated",
+      raw_response: "Raw Response",
+      requestId: "Request Id",
+      requestedTime: "Request Time",
+      token_desc: "Credential Used",
+      errorcode: "ErrorCode",
+      status: "Status",
+      debug_type: "DebugReqType",
+      ipaddr: "IP address",
+      hostname: "Hostname"
     }
-  
-    chrome.storage.local.get(null, function(data) {
-      var arr_history = [];
-      var arr_checkers = [];
-      var history_data = {};
-  
-      for (var key in data) {
-        if (key.startsWith("D_")) {
-          arr_history.push(data[key]); 
-        }
-      }
-  
-  
-      //if there is no hisotry
-      if (arr_history.length == 0) {
-        $("#debugdetails-wrapper").html("<div class='row'>No information available.</div>");
-        return;
-      }
-  
-      for(var j=0; j < arr_history.length; j++) {
-        if (arr_history[j].requestId == passedId) {
-          history_data = arr_history[j];
-        }
-      }
-  
-      if (jQuery.isEmptyObject(history_data)) {
-        $("#debugdetails-wrapper").html("<div class='row'>No information available.</div>");
-      }
-  
-      for(var key in history_data) {
-  
-        var field_name = key.capitalize();
-        var field_data = history_data[key];
-  
-        if(jQuery.type(field_data) == 'object') {
-          var inhtml = "";
-          for (var each in field_data){
-            inhtml += '<li><div class="row">';
-            inhtml += '<div class="col s4">' + each.capitalize() + '</div>';
-            inhtml += '<div class="col s8">' + field_data[each] + '</div>';
-            inhtml += '</div></li>';
-          }
-          inhtml = '<ul>' + inhtml + '</ul>';
-          field_data = inhtml;
-        } else if(jQuery.type(field_data) == 'array') {
-          var inhtml = "";
-          for (var j=0; j<field_data.length; j++){
-            inhtml += '<li>' + field_data[j] + '</li>';
-          }
-          inhtml = '<ul>' + inhtml + '</ul>';
-          field_data = inhtml;
-        }
-  
-        var html = "<li class='collection-item'><div class='row'>";
-        html += '<div class="col s4">' + field_name + '</div>'; 
-        html += '<div class="col s8">' + field_data + '</div>';
-        html += "</div></li>";
-        $('#debugdetails').append(html);
-      }
-  
-    // *********************************
-  
-    chrome.alarms.getAll(function (arr_alarms) { 
-      var checker = {};
-      var alarm = {};
-  
-      for(var k=0; k < arr_checkers.length; k++) {
-        if(arr_checkers[k].requestId == passedId) {
-          checker = arr_checkers[k];
-        }
-      }
-  
-      for(var a=0; a < arr_alarms.length; a++) {
-        if (arr_alarms[a].name == passedId) {
-          alarm = arr_alarms[a];
-        }
-      }
-  
-      // print purge status
-      if (!jQuery.isEmptyObject(checker)) {
-        for (var each in checker) {
-          var checker_key = each.capitalize();
-          var checker_data = checker[each];
-  
-          if (checker_key == 'Token') { continue; }
-          
-          if (jQuery.type(checker_data) == 'object') {
-            var inhtml = "";
-            for (var each in checker_data){
-              inhtml += '<li><div class="row">';
-              inhtml += '<div class="col s4">' + each.capitalize() + '</div>';
-              inhtml += '<div class="col s8">' + checker_data[each] + '</div>';
-              inhtml += '</div></li>';
-            }
-            inhtml = '<ul>' + inhtml + '</ul>';
-            checker_data = inhtml;
-          }
-          var html = "<li class='collection-item'><div class='row'>";
-            html += '<div class="col s4">' + checker_key + '</div>'; 
-            html += '<div class="col s8">' + checker_data + '</div>';
-            html += "</div></li>";
-            $('#debug-status').append(html);
-          }
-        } else {
-          $("#debug-status-wrapper").hide();
-        }
-  
-        // print alarm
-        if(!jQuery.isEmptyObject(alarm)) {
-          for (var each in alarm) {
-            var alarm_key = each.capitalize();
-            var alarm_data = alarm[each];
-            
-            if (jQuery.type(alarm_data) == 'object') {
-              var inhtml = "";
-              for (var each in checker_data){
-                inhtml += '<li><div class="row">';
-                inhtml += '<div class="col s4">' + each.capitalize() + '</div>';
-                inhtml += '<div class="col s8">' + alarm_data[each] + '</div>';
-                inhtml += '</div></li>';
-              }
-              inhtml = '<ul>' + inhtml + '</ul>';
-              alarm_data = inhtml;
-            }
-            var html = "<li class='collection-item'><div class='row'>";
-            html += '<div class="col s4">' + alarm_key + '</div>'; 
-            html += '<div class="col s8">' + alarm_data + '</div>';
-            html += "</div></li>";
-            $('#scheduler-detail').append(html);
-          }
-        } else {
-          $("#scheduler-detail-wrapper").hide();
-        }
-      });
-    });
-  
-    $('#closeButton').click(function(){ 
-      chrome.runtime.sendMessage({type: "gaq", target: "Debug_details_page_closebtn", behavior: "clicked"});
-      closeCurrentTab(); 
-    }); 
 
-  });
-  
-  
+    var arr_keys = Object.keys(history_data).reverse();
+
+    for(var i=0; i < arr_keys.length; i++) {
+      let key = arr_keys[i];
+      var text = "";
+      if (jQuery.type(history_data[key]) == 'object') {
+        text = "<pre>" + JSON.stringify(history_data[key], null, 2) + "</pre>";
+      } else if (jQuery.type(history_data[key]) == 'array') {
+        for(var k=0; k < history_data[key].length; k++) {
+          text += "<p>" + history_data[key][k] + "</p>";
+        }
+      } else {
+        text = history_data[key];
+      }
+      html += "<tr><td><b>" + better_title[key] + "</b></td><td>" + text + "</td></tr>";
+    }
+    html += '</table>';
+    html += '</td>';
+    html += '</tr>';
+
+		callback(html);
+	});
+}
