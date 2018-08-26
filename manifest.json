@@ -15,6 +15,7 @@
       "js/common.js",
       "js/edgegrid.js",
       "js/background.js",
+      "js/http-request.js",
       "js/notification.js",
       "js/google-analytics.js",
       "cmanager/cmanager-bg.js",

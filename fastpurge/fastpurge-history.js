@@ -67,10 +67,10 @@ function loadHistory(callback) {
       tbody_html += "<td class='show-more'><a href='#!' requestId='" + obj_history.requestId + "'>";
       tbody_html += "<i class='material-icons'>expand_more</i></a></td>"; 
       tbody_html += "<td>" + obj_history.requestedTime + "</td>"; 
-      tbody_html += "<td>" + obj_history.token_used.desc.capitalize() + "</td>"; 
+      tbody_html += "<td>" + obj_history.token_used.capitalize() + "</td>"; 
       tbody_html += "<td>" + obj_history.update_type.capitalize() + "</td>"; 
       tbody_html += "<td>" + obj_history.purge_type.toUpperCase() + "</td>"; 
-      tbody_html += "<td>" + (obj_history.purgeId === undefined ? "Unknown" : obj_history.purgeId) + "</td>"; 
+      tbody_html += "<td>" + obj_history.purgeId + "</td>"; 
       tbody_html += "<td>" + obj_history.purge_objects.length + "</td>"; 
       tbody_html += "<td>" + obj_history.network.capitalize() + "</td>"; 
       tbody_html += "<td>" + obj_history.purge_request_accepted.capitalize() + "</td>"; 

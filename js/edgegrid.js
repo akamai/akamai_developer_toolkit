@@ -33,14 +33,6 @@ function dataToSign(apiTokens, without_signature, timestamp, body, method) {
   return data_to_sign;
 }
 
-function postBody(arr_objects) {
-  post_data = { 'objects': new Array() };
-  for(var i=0; i < arr_objects.length; i++) {
-    post_data['objects'].push(arr_objects[i]);
-  }
-  return JSON.stringify(post_data);
-}
-
 function authorizationHeader(ingredient) {
   var method = ingredient.method;
   var tokens = ingredient.tokens;

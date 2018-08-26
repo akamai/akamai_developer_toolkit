@@ -13,7 +13,7 @@ var akamai_debug_headers = [
 
 var img_success = "img/success_icon.png", 
     img_fail = "img/fail_icon.png", 
-    img_info = "img/info_icon.jpg";
+    img_info = "img/info_icon.png";
 
 var showBasicNotification = function(title, message, img = img_info) {
   chrome.notifications.create(getCurrentDatetimeUTC(), {
@@ -31,10 +31,63 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     type: "popup"
   });
 });
+var showListNotification = function(type, title, obj_result, img = img_info) {
+  var display_items = [{title: '', message: ''}];
+  var context_msg = "";
+
+  if (type == 'purge') {
+    title = obj_result.token_used + ": " + title;
+    context_msg = "Purge Type: " + obj_result.purge_type.toUpperCase();
+    display_items = [{title: 'Result', message: 'Click here to see result'}];
+  } else if (type == "debug-errorcode") {
+    title = obj_result.token_desc + ": " + title;
+    context_msg = obj_result.errorcode;
+    display_items = [{title: 'Result', message: 'Click here to see result'}];
+  } else if (type == 'debug-fetchlog') {
+    title = obj_result.token_desc + ": " + title;
+    context_msg = obj_result.hostname + ' logs from ' + obj_result.ipaddr;
+    display_items = [{title: 'Result', message: 'Click here to see result'}];
+  }
+
+  chrome.notifications.create(obj_result.requestId, {
+    type: "list",
+    iconUrl: img,
+    title: title,
+    message: "",
+    contextMessage: context_msg,
+    items: display_items
+  }); 
+}
+
+var checkActiveCredential = function(credential_type_needed) {
+  if (jQuery.isEmptyObject(activatedTokenCache)) {
+    showBasicNotification('No Active Token', 'Please activate a credential', img_fail);
+    return false;
+  } else {
+    var credential_type = "";
+    switch(credential_type_needed) {
+      case "luna":
+        credential_type = "General OPEN APIs";
+        break;
+      case "purge":
+        credential_type = "Fast Purge APIs";
+        break;
+      default:
+        break;
+    }
+    if (activatedTokenCache.tokentype !== credential_type) {
+      showBasicNotification('Credential Type Mismatch', 'Activate ' + credential_type + ' credential', img_fail);
+      return false;
+    } else {
+      return true;
+    }
+  } 
+}
 
 // Fires when Chrome starts or when user clicks refresh button in extension page
 chrome.runtime.onStartup.addListener(function() {
   initFastPurgeStorage();
+  initDebugReqStorage();
   initStorageTemp(); 
   initPiezStorageState();
   initDebugHeaderSwitchState();
@@ -44,6 +97,7 @@ chrome.runtime.onStartup.addListener(function() {
 // Fires when user clicks disable / enable button in extension page
 window.onload = function() {
   initFastPurgeStorage();
+  initDebugReqStorage();
   initStorageTemp(); 
   initPiezStorageState();
   initDebugHeaderSwitchState();
@@ -68,6 +122,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
     })
   }
   initFastPurgeStorage();
+  initDebugReqStorage();
   initStorageTemp(); 
   initPiezStorageState();
   initDebugHeaderSwitchState();
@@ -126,8 +181,8 @@ chrome.contextMenus.onClicked.addListener(function(event){
 });
 
 chrome.notifications.onClicked.addListener(function(event){
-  if(event.startsWith("Debug_r")){
-    chrome.tabs.create({url: 'debugreq/debugreq-details.html?id=' + event});
+  if(event.startsWith("Debug")){
+    chrome.tabs.create({url: 'debugreq/debugreq-history.html?id=' + event});
   }
   if(event.startsWith("Purge")){
     chrome.tabs.create({url: 'fastpurge/fastpurge-history.html?id=' + event});
@@ -216,4 +271,38 @@ var initStorageTemp = function() {
       });
     }
 	});
+
+  // for D_Debug records - temporary
+	chrome.storage.local.get(null, function(data) {
+    var arr_history_keys = [];
+		for (var key in data) {
+			if (key.startsWith("D_")) {
+        arr_history_keys.push(key);
+			}
+		}
+    if (arr_history_keys.length > 0) {
+      chrome.storage.local.remove(arr_history_keys, function(){
+        console.log("Removed old format debugreq records");
+      });
+    }
+  });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
