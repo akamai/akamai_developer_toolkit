@@ -20,12 +20,12 @@
       "cmanager/cmanager-bg.js",
       "fastpurge/fastpurge-bg.js",
       "debugreq/debugreq-bg.js",
-      "piez/piez-bg.js"
+      "piez/piez-bg.js",
+      "openapitester/openapitester-bg.js"
     ]
   },
   "browser_action":{
     "default_icon":"img/icons-128.png",
-    "default_popup":"popup.html",
     "default_title":"Akamai Developer Toolkit"
   },
   "description":"A chrome extension that provide developers access to Akamai developer tools right within their workspace",
@@ -55,7 +55,7 @@
     "webRequestBlocking"
   ],
   "update_url":"https://clients2.google.com/service/update2/crx",
-  "version":"1.0.31",
+  "version":"1.0.33",
   "web_accessible_resources":[
     "fonts/*.*",
     "js/jquery-3.1.1.min.js",

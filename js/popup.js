@@ -65,7 +65,9 @@ function ifPiezisinstalled() {
   });
 }
 
+
 $(document).ready(function() {
+
   chrome.runtime.sendMessage({type: "gaq", target: "Popup_page", behavior: "loaded"});
   $('.versionNumber').attr("data-badge-caption", "v" + chrome.runtime.getManifest().version);
   loadCredentialList();

@@ -25,7 +25,12 @@
       }
     </style>
   </head>
-  <body>
+  <body style="background-image: url(img/akamai-blue-logo.png); 
+  background-position: fit;
+  background-repeat: no-repeat;
+  background-attachment: fixed;">
+
+
     <div class="container" style="width: 650px; padding: 0px">
       <div class="row">
         <div class="col s12">
@@ -191,6 +196,73 @@
             </div>
           </div>
 
+          <!-- Add your own API requests -->
+          <div class="card hoverable">
+            <div class="card-content black-text">
+              <div class="row">
+                <div class="col s8">
+                  <span class="card-title black-text">OPEN API Tester
+                    <a href="#!" id="openapitutorial" class="tooltipped" data-position="bottom" data-tooltip="Video tutorial on how to use this section">
+                      <i class="material-icons blue-grey-text text-darken-2 tutorial-video-icon">play_circle_outline</i>
+                    </a>
+                  </span>
+                </div>
+                <div class="col s4 right-align">
+                  <a id='openapitesterhistorydetails' href="#!" class="btn blue-grey lighten-5 hoverable tooltipped blue-grey-text text-darken-3" data-position="bottom" data-tooltip="Click here to view the results of your latest request">History</a>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12">
+                  <span>OPEN API TESTER Body text block</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s2" style="margin-top: 10px">
+                  <div class="input-field">
+                      <select id="openAPImethod">
+                          <option value="" disabled selected>Method</option>
+                          <option value="GET">GET</option>
+                          <option value="POST">POST</option>
+                          <option value="PUT">PUT</option>
+                          <option value="DELETE">DELETE</option>
+                        </select>
+                  </div>  
+                </div>
+                <div class="col s10">
+                    <div class="input-field">
+                      <textarea id="openapiendpoint"  placeholder="/devpops-api/v1/sandbox"  class="materialize-textarea"></textarea>
+                      <label for="openapiendpoint">Enter API endpoint you wish to test</label>
+                    </div>  
+                  </div>
+                  <div class="col s4">
+                   <div class="input-field">
+                      <textarea id="addheadersname" placeholder="Content-Type" class="materialize-textarea"></textarea>
+                      <label for="addheadersname">Add Header Name</label>
+                    </div>  
+                  </div>
+                    <div class="col s8">
+                        <div class="input-field">
+                            <textarea id="addheadersvalue" placeholder="application/json" class="materialize-textarea"></textarea>
+                            <label for="addheadersvalue">Add Header Value</label>
+                          </div>  
+                      </div>                    
+
+                    <div class="col s12">
+                    <div class="input-field">
+                        <textarea id="addpostbody" placeholder="{a:b}" class="materialize-textarea"></textarea>
+                        <label for="addpostbody">Add POST data</label>
+                    </div> 
+                    <a id="openapitester-submitButton" href="#!" class="btn light-blue hoverable submit-button" style="width: 20%;">SUBMIT</a>  
+                    <p class="padding-top"><i>Need more capability?<a href="#!" id="feedbackformlink" class="orange-text">click here </a> to request them</i></p>                      
+                  </div>
+              </div>              
+              </div>
+            </div>
+          </div>
+      </div>
+
+          
+
           <!-- Piez -->
           <div class="card hoverable">
             <div class="card-content black-text">
@@ -271,6 +343,7 @@
     <script type="text/javascript" src="fastpurge/fastpurge.js"></script>
     <script type="text/javascript" src="browserst/browserst.js"></script>
     <script type="text/javascript" src="debugreq/debugreq.js"></script>
+    <script type="text/javascript" src="openapitester/openapitester.js"></script>
     <script type="text/javascript" src="piez/piez.js"></script>
   </body>
 </html>

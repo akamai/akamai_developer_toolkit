@@ -24,6 +24,14 @@ var showBasicNotification = function(title, message, img = img_info) {
   });
 }
 
+//open popup.html as a separate window every time a user clicks on the ext icon
+chrome.browserAction.onClicked.addListener(function(tab) {
+  chrome.windows.create({
+    url: chrome.runtime.getURL("popup.html"),
+    type: "popup"
+  });
+});
+
 // Fires when Chrome starts or when user clicks refresh button in extension page
 chrome.runtime.onStartup.addListener(function() {
   initFastPurgeStorage();
