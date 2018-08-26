@@ -27,8 +27,13 @@ li.disabled {
   padding-left: 20px;
 }
 
-/* token list */
+/* general */
+.row-stacked {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
 
+/* token list */
 #tokenlist.collection {
   font-size: 11.5px;
   border-left: unset;
@@ -141,3 +146,26 @@ tr.shown:hover {
 .delete-record {
   width: 1%;
 }
+
+/* debug request */
+.debug-card-btn {
+  margin-top: 20px;
+  width: 100%;
+}
+
+/* for wrapping text in datatable */
+table pre {
+ white-space: pre-wrap;       /* css-3 */
+ white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+ white-space: -pre-wrap;      /* Opera 4-6 */
+ white-space: -o-pre-wrap;    /* Opera 7 */
+ word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+
+
+
+
+
+
+

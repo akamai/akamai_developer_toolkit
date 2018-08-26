@@ -1,11 +1,5 @@
 chrome.storage.local.get('update_type', function(data) {
-  var type = data['update_type'];
-  if (typeof type == 'undefined' || type == null) {
-    chrome.storage.local.set({update_type: 'invalidate'}, function() {
-      $("#updatetype-switch").prop('checked', false);
-    });
-  }
-  $("#updatetype-switch").prop('checked', (type == 'invalidate') ? false : true);
+  $("#updatetype-switch").prop('checked', (data['update_type'] == 'invalidate') ? false : true);
 });
 
 $('#purgehistorydetails, #purgehistorydetailslink').click(function() {
@@ -18,9 +12,7 @@ $('#purgehistorydetails, #purgehistorydetailslink').click(function() {
 $("#updatetype-switch").change(function() {
   chrome.runtime.sendMessage({type: "gaq", target: "toggle_purge_type", behavior: "clicked"});
   var type = $(this).prop("checked") ? "delete" : "invalidate";
-  chrome.storage.local.set({
-    update_type: type
-  });
+  chrome.runtime.sendMessage({type: "fastpurge", update_type: type});
 });
 
 $('#submitButton-stg, #submitButton-pro').click(function(obj) {
