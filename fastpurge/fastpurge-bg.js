@@ -124,50 +124,49 @@ function makePurgeRequest(arr_purge_targets, network, callback) {
     return;
   }
 
-  var active_token = jQuery.extend(true, {}, activatedTokenCache);
   var obj_purge_targets = inputParser(arr_purge_targets);
   var purge_requests = [];
 
   if (obj_purge_targets.urls.length > 0) {
-    active_token.baseurl += '/ccu/v3/' + purgeUpdateTypeCache + '/url/' + network; 
+    var endpoint = getApiEndPoint("purge-url", {updatetype: purgeUpdateTypeCache, network: network});
     purge_requests.push({
-      baseurl: active_token.baseurl,
+      url: activatedTokenCache.baseurl + endpoint,
       body_data: createPostBody(obj_purge_targets.urls),
-      auth_header: authorizationHeader({method: "POST", body: createPostBody(obj_purge_targets.urls), tokens: active_token}),
+      auth_header: authorizationHeader({method: "POST", body: createPostBody(obj_purge_targets.urls), tokens: activatedTokenCache, endpoint: endpoint}),
       purge_type: 'url',
       requestId: "PurgeURL_r" + new Date().getTime().toString(),
       purge_update_type: purgeUpdateTypeCache,
-      token_desc: active_token.desc,
+      token_desc: activatedTokenCache.desc,
       purge_network: network,
       requestedTime: getCurrentDatetimeUTC()
     });
   } 
   
   if (obj_purge_targets.cpcodes.length > 0) {
-    active_token.baseurl += '/ccu/v3/' + purgeUpdateTypeCache + '/cpcode/' + network; 
+    var endpoint = getApiEndPoint("purge-cpcode", {updatetype: purgeUpdateTypeCache, network: network});
     purge_requests.push({
-      baseurl: active_token.baseurl,
+      url: activatedTokenCache.baseurl + endpoint,
       body_data: createPostBody(obj_purge_targets.cpcodes),
-      auth_header: authorizationHeader({method: "POST", body: createPostBody(obj_purge_targets.cpcodes), tokens: active_token}),
+      auth_header: authorizationHeader({method: "POST", body: createPostBody(obj_purge_targets.cpcodes), tokens: activatedTokenCache, endpoint: endpoint}),
       purge_type: 'cpcode',
       requestId: "PurgeCPCode_r" + new Date().getTime().toString(),
       purge_update_type: purgeUpdateTypeCache,
-      token_desc: active_token.desc,
+      token_desc: activatedTokenCache.desc,
       purge_network: network,
       requestedTime: getCurrentDatetimeUTC()
     });
   } 
   
   if (obj_purge_targets.tags.length > 0) {
-    active_token.baseurl += '/ccu/v3/' + purgeUpdateTypeCache + '/tag/' + network; 
+    var endpoint = getApiEndPoint("purge-tag", {updatetype: purgeUpdateTypeCache, network: network});
     purge_requests.push({
-      baseurl: active_token.baseurl,
+      url: activatedTokenCache.baseurl + endpoint,
       body_data: createPostBody(obj_purge_targets.tags),
-      auth_header: authorizationHeader({method: "POST", body: createPostBody(obj_purge_targets.tags), tokens: active_token}),
+      auth_header: authorizationHeader({method: "POST", body: createPostBody(obj_purge_targets.tags), tokens: activatedTokenCache, endpoint: endpoint}),
       purge_type: 'tag',
       requestId: "PurgeTag_r" + new Date().getTime().toString(),
       purge_update_type: purgeUpdateTypeCache,
-      token_desc: active_token.desc,
+      token_desc: activatedTokenCache.desc,
       purge_network: network,
       requestedTime: getCurrentDatetimeUTC()
     });

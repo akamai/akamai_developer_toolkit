@@ -361,5 +361,4 @@ $(document).ready(function() {
     chrome.runtime.sendMessage({type: "gaq", target: "View_browser_settings_tutorial", behavior: "clicked"});
     chrome.tabs.create({url: 'https://youtu.be/YZsaQZzMtmM'});
   });
-
 });
