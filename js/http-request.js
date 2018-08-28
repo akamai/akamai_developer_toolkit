@@ -1,6 +1,6 @@
 var sendPostReq = function(obj_request, successCallBack, errorCallBack, completeCallback) {
   $.ajax({
-    url: obj_request.baseurl,
+    url: obj_request.url,
     contentType: "application/json",
     type: 'POST',
     data: obj_request.body_data,
@@ -25,7 +25,7 @@ var sendPostReq = function(obj_request, successCallBack, errorCallBack, complete
 
 var sendGetReq = function(obj_request, successCallBack, errorCallBack, completeCallback) {
   $.ajax({
-    url: obj_request.baseurl,
+    url: obj_request.url,
     type: 'GET',
     headers: { 'Authorization': obj_request.auth_header },
     success: function(response, status, xhr) { 
