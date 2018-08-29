@@ -33,12 +33,12 @@
           console.log(this_html);
           submit_buttons.addClass("disabled");
           this_obj.html('<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>');
-          chrome.runtime.getBackgroundPage(function(backgroundpage) {
-            backgroundpage.makeOPENAPIReqs(arr_target_openapiendpoint.filter(Boolean), arr_target_method, arr_target_addpostbody, function(data) {
-                submit_buttons.removeClass("disabled").blur();
-                this_obj.html(this_html);
-                console.log(data);
-              });
+         chrome.runtime.getBackgroundPage(function(backgroundpage1){
+            backgroundpage1.makeOPENAPIReqs(arr_target_openapiendpoint.filter(Boolean), arr_target_method, arr_target_addpostbody); 
+            //{
+            //    submit_buttons.removeClass("disabled").blur();
+            //    this_obj.html(this_html);
+            //  });
           });
       }
   });
