@@ -32,7 +32,7 @@ var OnRequestSuccess = function(response, status, obj_request) {
    // 'network': obj_request.purge_network,
   //  'purge_objects': JSON.parse(obj_request.body_data).objects,
     'raw_response': response,
-    'token_used': obj_request.token_desc,
+    'token_desc': obj_request.token_desc,
   // 'update_type': obj_request.purge_update_type,
     'requestId': obj_request.requestId,
     'status': 'success'

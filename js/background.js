@@ -195,6 +195,9 @@ chrome.notifications.onClicked.addListener(function(event){
   if(event.startsWith("Purge")){
     chrome.tabs.create({url: 'fastpurge/fastpurge-history.html?id=' + event});
   }
+  if(event.startsWith("OpenAPI")){
+    chrome.tabs.create({url: 'openapitester/openapitester-history.html?id=' + event});
+  }
   chrome.notifications.clear(event);
 });
 
