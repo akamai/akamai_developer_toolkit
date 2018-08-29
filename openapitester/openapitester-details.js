@@ -1,7 +1,7 @@
-function loadDetails(openapi_req_id, callback) {
-    chrome.storage.local.get('openapiHistory', function(data) {
-      var obj_records = data['openapiHistory'];
-      var history_data = obj_records[openapi_req_id];
+function loadDetails(purge_req_id, callback) {
+    chrome.storage.local.get('purgeHistory', function(data) {
+      var obj_records = data['purgeHistory'];
+      var history_data = obj_records[purge_req_id];
   
       var html = '<tr class="shown">';
       html += '<td colspan="10">';
@@ -9,14 +9,16 @@ function loadDetails(openapi_req_id, callback) {
       
       var better_title = {
         lastupdated: "Last Updated",
-        openapi_endpoint: "Open API Endpoint",
-        openapi_request_accepted: "Request Status",
-        request_payload: "Request Payload",
+        network: "Network",
+        purgeId: "Purge Id",
+        purge_objects: "Purge Objects",
+        purge_request_accepted: "Purge Request Status",
+        purge_type: "Purge Type",
         raw_response: "Raw Response",
         requestId: "Request Id",
         requestedTime: "Request Time",
         token_used: "Credential Used",
-        response_code: "Response Status"
+        update_type: "Purge Update Type"
       }
   
       var arr_keys = Object.keys(history_data).reverse();

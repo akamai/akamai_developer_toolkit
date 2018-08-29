@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>OPEN API Request History</title>
+    <title>Purge History</title>
     <link type="text/css" rel="stylesheet" href="/css/materialize.css" media="screen,projection"/>
     <link type="text/css" rel="stylesheet" href="/css/common.css" media="screen,projection"/>
     <link rel="stylesheet" href="/fonts/materialicons.css"  type="text/css">
@@ -26,18 +26,21 @@
             <div class="card-content">
 
               <div class="row">
-                <span class="card-title">OPEN API Request History</span>
+                <span class="card-title">Purge History</span>
               </div>
 
               <div class="row" id="historytab">
-								<table id="openapi-table" class="hover centered" style="font-size: 14px">
+								<table id="purge-table" class="hover centered" style="font-size: 14px">
 									<thead>
 										<tr>
 											<th class="no-sort"></th>
 											<th>Time(GMT)</th>
 											<th>Credential</th>
-											<th>Endpoint</th>
-											<th>Response Code</th>
+											<th>UpdateType</th>
+											<th>PurgeType</th>
+											<th>PurgeId</th>
+											<th>ObjectNum</th>
+											<th>Network</th>
 											<th>Status</th>
 											<th class="no-sort"></th>
 										</tr>
@@ -64,7 +67,7 @@
     <script type="text/javascript" src="/js/materialize.min.js"></script>
     <script type="text/javascript" src="/js/jquery.dataTables.js"></script>
     <script type="text/javascript" src="/js/common.js"></script>
-    <script type="text/javascript" src="/openapitester/openapitester-details.js"></script>
-    <script type="text/javascript" src="/openapitester/openapitester-history.js"></script>
+    <script type="text/javascript" src="/fastpurge/fastpurge-details.js"></script>
+    <script type="text/javascript" src="/fastpurge/fastpurge-history.js"></script>
   </body>
 </html>

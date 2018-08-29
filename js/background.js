@@ -32,7 +32,6 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     type: "popup"
   });
 });
-
 var showListNotification = function(type, title, obj_result, img = img_info) {
   var display_items = [{title: '', message: ''}];
   var context_msg = "";
@@ -48,10 +47,6 @@ var showListNotification = function(type, title, obj_result, img = img_info) {
   } else if (type == 'debug-fetchlog') {
     title = obj_result.token_desc + ": " + title;
     context_msg = obj_result.hostname + ' logs from ' + obj_result.ipaddr;
-    display_items = [{title: 'Result', message: 'Click here to see result'}];
-  } else if (type == 'openapi') {
-    title = obj_result.token_desc + ": " + title;
-    context_msg = 'OPEN API request status';
     display_items = [{title: 'Result', message: 'Click here to see result'}];
   }
 
@@ -98,7 +93,6 @@ chrome.runtime.onStartup.addListener(function() {
   initPiezStorageState();
   initDebugHeaderSwitchState();
   initCmanagerStorageState();
-  initOPENAPIStorage();
 });
 
 // Fires when user clicks disable / enable button in extension page
@@ -109,7 +103,6 @@ window.onload = function() {
   initPiezStorageState();
   initDebugHeaderSwitchState();
   initCmanagerStorageState();
-  initOPENAPIStorage();
 };
 
 // restart app when new update is available 
@@ -135,7 +128,6 @@ chrome.runtime.onInstalled.addListener(function(details) {
   initPiezStorageState();
   initDebugHeaderSwitchState();
   initCmanagerStorageState();
-  initOPENAPIStorage();
 });
 
 chrome.contextMenus.create({
@@ -195,9 +187,6 @@ chrome.notifications.onClicked.addListener(function(event){
   }
   if(event.startsWith("Purge")){
     chrome.tabs.create({url: 'fastpurge/fastpurge-history.html?id=' + event});
-  }
-  if(event.startsWith("OPENAPI")){
-    chrome.tabs.create({url: 'openapitester/openapitester-history.html?id=' + event});
   }
   chrome.notifications.clear(event);
 });

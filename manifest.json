@@ -22,8 +22,8 @@
       "cmanager/cmanager-bg.js",
       "fastpurge/fastpurge-bg.js",
       "debugreq/debugreq-bg.js",
-      "openapitester/openapitester-bg.js",
-      "piez/piez-bg.js"
+      "piez/piez-bg.js",
+      "openapitester/openapitester-bg.js"
     ]
   },
   "browser_action":{
