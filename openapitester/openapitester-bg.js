@@ -7,15 +7,13 @@ var initOPENAPIStorage = function() {
     }  
   });
 }
-
- 
   
  function saveOpenAPIResult(openapi_result) {
   chrome.storage.local.get('openapiHistory', function(records) {
     var openapi_history = records['openapiHistory'];
     openapi_history[openapi_result.requestId] = openapi_result;  
     chrome.storage.local.set({ openapiHistory: openapi_history });
-    console.log(openapi_history[openapi_result.requestId]);
+    //console.log(openapi_history[openapi_result.requestId]);
     console.log("New OPEN API request record added");
   });
 }
@@ -84,7 +82,10 @@ var onRequestSuccess = function(response, status, obj_request) {
     active_token.baseurl += arr_openapiendpoint; 
    //active_token.baseurl = urlparser.toLocaleString() + arr_openapiendpoint;
     var body1_data = arr_addpostbody.replace(/\n|\r/g,"");
-     openapi_requests.push({
+  
+    
+    if (arr_method == 'POST'){
+      openapi_requests.push({
         baseurl: active_token.baseurl,
         body_data: body1_data,
         auth_header: authorizationHeader({method: "POST", body: body1_data, tokens: active_token}),
@@ -93,15 +94,40 @@ var onRequestSuccess = function(response, status, obj_request) {
         requestedTime: getCurrentDatetimeUTC(),
         openapiendpoint: arr_openapiendpoint
       });
-    
-  
+
+      if (openapi_requests.length > 0) {
+        for (i=0; i < openapi_requests.length; i++) {
+          sendPostReq(openapi_requests[i], onRequestSuccess, onRequestError, callback);
+        }
+      } else {
+        showBasicNotification('Input Error', 'Please check if API endpoint exists', img_fail);
+        callback("fail");
+        return false;
+      }
+    }
+   if (arr_method == 'GET'){
+    openapi_requests.push({
+      baseurl: active_token.baseurl,
+      body_data: body1_data,
+      auth_header: authorizationHeader({method: "GET", tokens: active_token}),
+      requestId: "OPENAPI_r" + new Date().getTime().toString(),
+      token_desc: active_token.desc,
+      requestedTime: getCurrentDatetimeUTC(),
+      openapiendpoint: arr_openapiendpoint
+    });
     if (openapi_requests.length > 0) {
       for (i=0; i < openapi_requests.length; i++) {
-        sendPostReq(openapi_requests[i], onRequestSuccess, onRequestError, callback);
+        sendGetReq(openapi_requests[i], onRequestSuccess, onRequestError, callback);
       }
     } else {
       showBasicNotification('Input Error', 'Please check if API endpoint exists', img_fail);
       callback("fail");
       return false;
     }
+   }
+   else {
+     callback("fail");
+     return false;
+   }
+
   }
