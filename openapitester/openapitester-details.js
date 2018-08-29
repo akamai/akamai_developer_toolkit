@@ -1,24 +1,22 @@
-function loadDetails(purge_req_id, callback) {
-    chrome.storage.local.get('purgeHistory', function(data) {
-      var obj_records = data['purgeHistory'];
-      var history_data = obj_records[purge_req_id];
+function loadDetails(openapireq_req_id, callback) {
+    chrome.storage.local.get('openapiHistory', function(data) {
+      var obj_records = data['openapiHistory'];
+      var history_data = obj_records[openapireq_req_id];
   
       var html = '<tr class="shown">';
       html += '<td colspan="10">';
       html += '<table class="history-table">';
       
       var better_title = {
-        lastupdated: "Last Updated",
-        network: "Network",
-        purgeId: "Purge Id",
-        purge_objects: "Purge Objects",
-        purge_request_accepted: "Purge Request Status",
-        purge_type: "Purge Type",
         raw_response: "Raw Response",
-        requestId: "Request Id",
+        lastupdated: "Last Updated",
         requestedTime: "Request Time",
-        token_used: "Credential Used",
-        update_type: "Purge Update Type"
+        token_desc: "Credential Used",
+        requestId: "Request Id",
+        status: "Response Status",
+        method: "HTTP Method",
+        endpoint: "API endpoint"
+ 
       }
   
       var arr_keys = Object.keys(history_data).reverse();
@@ -26,14 +24,14 @@ function loadDetails(purge_req_id, callback) {
       for(var i=0; i < arr_keys.length; i++) {
         let key = arr_keys[i];
         var text = "";
-        if (jQuery.type(history_data[key]) == 'object' && key != 'token_used') {
+        if (jQuery.type(history_data[key]) == 'object' && key != 'token_desc') {
           text = "<pre>" + JSON.stringify(history_data[key], null, 2) + "</pre>";
         } else if (jQuery.type(history_data[key]) == 'array') {
           for(var k=0; k < history_data[key].length; k++) {
             text += "<p>" + history_data[key][k] + "</p>";
           }
-        } else if (key == 'token_used') {
-          text = history_data[key].desc;
+        } else if (key == 'token_desc') {
+          text = history_data[key];
         } else {
           text = history_data[key];
         }
