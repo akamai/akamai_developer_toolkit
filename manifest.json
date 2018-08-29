@@ -22,8 +22,8 @@
       "cmanager/cmanager-bg.js",
       "fastpurge/fastpurge-bg.js",
       "debugreq/debugreq-bg.js",
-      "piez/piez-bg.js",
-      "openapitester/openapitester-bg.js"
+      "openapitester/openapitester-bg.js",
+      "piez/piez-bg.js"
     ]
   },
   "browser_action":{
@@ -57,7 +57,7 @@
     "webRequestBlocking"
   ],
   "update_url":"https://clients2.google.com/service/update2/crx",
-  "version":"1.0.34",
+  "version":"1.0.35",
   "web_accessible_resources":[
     "fonts/*.*",
     "js/jquery-3.1.1.min.js",

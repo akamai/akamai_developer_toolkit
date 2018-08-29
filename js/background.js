@@ -48,7 +48,11 @@ var showListNotification = function(type, title, obj_result, img = img_info) {
     title = obj_result.token_desc + ": " + title;
     context_msg = obj_result.hostname + ' logs from ' + obj_result.ipaddr;
     display_items = [{title: 'Result', message: 'Click here to see result'}];
-  }
+  } else if (type == 'OpenAPI') {
+    title = obj_result.token_desc + ": " + title;
+    context_msg = 'OPEN API Request';
+    display_items = [{title: 'Result', message: 'Click here to see result'}];
+  } 
 
   chrome.notifications.create(obj_result.requestId, {
     type: "list",
@@ -93,6 +97,7 @@ chrome.runtime.onStartup.addListener(function() {
   initPiezStorageState();
   initDebugHeaderSwitchState();
   initCmanagerStorageState();
+  initOpenAPIStorage();
 });
 
 // Fires when user clicks disable / enable button in extension page
@@ -103,6 +108,7 @@ window.onload = function() {
   initPiezStorageState();
   initDebugHeaderSwitchState();
   initCmanagerStorageState();
+  initOpenAPIStorage();
 };
 
 // restart app when new update is available 
@@ -128,6 +134,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
   initPiezStorageState();
   initDebugHeaderSwitchState();
   initCmanagerStorageState();
+  initOpenAPIStorage();
 });
 
 chrome.contextMenus.create({
