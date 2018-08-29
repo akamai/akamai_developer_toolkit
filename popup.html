@@ -29,28 +29,31 @@
   background-position: fit;
   background-repeat: no-repeat;
   background-attachment: fixed;">
-
-
-<nav class="nav-extended">
-    <div class="nav-wrapper orange">
-      <a href="#" class="brand-logo">&nbsp;&nbsp;	 Akamai Developer Toolkit<span class="versionNumber new badge teal lighten-2" data-badge-caption="Version" style="margin-top: 10px; position: absolute"></span></a>
-      
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a href="#!" id="feedbackform" class="btn blue-grey-text text-darken-2 blue-grey lighten-5 hoverable tooltipped" data-position="bottom" data-tooltip="Provide feedback to improve the tool">
-          Report a bug</a></li>
-        <li><div class="twitter-wjs" style="padding-top: 10px; padding-right: 10px"></div></li>
-      </ul>    
-    </div>
-    <div class="nav-content orange lighten-1">
-      <ul class="tabs tabs-transparent">
-        <li class="tab"><a href="#testing">OPEN API Tester</a></li>
-        <li class="tab"><a href="#debugging">Debugging</a></li>
-        <li class="tab"><a class="active" href="#adminops">Admin Operations</a></li>
-        <li class="tab"><a href="#analysis">Site Analysis</a></li>
-        <li class="tab"><a href="#upcoming">Upcoming Features</a></li>
-      </ul>
-    </div>
-  </nav>
+<header>
+    <div class="navbar-fixed">
+        <nav class="nav-extended" data-target="nav-extended">
+            <div class="nav-wrapper orange">
+              <a href="#" class="brand-logo">&nbsp;&nbsp;	 Akamai Developer Toolkit<span class="versionNumber new badge teal lighten-2" data-badge-caption="Version" style="margin-top: 10px; position: absolute"></span></a>
+              
+              <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="#!" id="feedbackform" class="btn blue-grey-text text-darken-2 blue-grey lighten-5 hoverable tooltipped" data-position="bottom" data-tooltip="Provide feedback to improve the tool">
+                  Report a bug</a></li>
+                <li><div class="twitter-wjs" style="padding-top: 10px; padding-right: 10px"></div></li>
+              </ul>    
+            </div>
+            <div class="nav-content orange lighten-1">
+              <ul class="tabs tabs-transparent">
+                <li class="tab"><a href="#testing">OPEN API Tester</a></li>
+                <li class="tab"><a href="#debugging">Debugging</a></li>
+                <li class="tab"><a class="active" href="#adminops">Admin Operations</a></li>
+                <li class="tab"><a href="#analysis">Site Analysis</a></li>
+                <li class="tab"><a href="#upcoming">Upcoming Features</a></li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+</header>
+<main>
 
   <div id="testing" class="col l12">
       <div class="container">
@@ -68,7 +71,7 @@
                     </span>
                   </div>
                   <div class="col s4 right-align">
-                    <a id='openapitesterhistorydetails' href="#!" class="btn blue-grey lighten-5 hoverable tooltipped blue-grey-text text-darken-3" data-position="bottom" data-tooltip="Click here to view the results of your latest request">History</a>
+                    <a id='openapitesterhistorydetails' class="btn blue-grey lighten-5 hoverable tooltipped blue-grey-text text-darken-3" data-position="bottom" data-tooltip="Click here to view the results of your latest request">History</a>
                   </div>
                 </div>
                 <div class="row">
@@ -105,6 +108,56 @@
                 </div>              
                 </div>
               </div>
+
+          <!--OpenAPI history-->
+              <div class="row">
+                <div class="col s12">
+                  <div class="card">
+                    <div class="card-content">
+        
+                      <div class="row">
+                          <div class="col s8">
+                              <span class="card-title">OPEN API History</span>
+                          </div>
+
+
+                       
+                        <div class="col s4 right-align">
+                            <!--<a href="#!" id="reload" class="btn blue-grey lighten-5 hoverable tooltipped blue-grey-text text-darken-3" data-position="bottom" data-tooltip="Click here to reload the history below">Reload</a>-->
+                          </div>
+                      </div>
+
+        
+                      <div class="row" id="historytab">
+                        <table id="openapi-table" class="hover centered" style="font-size: 14px">
+                          <thead>
+                            <tr>
+                              <th class="no-sort"></th>
+                              <th>Time(GMT)</th>
+                              <th>OPEN API Cred</th>
+                              <th>HTTP Method</th>
+                              <th>API Endpoint Requested</th>
+                              <th>Response Status</th>
+                              <th class="no-sort"></th>
+                            </tr>
+                          </thead>
+                          <tbody id="historylist">
+                          </tbody>
+                        </table>
+                      </div>
+        
+                      <div class="row right-align">
+                        <div class="col s12 right-align">
+                          <a id="clearHistoryButton" class="btn blue-grey waves-effect waves-light">Clear History</a>
+                          <a id="closeButton" class="btn light-blue waves-effect waves-light">Close Tab</a>
+                        </div>
+                      </div>
+        
+                    </div>
+                  </div>
+                </div>
+              </div>
+             <!-- container -->
             </div>
           </div>
         </div>
@@ -424,7 +477,14 @@
         </div>
       </div>
     </div> <!-- container -->
-
+  </main>
+    <footer class="page-footer orange lighten-1">
+        <div class="footer-copyright orange ">
+          <div class="container">
+           <b>Disclaimer</b> This is not an official Akamai product. Please report all issues, bugs and suggestions for improvment using the "report a bug" button on the top right corner of this app
+          </div>
+        </div>
+      </footer>
     <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
     <script type="text/javascript" src="js/common.js"></script>
@@ -435,5 +495,10 @@
     <script type="text/javascript" src="debugreq/debugreq.js"></script>
     <script type="text/javascript" src="openapitester/openapitester.js"></script>
     <script type="text/javascript" src="piez/piez.js"></script>
+    <script type="text/javascript" src="/openapitester/openapitester-details.js"></script>
+    <script type="text/javascript" src="/openapitester/openapitester-history.js"></script>
+    <script type="text/javascript" src="/js/jquery.dataTables.js"></script>
+
+
   </body>
 </html>

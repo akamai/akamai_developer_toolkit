@@ -19,46 +19,54 @@
     </style>
   </head>
   <body>
-    <div class="container" style="margin-top: 70px; width: 80%;">
-      <div class="row">
-        <div class="col s12">
-          <div class="card">
-            <div class="card-content">
 
+  <main>
+      <div id="history" class="col l12">
+          <div class="container" style="margin-top: 70px; width: 80%;">
               <div class="row">
-                <span class="card-title">OPEN API History</span>
-              </div>
-
-              <div class="row" id="historytab">
-								<table id="openapi-table" class="hover centered" style="font-size: 14px">
-									<thead>
-										<tr>
-											<th class="no-sort"></th>
-											<th>Time(GMT)</th>
-											<th>OPEN API Cred</th>
-											<th>HTTP Method</th>
-											<th>API Endpoint Requested</th>
-											<th>Response Status</th>
-											<th class="no-sort"></th>
-										</tr>
-                  </thead>
-                  <tbody id="historylist">
-                  </tbody>
-                </table>
-              </div>
-
-              <div class="row right-align">
-                <div class="col s12 right-align">
-                  <a id="clearHistoryButton" class="btn blue-grey waves-effect waves-light">Clear History</a>
-                  <a id="closeButton" class="btn light-blue waves-effect waves-light">Close Tab</a>
+                <div class="col s12">
+                  <div class="card">
+                    <div class="card-content">
+        
+                      <div class="row">
+                        <span class="card-title">OPEN API History</span>
+                      </div>
+        
+                      <div class="row" id="historytab">
+                        <table id="openapi-table" class="hover centered" style="font-size: 14px">
+                          <thead>
+                            <tr>
+                              <th class="no-sort"></th>
+                              <th>Time(GMT)</th>
+                              <th>OPEN API Cred</th>
+                              <th>HTTP Method</th>
+                              <th>API Endpoint Requested</th>
+                              <th>Response Status</th>
+                              <th class="no-sort"></th>
+                            </tr>
+                          </thead>
+                          <tbody id="historylist">
+                          </tbody>
+                        </table>
+                      </div>
+        
+                      <div class="row right-align">
+                        <div class="col s12 right-align">
+                          <a id="clearHistoryButton" class="btn blue-grey waves-effect waves-light">Clear History</a>
+                          <a id="closeButton" class="btn light-blue waves-effect waves-light">Close Tab</a>
+                        </div>
+                      </div>
+        
+                    </div>
+                  </div>
                 </div>
               </div>
-
-            </div>
-          </div>
-        </div>
+            </div> <!-- container -->
       </div>
-    </div> <!-- container -->
+
+  </main>
+
+
 
     <script type="text/javascript" src="/js/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="/js/materialize.min.js"></script>

@@ -2335,6 +2335,16 @@ hr {
   height: 0;
 }
 
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
 /**
  * Contain overflow in all browsers.
  */
@@ -2866,7 +2876,7 @@ ul.staggered-list li {
 }
 
 footer.page-footer {
-  padding-top: 20px;
+  /*padding-top: 20px;*/
   background-color: #ee6e73;
 }
 
@@ -4211,7 +4221,7 @@ nav .input-field label.active i {
     line-height: 64px;
   }
   .navbar-fixed {
-    height: 64px;
+    height: 128px;
   }
 }
 

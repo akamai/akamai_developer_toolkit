@@ -68,6 +68,7 @@ function ifPiezisinstalled() {
 
 $(document).ready(function() {
 
+
   chrome.runtime.sendMessage({type: "gaq", target: "Popup_page", behavior: "loaded"});
   $('.versionNumber').attr("data-badge-caption", "v" + chrome.runtime.getManifest().version);
   loadCredentialList();
@@ -76,6 +77,8 @@ $(document).ready(function() {
   ifPiezisinstalled();
   loadDialog();
   loadUpdateDialog();
+
+
 
   $(document).on('click', '#addProxyBtn', addProxy);
   $(document).on('click', '#flushdns', function() {
@@ -133,6 +136,7 @@ $(document).ready(function() {
       loadProxy();
     });
   });
+
 
   $(document).on('click', '#addProxy #submitBtn', function() {
     chrome.runtime.sendMessage({type: "gaq", target: "Add_new_proxy_savebtn", behavior: "clicked"});
@@ -314,6 +318,9 @@ $(document).ready(function() {
     });
   });
 
+
+
+
   $(document).on('click', '#removePiez', function() {
     chrome.runtime.sendMessage({type: "gaq", target: "Original_piez_user_uninstalled", behavior: "clicked"});
     chrome.management.uninstall('npbccjkjemgagjioahfccljgnlkdleod');
@@ -353,6 +360,11 @@ $(document).ready(function() {
     chrome.runtime.sendMessage({type: "gaq", target: "View_fast_purge_tutorial", behavior: "clicked"});
     chrome.tabs.create({url: 'https://youtu.be/kk9RDQaARxw'});
   });
+
+  $('#reload').click(function(){
+    window.location.href="popup.html#testing";
+    console.log('click registered');
+   });
 
   $('#debugtutorial').click(function(){
     chrome.runtime.sendMessage({type: "gaq", target: "View_debug_reqests_tutorial", behavior: "clicked"});
