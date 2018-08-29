@@ -35,7 +35,8 @@ function dataToSign(apiTokens, without_signature, timestamp, body, method) {
 
 function authorizationHeader(ingredient) {
   var method = ingredient.method;
-  var tokens = ingredient.tokens;
+  var tokens = jQuery.extend(true, {}, ingredient.tokens);
+  tokens.baseurl += ingredient.endpoint;
   var body = (method == 'POST') ? ingredient.body : "";
   var timestamp = getTimeStampInUtc();
   var auth_header_without_signature = authHeaderValueWithOutSignature(tokens, timestamp);

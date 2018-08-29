@@ -16,13 +16,12 @@ function translateErrorCode(errorcode, callback) {
     return;
   }
   var reference_code = errorcode.replace('#','');
-  var active_token = jQuery.extend(true, {}, activatedTokenCache);
-  active_token.baseurl += "/diagnostic-tools/v2/errors/" + reference_code + "/translated-error";
+  var endpoint = getApiEndPoint("debug-translate-errorcode", {errorcode: reference_code});
   var obj_request = {
-    baseurl: active_token.baseurl,
-    auth_header: authorizationHeader({method: "GET", tokens: active_token}),
+    url: activatedTokenCache.baseurl + endpoint,
+    auth_header: authorizationHeader({method: "GET", tokens: activatedTokenCache, endpoint: endpoint}),
     requestId: "DebugErrCode" + new Date().getTime().toString(),
-    token_desc: active_token.desc,
+    token_desc: activatedTokenCache.desc,
     errorcode: reference_code,
     requestedTime: getCurrentDatetimeUTC()
   }
@@ -37,15 +36,14 @@ function getLogLinesFromIP(obj_debug_data, callback) {
     return;
   }
   var querystring = "?endTime=" + encodeURIComponent(getCurrentDatetimeUTC("ISO-8601")) + "&hostHeader=" + obj_debug_data.hostname;
-  var active_token = jQuery.extend(true, {}, activatedTokenCache);
-  active_token.baseurl += "/diagnostic-tools/v2/ip-addresses/" + obj_debug_data.ipaddr + "/log-lines" + querystring;
+  var endpoint = getApiEndPoint("debug-fetchlog-by-ip", {ipaddr: obj_debug_data.ipaddr, querystring: querystring});
   var obj_request = {
-    baseurl: active_token.baseurl,
-    auth_header: authorizationHeader({method: "GET", tokens: active_token}),
+    url: activatedTokenCache.baseurl + endpoint,
+    auth_header: authorizationHeader({method: "GET", tokens: activatedTokenCache, endpoint: endpoint}),
     requestId: "DebugFetchLog" + new Date().getTime().toString(),
     ipaddr: obj_debug_data.ipaddr,
     hostname: obj_debug_data.hostname,
-    token_desc: active_token.desc,
+    token_desc: activatedTokenCache.desc,
     requestedTime: getCurrentDatetimeUTC()
   }
   sendGetReq(obj_request, onGetLogLinesSuccess, onGetLogLinesError);
