@@ -26,6 +26,7 @@ var OnRequestSuccess = function(response, status, obj_request) {
     'requestedTime': obj_request.requestedTime,
     'endpoint': obj_request.endpoint,
     'method': obj_request.method,
+    'body_data': obj_request.body_data,
     //'purge_request_accepted': 'success',
    // 'purge_type': obj_request.purge_type,
    // 'purgeId': response.purgeId,
@@ -47,6 +48,7 @@ var OnRequestSuccess = function(response, status, obj_request) {
         'requestedTime': obj_request.requestedTime,
         'endpoint': obj_request.endpoint,
         'method': obj_request.method,
+        'body_data': obj_request.body_data,
         'raw_response': '',
         'token_desc': obj_request.token_desc,
         'requestId': obj_request.requestId,
@@ -57,7 +59,7 @@ var OnRequestSuccess = function(response, status, obj_request) {
       } catch (err) {
         openapireqerror_result['raw_response'] = {detail: 'Could not make API request'};
       }
-      saveDebugReqResult(openapireqerror_result);
+      saveOpenAPIResult(openapireqerror_result);
       showListNotification("OpenAPI", "Request Failed", openapireqerror_result, img_fail);
   }
   

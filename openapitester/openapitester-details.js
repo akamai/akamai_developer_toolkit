@@ -15,7 +15,8 @@ function loadDetails(openapireq_req_id, callback) {
         requestId: "Request Id",
         status: "Response Status",
         method: "HTTP Method",
-        endpoint: "API endpoint"
+        endpoint: "API endpoint",
+        body_data: "POST Payload"
  
       }
   
