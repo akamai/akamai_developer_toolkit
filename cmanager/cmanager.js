@@ -13,10 +13,10 @@ var loadCredentialList = function () {
           list_html += '<p>' + api_credential.tokentype + '</p>';
           list_html += '<p class="blue-grey-text">Click on Activate to enable this credential for your requests</p>';
           list_html += '<div class="secondary-content">';
-          list_html += '<div><a href="#!" tokenid="' + api_credential.uniqid + '" action="activate">Activate</a></div>';
-          list_html += '<div><a href="#!" tokenid="' + api_credential.uniqid + '" action="edit">Edit</a></div>';
-          list_html += '<div><a href="#!" tokenid="' + api_credential.uniqid + '" action="download">Download</a></div>';
-          list_html += '<div><a href="#!" tokenid="' + api_credential.uniqid + '" action="delete">Delete</a></div>';
+          list_html += '<div><a href="#!" style="height: 25px; line-height: 25px;" tokenid="' + api_credential.uniqid + '" action="activate">Activate</a></div>';
+          list_html += '<div><a href="#!" style="height: 25px; line-height: 25px;" tokenid="' + api_credential.uniqid + '" action="edit">Edit</a></div>';
+          list_html += '<div><a href="#!" style="height: 25px; line-height: 25px;" tokenid="' + api_credential.uniqid + '" action="download">Download</a></div>';
+          list_html += '<div><a href="#!" style="height: 25px; line-height: 25px;" tokenid="' + api_credential.uniqid + '" action="delete">Delete</a></div>';
           list_html += '</div></li>';
           $('#tokenlist').append(list_html);
         }
@@ -31,6 +31,68 @@ var loadCredentialList = function () {
     });
   });
 }
+
+var loadActiveCredentiallist = function () {
+  $('#activetoken_inuse').empty().hide();
+  chrome.runtime.getBackgroundPage(function(backgroundpage) {
+    chrome.storage.local.get('tokens', function(data) {
+      var arr_tokens = data['tokens'];
+      var activetokenid = backgroundpage.activatedTokenCache.uniqid;
+     // console.log(activetokenid);
+      console.log(arr_tokens.length);
+      if (arr_tokens.length >0 ){
+        if (activetokenid !== undefined) {
+          // var activetokenid = backgroundpage.activatedTokenCache.uniqid;
+           console.log(activetokenid);
+           var api_credential1 = backgroundpage.activatedTokenCache;
+           console.log(api_credential1);
+           if (!api_credential1) { api_credential1 = {desc: "Failed to load", tokentype: "Please delete and register again", uniqid: activetokenid}; }
+           var list_html1 = '<div class="row"><div class="col s9">';
+           list_html1 += '<li class="collection-item avatar1">';
+           list_html1 += '<i class="material-icons key-img circle teal lighten-2 z-depth-1" style="display: none;">lock_open</i>';
+           list_html1 += '<h5 class="" style="font-size: 20px; font-weight: bold">' + api_credential1.desc + '</h5>';
+           list_html1 += '<p class="">' + api_credential1.tokentype + '</p>';
+           list_html1 += '<p class="blue-grey-text">This is the token is currently active across the extension. This token will be used for any OPEN api call the extension has to make.</p></li></div>';
+           list_html1 += '<div class="col s3" style="height: 40px; line-height: 150px;">';
+           list_html1 += '<a id="sidenavbutton" class="btn blue-grey lighten-5 hoverable blue-grey-text text-darken-3 center-align">Switch OPEN API tokens</a>';
+           list_html1 += '</div>';
+           $('#activetoken_inuse').append(list_html1);
+          // $("#apitab-nocredential").hide();
+           $('#activetoken_inuse').show();
+ 
+        // $(".key-img").hide();
+        // $("#activetoken_inuse").closest("li.avatar").find(".key-img").fadeToggle();
+        // $('.collection-item.avatar').addClass("disabled");
+        //$("#activetoken_inuse").closest("li.avatar").removeClass("disabled");
+        // markActiveToken();
+       }
+       else {
+        var list_html2 = '<li class="collection-item avatar">';
+       // list_html2 += '<i class="material-icons key-img circle teal lighten-2 z-depth-1" style="display: none;">lock_open</i>';
+        list_html2 += '<p class="center-align blue-grey-text">Congrats! on adding your first OPEN API token, you need to activate the token inorder to use it across the extension </p>';
+        list_html2 += '<p class="center-align"><a id="sidenavbutton" class="btn light-blue hoverable white-text center-align">Activate OPEN API tokens</a></p>';
+        list_html2 += '</li>';
+        $('#activetoken_inuse').append(list_html2);
+        $('#activetoken_inuse').show();
+       }
+      }
+ else {
+        $("#apitab-nocredential").show();
+        return false;
+      }
+    });
+  });
+}
+
+//receive message that active token has been updated
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+      if (request.msg === "activecachetokenupdated") {
+          //  To do something
+          loadActiveCredentiallist();
+      }
+  }
+);
 
 // Mark current active_token
 var markActiveToken = function() {
@@ -73,6 +135,8 @@ $(document).on('click', '#tokenlist li a', function(event) {
         }
         $(this).remove();
       });
+      //loadActiveCredentiallist();
+      
       chrome.runtime.sendMessage({type: "cmanager", action: "delete", token_id: token_id});
       chrome.runtime.sendMessage({type: "gaq", target: "Deleting_an_api_token", behavior: "clicked"});
       break;
@@ -81,6 +145,7 @@ $(document).on('click', '#tokenlist li a', function(event) {
       $(this).closest("li.avatar").find(".key-img").fadeToggle();
       $('.collection-item.avatar').addClass("disabled");
       $(this).closest("li.avatar").removeClass("disabled");
+
       chrome.runtime.sendMessage({type: "cmanager", action: "activate", token_id: token_id});
       chrome.runtime.sendMessage({type: "gaq", target: "Activating_an_api_token", behavior: "clicked"});
       break;

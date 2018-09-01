@@ -25,6 +25,14 @@ var updateActiveTokenCache = function(token) {
   urlparser.href = token.baseurl;
   activatedTokenCache = token;
   activatedTokenCache.baseurl = urlparser.origin;
+  //send msg to cmanager.js about active token cache being updated
+  chrome.runtime.sendMessage({
+    msg: "activecachetokenupdated", 
+    data: {
+        subject: "Activecacheupdated",
+        content: "yes"
+    }
+});
   console.log("ActiveTokenCache updated");
 }
 
@@ -103,6 +111,13 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                   if (token_id == activatedTokenCache.uniqid) {
                     activatedTokenCache = {};
                     chrome.storage.local.set({'active_token': ""});
+                    chrome.runtime.sendMessage({
+                      msg: "activecachetokenupdated", 
+                      data: {
+                          subject: "Activecacheupdated",
+                          content: "yes"
+                      }
+                  });
                   }
                 }
               }
@@ -119,6 +134,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
               }
             }
           });
+ 
         break;
       case "activate":
         chrome.storage.local.get('tokens', function(tokens) {
@@ -154,6 +170,13 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
           'active_token': "",
           'tokens': []
         });
+        chrome.runtime.sendMessage({
+          msg: "activecachetokenupdated", 
+          data: {
+              subject: "Activecacheupdated",
+              content: "yes"
+          }
+      });
         break;
       default:
         break;

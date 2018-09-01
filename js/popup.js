@@ -108,11 +108,13 @@ chrome.runtime.onMessage.addListener(
   chrome.runtime.sendMessage({type: "gaq", target: "Popup_page", behavior: "loaded"});
   $('.versionNumber').attr("data-badge-caption", "v" + chrome.runtime.getManifest().version);
   loadCredentialList();
+  loadActiveCredentiallist();
   loadProxy();
   loadTwitter();
   ifPiezisinstalled();
   loadDialog();
   loadUpdateDialog();
+ 
 
 
 
@@ -414,5 +416,9 @@ chrome.runtime.onMessage.addListener(
   $('#devpopssignuplink').click(function(){
     chrome.runtime.sendMessage({type: "gaq", target: "DevPoPs Sign Up Link", behavior: "clicked"});
     chrome.tabs.create({url: 'http://bit.ly/devpops18'});
+  });
+  $('#reportbugs').click(function(){
+    chrome.runtime.sendMessage({type: "gaq", target: "Report Bug", behavior: "clicked"});
+    chrome.tabs.create({url: 'https://github.com/akamai/akamai_developer_toolkit/issues'});
   });
 });

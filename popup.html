@@ -43,69 +43,30 @@
 
    
           <ul class="side-nav grey darken-2" id="mobile-demo">
-            <li class="sidenav-header blue">
-              <div class="row">
-                <div class="col s4">
-                    <img src="https://gravatar.com/avatar/961997eb7fd5c22b3e12fb3c8ca14e11?s=80&d=https://codepen.io/assets/avatars/user-avatar-80x80-bdcd44a3bfb9a5fd01eb8b86f9e033fa1a9897c3a15b33adfc2649a002dab1b6.png" width="48px" height="48px" alt="" class="circle responsive-img valign profile-image">
-                </div>
-                <div class="col s8">
-                    <a class="btn-flat dropdown-button waves-effect waves-light white-text" href="#" data-activates="profile-dropdown">Jay<i class="mdi-navigation-arrow-drop-down right"></i></a>
-                    <ul id="profile-dropdown" class="dropdown-content">
-                        <li><a href="#"><i class="material-icons">person</i>Profile</a></li>
-                        <li><a href="#"><i class="material-icons">settings</i>Setting</a></li>
-                        <li><a href="#"><i class="material-icons">help</i>Help</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#"><i class="material-icons">lock</i>Lock</a></li>
-                        <li><a href="#"><i class="material-icons">exit_to_app</i>Logout</a></li>
-                    </ul>
+            <li class="sidenav-header orange">
+              <div class="row" style="margin-bottom: 0px;">
+                <div class="col s12 center-align">
+              <h5 class="white-text">OPEN API Token List</h5>
                 </div>
               </div>
             </li>
+       
+
+               
+            <ul id="tokenlist" class="collection orange-text text-darken-2" style="margin: 0.0rem;"></ul>
             
-            <li class="blue">
-              <ul class="collapsible collapsible-accordion">
-                  <li>
-                    <a class="collapsible-header white-text waves-effect waves-blue "><i class="material-icons white-text ">language</i>Language <i class="material-icons right white-text" style="margin-right:0;">arrow_drop_down</i></a>
-                    <div class="collapsible-body z-depth-3">
-                      <ul>
-                        <li><a class="waves-effect waves-blue" href="#">English</a></li>
-                        <li><a class="waves-effect waves-blue" href="#">العربية</a></li>
-                        <li><a class="waves-effect waves-blue" href="#">中文</a></li>
-                        <li><a class="waves-effect waves-blue" href="#">Čeština</a></li>
-                        <li><a class="waves-effect waves-blue" href="#">Nederlands</a></li>
-                        <li><a class="waves-effect waves-blue" href="#">Français</a></li>
-                        <li><a class="waves-effect waves-blue" href="#">Deutsch</a></li>
-                        <li><a class="waves-effect waves-blue" href="#">한국어</a></li>
-                        <li><a class="waves-effect waves-blue" href="#">Português</a></li>
-                        <li><a class="waves-effect waves-blue" href="#">Русский</a></li>
-                        <li><a class="waves-effect waves-blue" href="#">Español</a></li>
-                        <li><a class="waves-effect waves-blue" href="#">Svenska</a></li>
-                        <li><a class="waves-effect waves-blue" href="#">ภาษาไทย</a></li>
-                        <li><a class="waves-effect waves-blue" href="#">Türkçe</a></li>
-                        <li><div class="divider"></div></li>
-                      </ul>
-                    </div>
-                  </li>
-              </ul>
-            </li>
-            
-            
-            
-            <li class="white">
-              <ul class="collapsible collapsible-accordion">
-                <li>
-                  <a class="collapsible-header waves-effect waves-blue"><i class="material-icons">folder_special</i>Layouts <i class="material-icons right" style="margin-right:0;">arrow_drop_down</i></a>
-                  <div class="collapsible-body">
-                    <ul>
-                      <li><a class="waves-effect waves-blue" href="#"><i class="material-icons">fullscreen</i>Full Screen<span class="new badge right yellow grey lighten-1" data-badge-caption="updated"></span></a></li>
-                      <li><a class="waves-effect waves-blue" href="#"><i class="material-icons">swap_horiz</i>Horizontal Menu<span class="new badge right yellow darken-3"></span></a></li>
-                      <li><div class="divider"></div></li>
-                    </ul>
+          
+            <li class="sidenav-header orange">
+                <div class="row" style="margin-bottom: 0px;">
+                  <div class="col s12 center-align">
+                <h5 class="white-text">Getting Started Section</h5>
                   </div>
-                </li>
-              </ul>
-            </li>
-            <li class="white">
+                </div>
+              </li>
+              <li class="white"><a href="#" class="waves-effect waves-blue"><i class="material-icons">web</i>User Guide</a></li>
+         
+
+           <!-- <li class="white">
               <ul class="collapsible collapsible-accordion">
                 <li>
                   <a class="collapsible-header waves-effect waves-blue"><i class="material-icons">folder_open</i>A submenu <i class="material-icons right" style="margin-right:0;">arrow_drop_down</i></a>
@@ -118,15 +79,27 @@
                   </div>
                 </li>
               </ul>
-            </li>
-            <li class="white"><a href="#" class="waves-effect waves-blue"><i class="material-icons">mail</i>Menu item</a></li>
-            <li class="white"><a href="#" class="waves-effect waves-blue"><i class="material-icons">call</i> Menu item</a></li>
-            <li class="white"><a href="#" class="waves-effect waves-blue"><i class="material-icons">android</i> Menu item</a></li>
-            <li class="white"><a href="#" class="waves-effect waves-blue"><i class="material-icons">dialpad</i> Menu item</a></li>
-            <li class="white"><div class="divider"></div></li>
-            <li class="white"><a href="#" class="waves-effect waves-blue"><i class="material-icons">language</i> Menu item<span class="new badge right yellow darken-3"></span></a></li>
-            
-            <li class="sidenav-footer grey darken-2">
+            </li>-->
+            <li class="white"><a href="#" id="feedbackform" class="waves-effect waves-blue"><i class="material-icons">chat</i>New Feature Request</a></li>
+            <!--<li class="white"><div class="divider"></div></li>-->
+            <li class="white"><a href="#" id="reportbugs"class="waves-effect waves-blue"><i class="material-icons">language</i>Report Bugs<span class="new badge right yellow darken-3"></span></a></li>
+            <li class="white">
+                <ul class="collapsible collapsible-accordion">
+                  <li>
+                    <a class="collapsible-header waves-effect waves-blue"><i class="material-icons">folder_special</i>Video Tutorials<span class="new badge right grey" data-badge-caption="Upcoming"></span><i class="material-icons right" style="margin-right:0;">arrow_drop_down</i></a>
+                    <div class="collapsible-body">
+                      <ul>
+                        <li><a class="waves-effect waves-blue" href="#">How to use OPEN API Tester</a></li>
+                        <li><a class="waves-effect waves-blue" href="#">Developer Points of Presence</a></li>
+                        <li><a class="waves-effect waves-blue" href="#">Brotli Comparision Tool</a></li>
+                        <li><a class="waves-effect waves-blue" href="#">How to add a new API token</a></li>
+                        <li><div class="divider"></div></li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+            <!--<li class="sidenav-footer grey darken-2">
               <div class="row">  
                 <div class="social-icons">
                   <div class="col s2">
@@ -149,7 +122,8 @@
                   </div>
                 </div>
               </div>
-            </li>
+            </li>-->
+
           </ul>
           
 
@@ -437,7 +411,8 @@
                         </a>
                       </span>
                       <p>Manage your API credentials and toggle between different kinds of API tokens based on the service you are trying to access</p>
-                      <ul id="tokenlist" class="collection orange-text text-darken-2"></ul>
+                      <!--<ul id="tokenlist" class="collection orange-text text-darken-2"></ul>-->
+                      <ul id="activetoken_inuse" class="collection orange-text text-darken-2"></ul>
                       <div id="apitab-nocredential" class="col s12 center-align" style="font-size: 13px; padding: 40px;">
                         <p>Looks like you have no API credentials configured, <a id="addnewtokenlink" href="#">click here</a> to configure one.</p><br/>
                         <p>If you have already added your API token please refresh this page by clicking "command + shift + r"</p>

@@ -3032,8 +3032,9 @@ td, th {
 }
 
 .collection .collection-item.avatar {
-  min-height: 84px;
+  min-height: 90px;
   padding-left: 72px;
+  padding-right: 90px;
   position: relative;
 }
 
@@ -3066,7 +3067,7 @@ td, th {
 .collection .collection-item.avatar .secondary-content {
   position: absolute;
   top: 16px;
-  right: 16px;
+  right: 2px;
 }
 
 .collection .collection-item:last-child {
@@ -6951,7 +6952,7 @@ input[type=range]:focus::-ms-fill-upper {
 
 .side-nav {
   position: fixed;
-  width: 300px;
+  width: 600px;
   left: 0;
   top: 0;
   margin: 0;
