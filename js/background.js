@@ -66,6 +66,13 @@ var showListNotification = function(type, title, obj_result, img = img_info) {
 
 var checkActiveCredential = function(credential_type_needed) {
   if (jQuery.isEmptyObject(activatedTokenCache)) {
+    chrome.runtime.sendMessage({
+      msg: "cred_mismatch_nocreds", 
+      data: {
+          subject: "nocreds",
+          content: "nocred"
+      }
+  });
     showBasicNotification('No Active Token', 'Please activate a credential', img_fail);
     return false;
   } else {
@@ -81,6 +88,13 @@ var checkActiveCredential = function(credential_type_needed) {
         break;
     }
     if (activatedTokenCache.tokentype !== credential_type) {
+      chrome.runtime.sendMessage({
+        msg: "cred_mismatch_nocreds", 
+        data: {
+            subject: "mistmatch_creds",
+            content: "mismatch"
+        }
+    });
       showBasicNotification('Credential Type Mismatch', 'Activate ' + credential_type + ' credential', img_fail);
       return false;
     } else {

@@ -1,6 +1,7 @@
-$(document).ready(function(){
-  $('select').material_select();
-  $('.initialized').hide(); // materialize bug
+function loadcredentialaddition(){
+  console.log('credential.js loaded');
+ // $('select').material_select();
+ // $('.initialized').hide(); // materialize bug
 
   chrome.runtime.sendMessage({type: "gaq", target: "Add_new_credentials_page", behavior: "loaded"});
 
@@ -166,8 +167,13 @@ $(document).ready(function(){
 					chrome.runtime.sendMessage({type: "gaq", target: "New_credentials_page_save_successful", behavior: "yes"});
           if (button_id == "submitButton-add") { 
             $("#clearButton").trigger('click');
+            loadCredentialList();
           } else if (button_id == "submitButton") {
-            closeCurrentTab();
+            //closeCurrentTab();
+            $('.addingapitoken').empty();
+            //$('.apimanager').empty();
+            loadCredentialList();
+           // $('.apimanager').append(' <span class="card-title black-text">API Credentials Manager <a href="#!" id="apicredstutorial" class="tooltipped" data-position="bottom" data-tooltip="Video tutorial on how to use this section"> <i class="material-icons blue-grey-text text-darken-2 tutorial-video-icon">play_circle_outline</i> </a> </span> <p>Manage your API credentials and toggle between different kinds of API tokens based on the service you are trying to access</p> <ul id="tokenlist" class="collection orange-text text-darken-2"></ul> <div id="apitab-nocredential" class="col s12 center-align" style="font-size: 13px; padding: 40px;"> <p>Looks like you have no API credentials configured, <a id="addnewtokenlink" href="#">click here</a> to configure one.</p><br/> <p>If you have already added your API token please refresh this page by clicking "command + shift + r"</p> </div> <a id="deletealltoken" href="#" class="btn blue-grey lighten-5 hoverable tooltipped" data-position="top" data-tooltip="Delete all tokens"> <i class="material-icons blue-grey-text text-darken-2">delete</i></a> <a id="addnewtoken" href="#" class="btn light-blue hoverable tooltipped" data-position="top" data-tooltip="Add new credential"><i class="material-icons">add</i></a> ');
           }
 				});
 			});
@@ -185,7 +191,13 @@ $(document).ready(function(){
     $('select').material_select();
   });
 
+  $('#closed_api_Button').click(function(){
+    $('.addingapitoken').empty();
+    loadCredentialList();
+  });
+
 	$(":file").change(function(){
+    console.log('file uploaded');
 		var uploaded_file = this.files[0];
     if (!uploaded_file) {
       alert("Failed to load file");
@@ -250,4 +262,4 @@ $(document).ready(function(){
     }
   });
 
-}); // document ready
+} // document ready

@@ -67,19 +67,43 @@ function ifPiezisinstalled() {
 
 
 $(document).ready(function() {
+  $('select').material_select();
+  $('.initialized').hide(); // materialize bug
+ // $('.fixed-action-btn').floatingActionButton();
+ $('.button-collapse').sideNav({
+  menuWidth: 400, // Default is 300
+  edge: 'left', // Choose the horizontal origin
+  closeOnClick: false, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+  draggable: true // Choose whether you can drag to open on touch screens
+}
+);
+
+$(document).on('click', '#sidenavbutton', function(){
+
+  // START OPEN
+  $('.button-collapse').sideNav('show');
+});
+
+
 
   chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         if (request.msg === "openapi_response_completed") {
             //  To do something
-            console.log(request.data.subject)
-            console.log(request.data.content)
             $('.openapiresults-js').empty();
             $('.openapiresults-js').append(request.data.content);
         }
     }
 );
 
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+      if (request.msg === "cred_mismatch_nocreds") {
+          //  To do something
+          $('.openapiresults-js').empty();
+      }
+  }
+);
 
   chrome.runtime.sendMessage({type: "gaq", target: "Popup_page", behavior: "loaded"});
   $('.versionNumber').attr("data-badge-caption", "v" + chrome.runtime.getManifest().version);

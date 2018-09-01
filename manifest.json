@@ -10,6 +10,7 @@
       "js/md5.js",
       "js/evpkdf.js",
       "js/cipher-core.js",
+      "js/materialize.min.js",
       "js/aes.js",
       "js/encdec.js",
       "js/common.js",
@@ -39,7 +40,7 @@
     "48":"img/dev-icons-128.png"
   },
   "manifest_version":2,
-  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com https://platform.twitter.com https://www.gstatic.com; object-src 'self'",
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com https://platform.twitter.com https://www.gstatic.com ; object-src 'self'",
   "name":"Akamai Developer Toolkit - Canary Release",
   "permissions":[
     "alarms",
