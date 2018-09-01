@@ -23,6 +23,7 @@
       "fastpurge/fastpurge-bg.js",
       "debugreq/debugreq-bg.js",
       "openapitester/openapitester-bg.js",
+      "openapitester/openapitester.js",
       "piez/piez-bg.js"
     ]
   },
@@ -57,7 +58,7 @@
     "webRequestBlocking"
   ],
   "update_url":"https://clients2.google.com/service/update2/crx",
-  "version":"1.0.37",
+  "version":"2.0.0",
   "web_accessible_resources":[
     "fonts/*.*",
     "js/jquery-3.1.1.min.js",

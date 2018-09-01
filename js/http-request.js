@@ -30,6 +30,7 @@ var sendGetReq = function(obj_request, successCallBack, errorCallBack, completeC
   $.ajax({
     url: obj_request.url,
     type: 'GET',
+    dataType: "json",
     headers: { 'Authorization': obj_request.auth_header },
     success: function(response, status, xhr) { 
       if (typeof successCallBack != 'undefined') {

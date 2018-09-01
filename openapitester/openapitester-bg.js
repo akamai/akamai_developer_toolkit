@@ -18,6 +18,8 @@ function saveOpenAPIResult(openapi_result) {
   });
 }
 
+
+
   
 var OnRequestSuccess = function(response, status, obj_request) {
   _gaq.push(['_trackEvent', 'OpenAPI_req_successful', 'yes']);
@@ -39,6 +41,7 @@ var OnRequestSuccess = function(response, status, obj_request) {
     'status': 'success'
   };
   saveOpenAPIResult(openapireq_result);
+  loadOpenAPIResults(openapireq_result);
   showListNotification("OpenAPI", "Request Success", openapireq_result, img_success);
 }
 
@@ -60,6 +63,7 @@ var OnRequestSuccess = function(response, status, obj_request) {
         openapireqerror_result['raw_response'] = {detail: 'Could not make API request'};
       }
       saveOpenAPIResult(openapireqerror_result);
+      loadOpenAPIResults(openapireqerror_result);
       showListNotification("OpenAPI", "Request Failed", openapireqerror_result, img_fail);
   }
   

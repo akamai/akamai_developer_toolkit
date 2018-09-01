@@ -68,6 +68,18 @@ function ifPiezisinstalled() {
 
 $(document).ready(function() {
 
+  chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        if (request.msg === "openapi_response_completed") {
+            //  To do something
+            console.log(request.data.subject)
+            console.log(request.data.content)
+            $('.openapiresults-js').empty();
+            $('.openapiresults-js').append(request.data.content);
+        }
+    }
+);
+
 
   chrome.runtime.sendMessage({type: "gaq", target: "Popup_page", behavior: "loaded"});
   $('.versionNumber').attr("data-badge-caption", "v" + chrome.runtime.getManifest().version);
@@ -374,5 +386,9 @@ $(document).ready(function() {
   $('#browsersettingstutorial').click(function(){
     chrome.runtime.sendMessage({type: "gaq", target: "View_browser_settings_tutorial", behavior: "clicked"});
     chrome.tabs.create({url: 'https://youtu.be/YZsaQZzMtmM'});
+  });
+  $('#devpopssignuplink').click(function(){
+    chrome.runtime.sendMessage({type: "gaq", target: "DevPoPs Sign Up Link", behavior: "clicked"});
+    chrome.tabs.create({url: 'http://bit.ly/devpops18'});
   });
 });

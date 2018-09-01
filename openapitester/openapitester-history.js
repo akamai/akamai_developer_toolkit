@@ -46,7 +46,7 @@ $(document).ready(function() {
   });
   
   function initDataTable() {
-    $('#purge-table').DataTable({
+    $('#openapi-table').DataTable({
       "columnDefs": [ {
         "targets"  : 'no-sort',
         "orderable": false

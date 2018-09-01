@@ -23,6 +23,16 @@
         width: 100%;
         overflow: hidden;
       }
+      select[name='openapi-table_length'] {
+        width: auto !important;
+        color: unset !important;
+      }
+      input[type='search'] {
+        width: auto !important;
+      }
+      label {
+        color: black;
+      }
     </style>
   </head>
   <body style="background-image: url(img/akamai-blue-logo.png); 
@@ -33,12 +43,13 @@
     <div class="navbar-fixed">
         <nav class="nav-extended" data-target="nav-extended">
             <div class="nav-wrapper orange">
-              <a href="#" class="brand-logo">&nbsp;&nbsp;	 Akamai Developer Toolkit<span class="versionNumber new badge teal lighten-2" data-badge-caption="Version" style="margin-top: 10px; position: absolute"></span></a>
+              <a href="#" class="brand-logo" style="line-height: 40px;">&nbsp;&nbsp;	 Akamai Developer Toolkit<span class="versionNumber new badge teal lighten-2" data-badge-caption="Version" style="margin-top: 8px; position: absolute"></span></a>
               
               <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="#!" id="feedbackform" class="btn blue-grey-text text-darken-2 blue-grey lighten-5 hoverable tooltipped" data-position="bottom" data-tooltip="Provide feedback to improve the tool">
-                  Report a bug</a></li>
-                <li><div class="twitter-wjs" style="padding-top: 10px; padding-right: 10px"></div></li>
+                <li style="line-height: 30px;"><a href="#!" id="feedbackform" class="btn blue-grey-text text-darken-2 blue-grey lighten-5 hoverable tooltipped" data-position="bottom" data-tooltip="Provide feedback to improve the tool" style=
+                  "margin-top: 7px; height: 26px; line-height: 26px; font-size: 1rem; text-transform: unset;">
+                  Submit Feedback</a></li>
+                <li><div class="twitter-wjs" style="padding-top: 6px; padding-right: 15px; line-height: 30px;"></div></li>
               </ul>    
             </div>
             <div class="nav-content orange lighten-1">
@@ -76,10 +87,12 @@
                 </div>
                 <div class="row">
                   <div class="col s12">
-                    <span>OPEN API TESTER Body text block</span>
+                    <span>Enter your OPEN API endpoint and select the method you want to call</span>
                   </div>
                 </div>
                 <div class="row">
+                  <div class="col s12 card" style="background-color:#e7eff7">
+                    <h6>REQUEST SECTION</h6>
                   <div class="col s2" style="margin-top: 10px">
                     <div class="input-field">
                         <select id="openAPImethod">
@@ -90,6 +103,7 @@
                           </select>
                     </div>  
                   </div>
+
                   <div class="col s10">
                       <div class="input-field">
                         <textarea id="openapiendpoint"  placeholder="/devpops-api/v1/sandbox"  class="materialize-textarea"></textarea>
@@ -103,7 +117,21 @@
                           <label for="addpostbody">Add POST data</label>
                       </div> 
                       <a id="openapitester-submitButton" href="#!" class="btn light-blue hoverable submit-button" style="width: 20%;">SUBMIT</a>  
-                      <p class="padding-top"><i>Need more capability?<a href="#!" id="feedbackformlink" class="orange-text">click here </a> to request them</i></p>                      
+                      <p style="padding-bottom:10px; padding-top:10px;"><i>Need more capability? <a href="#!" id="feedbackformlink" class="orange-text">click here </a> to request them</i></p>                      
+                    </div>
+                  </div>
+                  
+                 
+                    
+                      <div class="col s12 card" style="background-color: #e7f2fd">
+                          <h6>RESPONSE SECTION</h6>
+                        <div class="openapiresults-js">
+
+                        </div>
+                      </div>
+
+                   
+
                     </div>
                 </div>              
                 </div>
@@ -289,12 +317,14 @@
                       <p>Manage your API credentials and toggle between different kinds of API tokens based on the service you are trying to access</p>
                       <ul id="tokenlist" class="collection orange-text text-darken-2"></ul>
                       <div id="apitab-nocredential" class="col s12 center-align" style="font-size: 13px; padding: 40px;">
-                        <p>Looks like you have no API credentials configured, <a id="addnewtokenlink" href="#">click here</a> to configure one.</p>
+                        <p>Looks like you have no API credentials configured, <a id="addnewtokenlink" href="#">click here</a> to configure one.</p><br/>
+                        <p>If you have already added your API token please refresh this page by clicking "command + shift + r"</p>
                       </div>
                       <a id="deletealltoken" href="#" class="btn blue-grey lighten-5 hoverable tooltipped" data-position="top" data-tooltip="Delete all tokens">
                         <i class="material-icons blue-grey-text text-darken-2">delete</i></a>
                       <a id="addnewtoken" href="#" class="btn light-blue hoverable tooltipped" data-position="top" data-tooltip="Add new credential"><i class="material-icons">add</i></a>
                     </div>
+                    <div class="card-content black-text addingapitoken"></div>
                   </div>
            <!-- Fast Purge -->
           <div class="card hoverable">
@@ -408,11 +438,11 @@
                                         <i class="material-icons blue-grey-text text-darken-2 tutorial-video-icon">play_circle_outline</i>
                                       </a>
                                     </span>
-                                    <p>Manage your Akamai sandboxes and debug issues going through the sandbox</p>
+                                    <p>Allows you to create isolated Akamai sandboxes that you can you put in front of your development environment.</p>
                                     <br/><br/>
                                     <div id="devpops-nosandbox" class="center-align" style="font-size: 13px;">
-                                      <p>Looks like you have no sandboxes created, <a id="createsandboxlink" href="#">click here</a> to create one.</p>
-                                      <p>Note: you will need to have aleast PAPI api tokens configured or devpops API tokens configured</p>
+                                      <p>Sign up here to get early access: <a id="devpopssignuplink" href="#">SIGN UP FORM</a></p>
+                                    
                                       <br/>
                                     </div>
                                     <a id="deleteallsandbox" href="#" class="btn blue-grey lighten-5 hoverable tooltipped disabled" data-position="top" data-tooltip="Delete all sandboxes"><i class="material-icons blue-grey-text text-darken-2">delete</i></a>
@@ -477,6 +507,9 @@
         </div>
       </div>
     </div> <!-- container -->
+
+    
+
   </main>
     <footer class="page-footer orange lighten-1">
         <div class="footer-copyright orange ">
