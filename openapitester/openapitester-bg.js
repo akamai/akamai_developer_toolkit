@@ -68,21 +68,27 @@ var OnRequestSuccess = function(response, status, obj_request) {
   }
   
   
-  function makeOpenAPIReq(arr_openapiendpoint, arr_method, arr_addpostbody, callback) {
+  function makeOpenAPIReq(arr_openapiendpoint, arr_method, arr_headersname, arr_headersvalue, arr_addpostbody, callback) {
       console.log(arr_method);
       console.log(arr_openapiendpoint);
       console.log(arr_addpostbody);
+      console.log(arr_headersname);
+      console.log(arr_headersvalue);
 
-      if(!checkActiveCredential("luna")) {
-        callback();
-        return;
-      }
-
+     // if(!checkActiveCredential("luna")){
+     //   callback();
+      //  return;
+      //}
+      var arr_headernamevalue = {};
+      arr_headernamevalue [arr_headersname] = arr_headersvalue;
       if (arr_method == "GET"){
         var obj_request = {
           url: activatedTokenCache.baseurl + arr_openapiendpoint,
           endpoint: arr_openapiendpoint,
           method: arr_method,
+          headernamevalue: arr_headernamevalue,
+          headername: arr_headersname,
+          headervalue: arr_headersvalue,
           auth_header: authorizationHeader({method: "GET", tokens: activatedTokenCache, endpoint: arr_openapiendpoint}),
           requestId: "OpenAPI_" + new Date().getTime().toString(),
           token_desc: activatedTokenCache.desc,
@@ -97,12 +103,16 @@ var OnRequestSuccess = function(response, status, obj_request) {
           url: activatedTokenCache.baseurl + arr_openapiendpoint,
           endpoint: arr_openapiendpoint,
           method: arr_method,
+          headernamevalue: arr_headernamevalue,
+          headername: arr_headersname,
+          headervalue: arr_headersvalue,
           body_data: arr_addpostbody,
           auth_header: authorizationHeader({method: "POST", body: arr_addpostbody, tokens: activatedTokenCache, endpoint: arr_openapiendpoint}),
           requestId: "OpenAPI_" + new Date().getTime().toString(),
           token_desc: activatedTokenCache.desc,
           requestedTime: getCurrentDatetimeUTC()
         }
+        
         sendPostReq(obj_request, OnRequestSuccess, OnRequestError, callback);
         showBasicNotification("OPEN API POST Requested", "You will get notified shortly");
         sleep(Math.floor((Math.random() * 1000) + 100), callback);

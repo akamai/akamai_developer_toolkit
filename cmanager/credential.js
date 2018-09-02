@@ -11,7 +11,7 @@ function loadcredentialaddition(){
     } else if (domain.match(/.*\.purge\.akamaiapis\.net\/?$/i)) {
       return "purge";
     } else {
-      return null;
+      return "others";
     }
     return null;
   }
@@ -108,7 +108,7 @@ function loadcredentialaddition(){
       return false;
     }
 
-    var domainre = /^https:\/\/[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]+\.(?:purge|luna)\.akamaiapis\.net\/?$/i;
+    var domainre = /^https:\/\/[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]+\.(?:purge|luna|imaging)\.akamaiapis\.net\/?$/i;
     if (!baseurl.match(domainre)) {
       alert('Please check if Base URL is in right format');
       $("#baseurl").focus();
@@ -259,7 +259,7 @@ function loadcredentialaddition(){
       $("#tokentype").val("General OPEN APIs");
       $('select').material_select();
     } else {
-      $("#tokentype").val(null);
+      $("#tokentype").val("Other OPEN APIs");
       $('select').material_select();
     }
   });

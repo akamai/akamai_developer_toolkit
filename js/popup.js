@@ -2,10 +2,18 @@ function loadDialog() {
   chrome.storage.local.get('firstTime', function(valueT) {
     var valueT = valueT['firstTime'];
     var msg = '<b>Thank you for installing the extension!</b><br/>If you are a first time user, ';
-    msg +='click <a href="#!" id="loadgettingstartedvideo" style="color: blue;"> here</a>';
+    msg +='click <a href="#!" id="sidenavbutton" style="color: blue;"> here</a>';
     msg += ' to view the getting started video';
     if (valueT === 'true') {
-      chrome.runtime.sendMessage({type: "notification", id: "dialog", body: msg});
+      var html = '<div id="dialog" class="card light-blue lighten-5 card-alert z-depth-2">';
+      html += '<div class="card-content light-blue-text card-alert-content">';
+      html += '<i class="material-icons tiny">notifications</i>';
+      html += '<p>'+ msg + '</p>';
+      html += '</div>';
+      html += '<i id="dialog_close" class="material-icons clearmark">clear</i>';
+      html += '</div>';
+      var target_dom = "notification";
+      $("#"+target_dom).prepend(html);
       chrome.runtime.sendMessage({type: "gaq", target: "first_time_install", behavior: "updated"});
       chrome.storage.local.set({'firstTime': 'false'});
     }
@@ -19,7 +27,16 @@ function loadUpdateDialog() {
       var thisVersion = chrome.runtime.getManifest().version;
       var msg = '<b>Heads up: </b>Your extension has been autoupdated to the latest version ' + thisVersion;
       if (valueU === 'true') {
-        chrome.runtime.sendMessage({type: "notification", id: "update-dialog", body: msg});
+
+        var html = '<div id="update-dialog" class="card light-blue lighten-5 card-alert z-depth-2">';
+        html += '<div class="card-content light-blue-text card-alert-content">';
+        html += '<i class="material-icons tiny">notifications</i>';
+        html += '<p>'+ msg + '</p>';
+        html += '</div>';
+        html += '<i id="dialog_close" class="material-icons clearmark">clear</i>';
+        html += '</div>';
+        var target_dom = "notification";
+        $("#"+target_dom).prepend(html);
         chrome.runtime.sendMessage({type: "gaq", target: "extension_version", behavior: "updated"});
         chrome.storage.local.set({'updatedU': 'false'});
       }
@@ -54,12 +71,15 @@ function ifPiezisinstalled() {
     if(details) {
       if(details.name === 'Piez') {
         var msg = 'Looks like you have Piez installed separately, click <a href="#!" id="removePiez" style="color: blue;"> here </a> to uninstall Piez for the optimal experience';
-        chrome.runtime.sendMessage({
-          type: "notification", 
-          id: "piez",
-          body: msg,
-          update_target: "piez-notification"
-        });
+        var html = '<div id="piez" class="card light-blue lighten-5 card-alert z-depth-2">';
+        html += '<div class="card-content light-blue-text card-alert-content">';
+        html += '<i class="material-icons tiny">notifications</i>';
+        html += '<p>'+ msg + '</p>';
+        html += '</div>';
+        html += '<i id="piez_close" class="material-icons clearmark">clear</i>';
+        html += '</div>';
+        var target_dom = "piez-notification";
+        $("#"+target_dom).prepend(html);
       }
     }
   });
@@ -78,8 +98,16 @@ $(document).ready(function() {
 }
 );
 
-$(document).on('click', '#sidenavbutton', function(){
+$(document).on('click', '#dialog_close', function(){
+  $("#notification").empty();
+});
 
+$(document).on('click', '#piez_close', function(){
+  $("#piez-notification").empty();
+});
+
+
+$(document).on('click', '#sidenavbutton', function(){
   // START OPEN
   $('.button-collapse').sideNav('show');
 });
@@ -362,6 +390,7 @@ chrome.runtime.onMessage.addListener(
   $(document).on('click', '#removePiez', function() {
     chrome.runtime.sendMessage({type: "gaq", target: "Original_piez_user_uninstalled", behavior: "clicked"});
     chrome.management.uninstall('npbccjkjemgagjioahfccljgnlkdleod');
+    $("#piez-notification").empty();
   });
 
   $(document).on('click', '#editProxyForm #deleteProxyBtn', function() {

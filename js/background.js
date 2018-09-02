@@ -32,6 +32,8 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     type: "popup"
   });
 });
+
+
 var showListNotification = function(type, title, obj_result, img = img_info) {
   var display_items = [{title: '', message: ''}];
   var context_msg = "";

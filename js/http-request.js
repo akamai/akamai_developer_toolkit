@@ -4,7 +4,7 @@ var sendPostReq = function(obj_request, successCallBack, errorCallBack, complete
     contentType: "application/json",
     type: 'POST',
     data: obj_request.body_data,
-    headers: { 'Authorization': obj_request.auth_header },
+    headers: { 'Authorization': obj_request.auth_header  },
     success: function(response, status, xhr) { 
       if (typeof successCallBack != 'undefined') {
         successCallBack(response, status, obj_request);
