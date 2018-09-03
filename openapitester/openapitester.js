@@ -52,20 +52,25 @@
  
    //defining HTML for detailed view
      var arr1_keys = Object.keys(openapi_result).reverse();
- 
      for(var i=0; i < arr1_keys.length; i++) {
        let key1 = arr1_keys[i];
        var text1 = "";
-       if (jQuery.type(openapi_result[key1]) == 'object' && key1 != 'token_desc') {
+      
+       if (jQuery.type(openapi_result[key1]) == 'object'|| jQuery.type(openapi_result[key1]) == 'array' && key1 != 'token_desc') {
+         
          text1 = "<pre>" + JSON.stringify(openapi_result[key1], null, 2) + "</pre>";
+         
        } else if (jQuery.type(openapi_result[key1]) == 'array') {
          for(var k=0; k < openapi_result[key1].length; k++) {
            text1 += "<p>" + openapi_result[key1][k] + "</p>";
+          
          }
        } else if (key1 == 'token_desc') {
          text1 = openapi_result[key1];
+       
        } else {
          text1 = openapi_result[key1];
+      
        }
        html1 += "<tr><td><b>" + better1_title[key1] + "</b></td><td>" + text1 + "</td></tr>";
      }
@@ -170,7 +175,6 @@
           chrome.runtime.getBackgroundPage(function(backgroundpage) {
             backgroundpage.makeOpenAPIReq(arr_target_openapiendpoint.filter(Boolean), arr_target_method, arr_target_headersname, arr_target_headersvalue, body_data, function(request_result) {
                 submit_buttons.removeClass("disabled").blur();
-               // console.log(JSON.stringify(request_result));
                 this_obj.html(this_html);
               });
           });
