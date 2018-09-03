@@ -163,7 +163,12 @@ function loadcredentialaddition(){
         }
 
 				chrome.storage.local.set({'tokens': arr_tokens} , function() { 
-					alert('Saved Successfully');
+         // alert('Saved Successfully');
+          swal({
+            title: 'Success!',
+            text: 'Your credential has been successfully saved and encrypted locally',
+            type: 'success',
+          })
 					chrome.runtime.sendMessage({type: "gaq", target: "New_credentials_page_save_successful", behavior: "yes"});
           if (button_id == "submitButton-add") { 
             $("#clearButton").trigger('click');

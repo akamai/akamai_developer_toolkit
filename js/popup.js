@@ -1,10 +1,15 @@
+var valueT = {};
+var valueU = {};
+
 function loadDialog() {
   chrome.storage.local.get('firstTime', function(valueT) {
-    var valueT = valueT['firstTime'];
+    valueT = valueT['firstTime'];
+    valueU = valueU['updated'];
     var msg = '<b>Thank you for installing the extension!</b><br/>If you are a first time user, ';
     msg +='click <a href="#!" id="sidenavbutton" style="color: blue;"> here</a>';
     msg += ' to view the getting started video';
     if (valueT === 'true') {
+      if (valueU !== 'true'){
       var html = '<div id="dialog" class="card light-blue lighten-5 card-alert z-depth-2">';
       html += '<div class="card-content light-blue-text card-alert-content">';
       html += '<i class="material-icons tiny">notifications</i>';
@@ -17,17 +22,20 @@ function loadDialog() {
       chrome.runtime.sendMessage({type: "gaq", target: "first_time_install", behavior: "updated"});
       chrome.storage.local.set({'firstTime': 'false'});
     }
+    }
   });
 }
 
 function loadUpdateDialog() {
   chrome.storage.local.get('updatedU', function(valueU) {
-    var valueU = valueU['updatedU'];
+    valueU = valueU['updatedU'];
+    //valueT = valueT['firstTime'];
+   // console.log(valueU);
+   // console.log(valueT);
     if (valueU === 'true') {
+  
       var thisVersion = chrome.runtime.getManifest().version;
       var msg = '<b>Heads up: </b>Your extension has been autoupdated to the latest version ' + thisVersion;
-      if (valueU === 'true') {
-
         var html = '<div id="update-dialog" class="card light-blue lighten-5 card-alert z-depth-2">';
         html += '<div class="card-content light-blue-text card-alert-content">';
         html += '<i class="material-icons tiny">notifications</i>';
@@ -39,7 +47,7 @@ function loadUpdateDialog() {
         $("#"+target_dom).prepend(html);
         chrome.runtime.sendMessage({type: "gaq", target: "extension_version", behavior: "updated"});
         chrome.storage.local.set({'updatedU': 'false'});
-      }
+      
     }
   });
 }
@@ -87,6 +95,7 @@ function ifPiezisinstalled() {
 
 
 $(document).ready(function() {
+  
   $('select').material_select();
   $('.initialized').hide(); // materialize bug
  // $('.fixed-action-btn').floatingActionButton();
@@ -113,16 +122,60 @@ $(document).on('click', '#sidenavbutton', function(){
 });
 
 
-
+//listener for response details
   chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         if (request.msg === "openapi_response_completed") {
-            //  To do something
             $('.openapiresults-js').empty();
             $('.openapiresults-js').append(request.data.content);
+
         }
     }
 );
+//listener for response payload
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if (request.msg === "openapi_response_payload"){
+      $('.openapiresppayload-js').empty();
+      $('.openapiresppayload-js').append(request.data.content);
+      console.log('response_payload msg recieved');
+    }
+  }
+);
+//listener for response headers
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if (request.msg === "openapi_response_headers"){
+      $('.openapirespheaders-js').empty();
+      $('.openapirespheaders-js').append(request.data.content);
+      console.log('response_headers msg recieved');
+    }
+  }
+);
+//listener for request payload
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if (request.msg === "openapi_request_payload"){
+      $('.openapireqpayload-js').empty();
+      $('.openapireqpayload-js').append(request.data.content);
+      console.log('response_headers msg recieved');
+    }
+  }
+);
+
+//listener for response time
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if (request.msg === "openapi_response_time"){
+      $('.responsetime-js').empty();
+      $('.responsetime-js').append(request.data.content);
+      console.log('response_time msg recieved');
+    }
+  }
+);
+
+
+
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {

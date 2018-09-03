@@ -144,6 +144,11 @@ chrome.runtime.onInstalled.addListener(function(details) {
       console.log('updated value is set to true' );
     })
   }
+  else {
+    chrome.storage.local.set({'updatedU': 'false'});
+    //chrome.storage.local.set({'firstTime': 'false'});
+    console.log('else loop is exectued');
+  }
   initFastPurgeStorage();
   initDebugReqStorage();
   initStorageTemp(); 

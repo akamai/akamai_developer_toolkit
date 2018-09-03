@@ -5,6 +5,7 @@
     <link type="text/css" rel="stylesheet" href="css/materialize.css" media="screen,projection"/>
     <link type="text/css" rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/sweetalert2.min.css">
     <link rel="stylesheet" href="fonts/materialicons.css"  type="text/css">
     <style>
       div.piez-main {
@@ -46,7 +47,7 @@
             <li class="sidenav-header orange">
               <div class="row" style="margin-bottom: 0px;">
                 <div class="col s12 center-align">
-              <h5 class="white-text">OPEN API Token List</h5>
+              <h5 class="white-text">OPEN API Credential List</h5>
                 </div>
               </div>
             </li>
@@ -179,7 +180,7 @@
                     </span>
                   </div>
                   <div class="col s5 right-align">
-                      <a id='sidenavbutton' class="btn blue-grey lighten-5 hoverable tooltipped blue-grey-text text-darken-3" data-position="bottom" data-tooltip="Click here to switch active tokens">Switch OPEN API tokens</a>
+                      <a id='sidenavbutton' class="btn blue-grey lighten-5 hoverable tooltipped blue-grey-text text-darken-3" data-position="bottom" data-tooltip="Click here to switch active tokens">Switch OPEN API credentials</a>
                     <a id='openapitesterhistorydetails' class="btn blue-grey lighten-5 hoverable tooltipped blue-grey-text text-darken-3" data-position="bottom" data-tooltip="Click here to view the results of your latest request">History</a>
                   </div>
                 </div>
@@ -194,8 +195,8 @@
                   <div class="col s2" style="margin-top: 10px">
                     <div class="input-field">
                         <select id="openAPImethod">
-                            <option value="" disabled selected>Method</option>
-                            <option value="GET">GET</option>
+                            <!--<option value="" disabled selected>Method</option>-->
+                            <option value="GET" selected>GET</option>
                             <option value="POST">POST</option>
                             <option value="DELETE">DELETE</option>
                           </select>
@@ -233,12 +234,64 @@
                   
                  
                     
-                      <div class="col s12 card" style="background-color: #e7f2fd">
-                          <h6>RESPONSE SECTION</h6>
-                        <div class="openapiresults-js">
+                         
+                          <div class="col s12 card" style="background-color: #e7f2fd">
+                            <div class="card-content">
+                              <div class="col s8">
+                                  <h6>RESPONSE SECTION</h6>
+                              </div>
+                              <div class="col s4">
+                                <div class="responsetime-js">
+                                  
+                                  <br>
+                                  <br>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="card-tabs">
+                              <ul class="tabs tabs-fixed-width">
+                                <li class="tab"><a class="active" href="#respPayload">Response Payload</a></li>
+                                <li class="tab"><a href="#respHeaders">Response Headers</a></li>
+                               <!-- <li class="tab"><a href="#reqHeaders">Request Headers</a></li>-->
+                                <li class="tab"><a href="#reqPayload">Request Payload</a></li>
+                                <li class="tab"><a href="#detailedView">Detailed View</a></li>
+                              </ul>
+                            </div>
+                            <div class="card-content" style="background-color: #e7f2fd">
+                              <div id="respPayload">
+                                <div class="openapiresppayload-js">
 
-                        </div>
-                      </div>
+                                </div>
+                              </div>
+                              <div id="respHeaders">
+                                  <div class="openapirespheaders-js">
+
+                                  </div>
+                              </div>
+                             <!-- <div id="reqHeaders">
+                                 <p>Request Headers</p>
+                                 <div class="openapireqheaders-js">
+
+                                </div>
+                              </div>-->
+                              <div id="reqPayload">
+                              
+                                <div class="openapireqpayload-js">
+
+                                </div>
+                             </div>
+                              <div id="detailedView">
+                                 
+                                  <div class="openapiresults-js">
+
+                                  </div>
+                              </div>
+
+                            </div>
+                          </div>
+
+
+                  
 
                    
 
@@ -424,16 +477,16 @@
                           <i class="material-icons blue-grey-text text-darken-2 tutorial-video-icon">play_circle_outline</i>
                         </a>
                       </span>
-                      <p>Manage your API credentials and toggle between different kinds of API tokens based on the service you are trying to access</p>
+                      <p>Manage your API credentials and toggle between different kinds of API credentials based on the service you are trying to access</p>
                       <!--<ul id="tokenlist" class="collection orange-text text-darken-2"></ul>-->
                       <ul id="activetoken_inuse" class="collection orange-text text-darken-2"></ul>
                       <div id="apitab-nocredential" class="col s12 center-align" style="font-size: 13px; padding: 40px;">
                         <p>Looks like you have no API credentials configured, <a id="addnewtokenlink" href="#">click here</a> to configure one.</p><br/>
-                        <p>If you have already added your API token please refresh this page by clicking "command + shift + r"</p>
+                        <p>If you have already added your API credentials please refresh this page by clicking "command + shift + r"</p>
                       </div>
                       <a id="deletealltoken" href="#" class="btn blue-grey lighten-5 hoverable tooltipped" data-position="top" data-tooltip="Delete all tokens">
                         <i class="material-icons blue-grey-text text-darken-2">delete</i></a>
-                      <a id="addnewtoken" href="#" class="btn light-blue hoverable tooltipped" data-position="top" data-tooltip="Add new credential"><i class="material-icons">add</i></a>
+                      <a id="addnewtoken" href="#" class="btn light-blue hoverable">add a new credential</a>
                     </div>
                     <div class="card-content">
                       <div class="addingapitoken"></div>
@@ -627,12 +680,13 @@
     <footer class="page-footer orange lighten-1">
         <div class="footer-copyright orange ">
           <div class="container">
-           <b>Disclaimer</b> This is not an official Akamai product. Please report all issues, bugs and suggestions for improvment using the "report a bug" button on the top right corner of this app
+           <b>Disclaimer</b> This is not an official Akamai product. Please report all issues, bugs and suggestions for improvment using the "submit feedback" button on the top right corner of this app
           </div>
         </div>
       </footer>
     <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/sweetalert2.min.js"></script>
     <script type="text/javascript" src="js/common.js"></script>
     <script type="text/javascript" src="js/popup.js"></script>
     <script type="text/javascript" src="cmanager/credential.js"></script>

@@ -21,7 +21,7 @@ function saveOpenAPIResult(openapi_result) {
 
 
   
-var OnRequestSuccess = function(response, status, obj_request) {
+var OnRequestSuccess = function(response, status, obj_request, jqappxhr, respp_time) {
   _gaq.push(['_trackEvent', 'OpenAPI_req_successful', 'yes']);
   var openapireq_result = {
     'lastupdated': getCurrentDatetimeUTC(),
@@ -29,33 +29,32 @@ var OnRequestSuccess = function(response, status, obj_request) {
     'endpoint': obj_request.endpoint,
     'method': obj_request.method,
     'body_data': obj_request.body_data,
-    //'purge_request_accepted': 'success',
-   // 'purge_type': obj_request.purge_type,
-   // 'purgeId': response.purgeId,
-   // 'network': obj_request.purge_network,
-  //  'purge_objects': JSON.parse(obj_request.body_data).objects,
+    'response_headers': jqappxhr.getAllResponseHeaders(),
     'raw_response': response,
     'token_desc': obj_request.token_desc,
-  // 'update_type': obj_request.purge_update_type,
     'requestId': obj_request.requestId,
-    'status': 'success'
+    'status': 'success',
+    'respreq_time': respp_time
   };
+  //console.log(openapireq_result.respreq_time);
   saveOpenAPIResult(openapireq_result);
   loadOpenAPIResults(openapireq_result);
   showListNotification("OpenAPI", "Request Success", openapireq_result, img_success);
 }
 
-    var OnRequestError = function(xhr, status, error, obj_request) { 
+    var OnRequestError = function(xhr, status, error, obj_request, respe_time) { 
       var openapireqerror_result = {
         'lastupdated': getCurrentDatetimeUTC(),
         'requestedTime': obj_request.requestedTime,
         'endpoint': obj_request.endpoint,
         'method': obj_request.method,
         'body_data': obj_request.body_data,
+        'response_headers': xhr.getAllResponseHeaders(),
         'raw_response': '',
         'token_desc': obj_request.token_desc,
         'requestId': obj_request.requestId,
-        'status': 'fail'
+        'status': 'fail',
+        'respreq_time': respe_time
       };
       try {
         openapireqerror_result['raw_response'] = JSON.parse(xhr.responseText);
@@ -69,11 +68,11 @@ var OnRequestSuccess = function(response, status, obj_request) {
   
   
   function makeOpenAPIReq(arr_openapiendpoint, arr_method, arr_headersname, arr_headersvalue, arr_addpostbody, callback) {
-      console.log(arr_method);
-      console.log(arr_openapiendpoint);
-      console.log(arr_addpostbody);
-      console.log(arr_headersname);
-      console.log(arr_headersvalue);
+     // console.log(arr_method);
+     // console.log(arr_openapiendpoint);
+    //  console.log(arr_addpostbody);
+    //  console.log(arr_headersname);
+    //  console.log(arr_headersvalue);
 
      // if(!checkActiveCredential("luna")){
      //   callback();

@@ -5,16 +5,19 @@ var sendPostReq = function(obj_request, successCallBack, errorCallBack, complete
     type: 'POST',
     data: obj_request.body_data,
     headers: { 'Authorization': obj_request.auth_header  },
+    start_time: new Date().getTime(),
     success: function(response, status, xhr) { 
       if (typeof successCallBack != 'undefined') {
-        successCallBack(response, status, obj_request);
-        console.log("success post sent");
+        var resp_time = new Date().getTime() - this.start_time;
+        successCallBack(response, status, obj_request, xhr, resp_time);
+        console.log("POST XHR request was a success");
       }
     },
     error: function(xhr, status, error) {
       if (typeof errorCallBack != 'undefined') {
-        errorCallBack(xhr, status, error, obj_request);
-        console.log("error post sent");
+        var resp_time = new Date().getTime() - this.start_time;
+        errorCallBack(xhr, status, error, obj_request, resp_time);
+        console.log("Recieved an error while executing POST XHR request");
       }
     },
     complete: function (xhr, status) {
@@ -32,16 +35,20 @@ var sendGetReq = function(obj_request, successCallBack, errorCallBack, completeC
     type: 'GET',
     dataType: "json",
     headers: { 'Authorization': obj_request.auth_header },
+    start_time: new Date().getTime(),
     success: function(response, status, xhr) { 
       if (typeof successCallBack != 'undefined') {
-        successCallBack(response, status, obj_request);
-        console.log("success get sent");
+        var resp_time = new Date().getTime() - this.start_time;
+        successCallBack(response, status, obj_request, xhr, resp_time);
+        console.log("GET XHR request was a success");
+       // console.log(resp_time);
       }
     },
     error: function(xhr, status, error) {
       if (typeof errorCallBack != 'undefined') {
-        errorCallBack(xhr, status, error, obj_request);
-        console.log("error get sent");
+        var resp_time = new Date().getTime() - this.start_time;
+        errorCallBack(xhr, status, error, obj_request, resp_time);
+        console.log("Recieved an error while executing GET XHR request");
       }
     },
     complete: function (xhr, status) {
@@ -58,16 +65,19 @@ var sendDeleteReq = function(obj_request, successCallBack, errorCallBack, comple
     url: obj_request.url,
     type: 'DELETE',
     headers: { 'Authorization': obj_request.auth_header },
+    start_time: new Date().getTime(),
     success: function(response, status, xhr) { 
       if (typeof successCallBack != 'undefined') {
-        successCallBack(response, status, obj_request);
-        console.log("success post sent");
+        var resp_time = new Date().getTime() - this.start_time;
+        successCallBack(response, status, obj_request, xhr, resp_time);
+        console.log("DELETE XHR request was a success");
       }
     },
     error: function(xhr, status, error) {
       if (typeof errorCallBack != 'undefined') {
-        errorCallBack(xhr, status, error, obj_request);
-        console.log("error post sent");
+        var resp_time = new Date().getTime() - this.start_time;
+        errorCallBack(xhr, status, error, obj_request, resp_time);
+        console.log("Recieved an error while executing DELETE XHR request");
       }
     },
     complete: function (xhr, status) {

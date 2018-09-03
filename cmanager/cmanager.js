@@ -39,22 +39,22 @@ var loadActiveCredentiallist = function () {
       var arr_tokens = data['tokens'];
       var activetokenid = backgroundpage.activatedTokenCache.uniqid;
      // console.log(activetokenid);
-      console.log(arr_tokens.length);
+      //console.log(arr_tokens.length);
       if (arr_tokens.length >0 ){
         if (activetokenid !== undefined) {
           // var activetokenid = backgroundpage.activatedTokenCache.uniqid;
-           console.log(activetokenid);
+           //console.log(activetokenid);
            var api_credential1 = backgroundpage.activatedTokenCache;
-           console.log(api_credential1);
+          // console.log(api_credential1);
            if (!api_credential1) { api_credential1 = {desc: "Failed to load", tokentype: "Please delete and register again", uniqid: activetokenid}; }
-           var list_html1 = '<div class="row"><div class="col s9">';
+           var list_html1 = '<div class="row"><div class="col s8">';
            list_html1 += '<li class="collection-item avatar1">';
            list_html1 += '<i class="material-icons key-img circle teal lighten-2 z-depth-1" style="display: none;">lock_open</i>';
            list_html1 += '<h5 class="" style="font-size: 20px; font-weight: bold">' + api_credential1.desc + '</h5>';
            list_html1 += '<p class="">' + api_credential1.tokentype + '</p>';
-           list_html1 += '<p class="blue-grey-text">This is the token is currently active across the extension. This token will be used for any OPEN api call the extension has to make.</p></li></div>';
-           list_html1 += '<div class="col s3" style="height: 40px; line-height: 150px;">';
-           list_html1 += '<a id="sidenavbutton" class="btn blue-grey lighten-5 hoverable blue-grey-text text-darken-3 center-align">Switch OPEN API tokens</a>';
+           list_html1 += '<p class="blue-grey-text">This is the credential that is currently active across the extension. This credential will be used for any OPEN api call the extension has to make.</p></li></div>';
+           list_html1 += '<div class="col s4" style="height: 40px; line-height: 150px;">';
+           list_html1 += '<a id="sidenavbutton" class="btn blue-grey lighten-5 hoverable blue-grey-text text-darken-3 center-align">Switch OPEN API credentials</a>';
            list_html1 += '</div>';
            $('#activetoken_inuse').append(list_html1);
           // $("#apitab-nocredential").hide();
@@ -69,8 +69,8 @@ var loadActiveCredentiallist = function () {
        else {
         var list_html2 = '<li class="collection-item avatar">';
        // list_html2 += '<i class="material-icons key-img circle teal lighten-2 z-depth-1" style="display: none;">lock_open</i>';
-        list_html2 += '<p class="center-align blue-grey-text">Congrats! on adding your first OPEN API token, you need to activate the token inorder to use it across the extension </p>';
-        list_html2 += '<p class="center-align"><a id="sidenavbutton" class="btn light-blue hoverable white-text center-align">Activate OPEN API tokens</a></p>';
+        list_html2 += '<p class="center-align blue-grey-text"><b>Congrats on adding your first OPEN API credential!</b> You need to activate the credential in order to use it across the extension </p>';
+        list_html2 += '<p class="center-align"><a id="sidenavbutton" class="btn light-blue hoverable white-text center-align">Activate OPEN API credentials</a></p>';
         list_html2 += '</li>';
         $('#activetoken_inuse').append(list_html2);
         $('#activetoken_inuse').show();
