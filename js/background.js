@@ -15,11 +15,16 @@ var img_success = "img/success_icon.png",
     img_fail = "img/fail_icon.png", 
     img_info = "img/info_icon.png";
 
+var recoveredFromIdleS = {};
+
 //extension needs to be restarted when going idle, it's impacting OPEN API tester's ability to compute the right time parameters
 chrome.idle.onStateChanged.addListener(function(state) {
       if (state == 'active') {
           console.log('State is now active');
-          chrome.runtime.reload();
+          chrome.storage.local.set({'recoveredFromIdle': 'true'}, function(){
+            chrome.runtime.reload();
+          })
+
       }
   });
 
@@ -149,9 +154,20 @@ chrome.runtime.onInstalled.addListener(function(details) {
     });
   }
   if (details.reason === 'update'){
-    chrome.storage.local.set({'updatedU': 'true'}, function(){
-      console.log('updated value is set to true' );
-    })
+    chrome.storage.local.get('recoveredFromIdle', function(recoveredFromIdleS) {
+      recoveredFromIdleS = recoveredFromIdleS['recoveredFromIdle'];
+      if (recoveredFromIdleS !== 'true') {
+        chrome.storage.local.set({'updatedU': 'true'}, function(){
+          console.log('updated value is set to true' );
+        })
+      }
+      else {
+        chrome.storage.local.set({'recoveredFromIdle':'false'}, function(){
+          console.log('setting recoveredFromIdle from back to false, so that we show the updated notification in case of refresh');
+        })
+      }
+
+    });
   }
   else {
     chrome.storage.local.set({'updatedU': 'false'});

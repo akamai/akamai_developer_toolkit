@@ -1,25 +1,83 @@
 var valueT = {};
 var valueU = {};
 
+// Config tour steps
+ var tourSteps = [{
+          "msg": "Welcome to Akamai Developer Toolkit. let's get you setup to make your first OPEN API call.", // tour bubble / dialog text
+          "selector": "body", // selector for highlighted feature. Comma seperated list = (dialog target, additional items to pop above mask). Don't forget your '.' or '#'
+          "position": "center", // dialog location in relation to target (selector). top, bottom, left, right, (or 'center' which centers to screen)
+          "btnMsg": "Start Tour &raquo", // if you'd like a button on the dialog simply add a message here
+          "waitForTrigger": false // should we pause the tour here? while the user does something? Pass a seletor as the trigger to resume the tour from this point
+      }, {
+          "msg": "Step 1: Click to add a new credential ",
+              "selector": "#addnewtoken",
+              "position": "bottom",
+              "nextSelector": "#addnewtoken"
+      }, {
+          "msg": "Step 2: Upload your credential file here, this is the credentials file you download from Akamai Luna control center",
+              "selector": ".file-field",
+              "position": "left",
+              "nextSelector": "#filebutton"
+      }, {
+          "msg": "Step 3: Enter a credential description, for example: 'Example.com GENERAL OPEN API'. Once you are complete click next",
+              "selector": ".cred_description",
+              "position": "top",
+              "btnMsg": "next >",
+              "nextSelector":"#tour_dialog_btn"
+      }, {
+          "msg": "Step 4: Click here to save your credential",
+              "selector": "#submitButton",
+              "position": "top",
+              "nextSelector": "#submitButton",
+      }, {
+          "msg": "Step 5: Click on the OK button to close the popup",
+              "selector": ".swal2-confirm",
+              "position": "bottom",
+              "nextSelector": ".swal2-confirm"
+      },{
+        "msg": "Step 6: click here to activate your credentials across the extension",
+            "selector": ".activate_token_creds",
+            "position": "bottom",
+            "nextSelector": ".activate_token_creds"
+    },{
+      "msg": "Step 7: Select this credential for activation",
+          "selector": "#activate_token_sidenav",
+          "position": "right",
+          "nextSelector": "#activate_token_sidenav"
+  },{
+  "msg": "Step 8: Click here to access the OPEN API tester",
+      "selector": "#tour_open_api",
+      "position": "bottom",
+      "nextSelector": "#tour_open_api"
+},{
+  "msg": "Step 9: <b>You are all set !</b> Enter an OPEN API url endpoint below and click submit. You will find the response payload and headers for the API call in the sections below",
+      "selector": ".request-section",
+      "position": "top",
+      "btnMsg": "done",
+}
+    ];
+
 function loadDialog() {
   chrome.storage.local.get('firstTime', function(valueT) {
     valueT = valueT['firstTime'];
     valueU = valueU['updated'];
     var msg = '<b>Thank you for installing the extension!</b><br/>If you are a first time user, ';
-    msg +='click <a href="#!" id="sidenavbutton" style="color: blue;"> here</a>';
-    msg += ' to view the getting started video';
+    msg +='click the <b>start tour</b> button</a>';
+    msg += ' to get a guided tour on how to setup your APIs and run your first OPEN API command';
     if (valueT === 'true') {
       if (valueU !== 'true'){
       var html = '<div id="dialog" class="card light-blue lighten-5 card-alert z-depth-2">';
       html += '<div class="card-content light-blue-text card-alert-content">';
-      html += '<i class="material-icons tiny">notifications</i>';
-      html += '<p>'+ msg + '</p>';
+      html += '<p><a href="#!" id="loadtour" class="btn white-text light-blue">Start Tour</a></p>';
+      html += '<p style="text-align: -webkit-left;">'+ msg + '</p><br>';
+      html += ''
       html += '</div>';
       html += '<i id="dialog_close" class="material-icons clearmark">clear</i>';
       html += '</div>';
       var target_dom = "notification";
       $("#"+target_dom).prepend(html);
       chrome.runtime.sendMessage({type: "gaq", target: "first_time_install", behavior: "updated"});
+
       chrome.storage.local.set({'firstTime': 'false'});
     }
     }
@@ -468,6 +526,14 @@ chrome.storage.local.get('openapiHistory', function(openapidata) {
       url: 'https://www.youtube.com/watch?v=6PhU7lwOqHM'
     });
   });
+
+  $(document).on('click', '#loadtour', function() {
+    chrome.runtime.sendMessage({type: "gaq", target: "View_getting_started_tour", behavior: "clicked"});
+    $('#notification').empty().hide();
+    jQuery.tour(tourSteps);
+  });
+
+
 
 
 

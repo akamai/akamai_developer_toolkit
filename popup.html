@@ -6,6 +6,7 @@
     <link type="text/css" rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link rel="stylesheet" href="css/sweetalert2.min.css">
+    <link rel="stylesheet" href="css/jquery.tour.css">
     <link rel="stylesheet" href="fonts/materialicons.css"  type="text/css">
     <style>
       div.piez-main {
@@ -64,6 +65,7 @@
                   </div>
                 </div>
               </li>
+              <!--<li class="white"><a href="#adminops" id="loadtour" class="waves-effect waves-blue"><i class="material-icons">language</i>Guided tour to setup APIs<span class="new badge right yellow darken-3"></span></a></li>-->
               <li class="white"><a href="#" class="waves-effect waves-blue"><i class="material-icons">web</i>User Guide</a></li>
          
 
@@ -84,6 +86,7 @@
             <li class="white"><a href="#" id="feedbackform" class="waves-effect waves-blue"><i class="material-icons">chat</i>New Feature Request</a></li>
             <!--<li class="white"><div class="divider"></div></li>-->
             <li class="white"><a href="#" id="reportbugs"class="waves-effect waves-blue"><i class="material-icons">language</i>Report Bugs<span class="new badge right yellow darken-3"></span></a></li>
+            
             <li class="white">
                 <ul class="collapsible collapsible-accordion">
                   <li>
@@ -145,11 +148,12 @@
             </div>
             <div class="nav-content orange lighten-1">
               <ul class="tabs tabs-transparent">
-                <li class="tab"><a href="#testing">OPEN API Tester</a></li>
+              
                 <li class="tab"><a href="#debugging">Debugging</a></li>
                 <li class="tab"><a class="active" href="#adminops">Admin Operations</a></li>
                 <li class="tab"><a href="#analysis">Site Analysis</a></li>
                 <li class="tab"><a href="#upcoming">Upcoming Features</a></li>
+                <li class="tab" id="tour_open_api"><a href="#testing">OPEN API Tester</a></li>
               </ul>
             </div>
 
@@ -162,7 +166,7 @@
 <main>
 
   <!--notification-->
-    <div id="notification"></div>
+    <div id="notification" style="text-align:-webkit-center;"></div>
 
   <div id="testing" class="col l12">
       <div class="container">
@@ -190,7 +194,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col s12 card" style="background-color:#e7eff7">
+                  <div class="col s12 card request-section" style="background-color:#e7eff7">
                     <h6>REQUEST SECTION</h6>
                   <div class="col s2" style="margin-top: 10px">
                     <div class="input-field">
@@ -700,6 +704,7 @@
     <script type="text/javascript" src="openapitester/openapitester-details.js"></script>
     <script type="text/javascript" src="openapitester/openapitester-history.js"></script>
     <script type="text/javascript" src="js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="js/jquery.tour.js"></script>
 
 
   </body>

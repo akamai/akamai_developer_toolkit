@@ -3,6 +3,7 @@ function loadcredentialaddition(){
  // $('select').material_select();
  // $('.initialized').hide(); // materialize bug
 
+
   chrome.runtime.sendMessage({type: "gaq", target: "Add_new_credentials_page", behavior: "loaded"});
 
   var credentialType = function(domain) {
