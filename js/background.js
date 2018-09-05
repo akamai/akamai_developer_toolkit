@@ -15,6 +15,15 @@ var img_success = "img/success_icon.png",
     img_fail = "img/fail_icon.png", 
     img_info = "img/info_icon.png";
 
+//extension needs to be restarted when going idle, it's impacting OPEN API tester's ability to compute the right time parameters
+chrome.idle.onStateChanged.addListener(function(state) {
+      if (state == 'active') {
+          console.log('State is now active');
+          chrome.runtime.reload();
+      }
+  });
+
+
 var showBasicNotification = function(title, message, img = img_info) {
   chrome.notifications.create(getCurrentDatetimeUTC(), {
     type: "basic",
@@ -158,6 +167,8 @@ chrome.runtime.onInstalled.addListener(function(details) {
   initOpenAPIStorage();
 });
 
+
+//code for Context Menus
 chrome.contextMenus.create({
   "id": "akamaidevtoolkit",
   "title": "Purge this URL", 
@@ -223,7 +234,7 @@ chrome.notifications.onClicked.addListener(function(event){
 });
 
 // Proxy
-chrome.webRequest.onAuthRequired.addListener(
+/*chrome.webRequest.onAuthRequired.addListener(
   function(details, callbackFn) {
     if(details.isProxy === false){
       callbackFn();
@@ -240,7 +251,7 @@ chrome.webRequest.onAuthRequired.addListener(
       });
     });
   }, {urls: ["<all_urls>"]}, ['asyncBlocking']
-);
+);*/
 
 
 // This is Temporary. will be removed in next version

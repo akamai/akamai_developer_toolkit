@@ -186,6 +186,36 @@ chrome.runtime.onMessage.addListener(
   }
 );
 
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+      if (request.msg === "reload_history") {
+          //  To do something
+          $("#historylist").empty();
+console.log('history list is cleard')
+chrome.storage.local.get('openapiHistory', function(openapidata) {
+  var obj_records = openapidata['openapiHistory'];
+  for (var openapiReqId in obj_records) {
+    var obj_history = obj_records[openapiReqId];
+    tbody_html = "<tr>"; 
+    tbody_html += "<td class='show-more'><a href='#!' requestId='" + obj_history.requestId + "'>";
+    tbody_html += "<i class='material-icons'>expand_more</i></a></td>"; 
+    tbody_html += "<td>" + obj_history.requestedTime + "</td>"; 
+    tbody_html += "<td>" + obj_history.token_desc + "</td>"; 
+    tbody_html += "<td>" + obj_history.method + "</td>"; 
+    tbody_html += "<td>" + obj_history.endpoint + "</td>"; 
+    tbody_html += "<td>" + obj_history.status + "</td>"; 
+    tbody_html += "<td class='delete-record'><a href='#!' requestId='" + obj_history.requestId + "'>";
+    tbody_html += "<i class='material-icons'>delete</i></a></td>"; 
+    tbody_html += "</tr>";
+    $("#historylist").append(tbody_html);
+  }
+});
+
+      }
+  }
+);
+
+
   chrome.runtime.sendMessage({type: "gaq", target: "Popup_page", behavior: "loaded"});
   $('.versionNumber').attr("data-badge-caption", "v" + chrome.runtime.getManifest().version);
   loadCredentialList();
@@ -198,7 +228,7 @@ chrome.runtime.onMessage.addListener(
  
 
 
-
+/*
   $(document).on('click', '#addProxyBtn', addProxy);
   $(document).on('click', '#flushdns', function() {
     chrome.runtime.sendMessage({type: "gaq", target: "flushdns", behavior: "clicked"});
@@ -430,6 +460,8 @@ chrome.runtime.onMessage.addListener(
     $('#editProxyForm').remove();
   });
 
+  */
+
   $(document).on('click', '#loadgettingstartedvideo', function() {
     chrome.runtime.sendMessage({type: "gaq", target: "View_getting_started_video", behavior: "clicked"});
     chrome.tabs.create({
@@ -445,7 +477,7 @@ chrome.runtime.onMessage.addListener(
     chrome.management.uninstall('npbccjkjemgagjioahfccljgnlkdleod');
     $("#piez-notification").empty();
   });
-
+/*
   $(document).on('click', '#editProxyForm #deleteProxyBtn', function() {
     chrome.runtime.sendMessage({type: "gaq", target: "deleting_edits_in_existing_proxy_form", behavior: "clicked"});
 
@@ -463,6 +495,7 @@ chrome.runtime.onMessage.addListener(
       });
     });
   });
+  */
 
   $('#feedbackform, #feedbackformlink').click(function() {
     chrome.runtime.sendMessage({type: "gaq", target: "View_feedback_form", behavior: "clicked"});

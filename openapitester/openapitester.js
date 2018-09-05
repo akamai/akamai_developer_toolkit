@@ -12,6 +12,7 @@
     $('.openapirespheaders-js').empty();
     $('.openapireqheaders-js').empty();
     $('.openapireqpayload-js').empty();
+  
 
     // console.log(openapi_result.requestId);
    //console.log(openapi_result.raw_response);
@@ -134,6 +135,8 @@
       }
   });
 
+ // loadHistory1();
+
 }
 
   $('#openapitester-submitButton').click(function(obj) {
@@ -181,3 +184,13 @@
       }
   });
   
+
+  function loadHistory1() {
+    chrome.runtime.sendMessage({
+      msg: "reload_history", 
+      data: {
+          subject: "XHR4 response",
+          content: "history reloaded"
+      }
+  });
+  }
