@@ -19,7 +19,7 @@ var valueU = {};
               "position": "left",
               "nextSelector": "#filebutton"
       }, {
-          "msg": "Step 3: Enter a credential description, for example: 'Example.com GENERAL OPEN API'. Once you are complete click next",
+          "msg": "Step 3: Enter a credential description, for example: 'GENERAL OPEN API'. Once you are complete click next",
               "selector": ".cred_description",
               "position": "top",
               "btnMsg": "next >",
@@ -63,7 +63,7 @@ function loadDialog() {
     valueU = valueU['updated'];
     var msg = '<b>Thank you for installing the extension!</b><br/>If you are a first time user, ';
     msg +='click the <b>start tour</b> button</a>';
-    msg += ' to get a guided tour on how to setup your APIs and run your first OPEN API command';
+    msg += ' to get a guided tour on how to add your API credentials and run your first OPEN API command. <br><b>NOTE: You will need a text file containing your credentials prior to starting the tour</b>, you can download one from Akamai Luna control center directly when you create a new credential ';
     if (valueT === 'true') {
       if (valueU !== 'true'){
       var html = '<div id="dialog" class="card light-blue lighten-5 card-alert z-depth-2">';
