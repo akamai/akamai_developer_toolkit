@@ -28,19 +28,19 @@
     ]
   },
   "browser_action":{
-    "default_icon":"img/dev-icons-128.png",
-    "default_title":"Akamai Developer Toolkit - Canary Release"
+    "default_icon":"img/icons-128.png",
+    "default_title":"Akamai Developer Toolkit"
   },
-  "description":"A chrome extension that provide developers access to Akamai developer tools right within their workspace",
+  "description":"A chrome extension that provide developers access to Akamai developer tools including testing OPEN APIs right within their workspace",
   "devtools_page": "/piez/devtools/devtools.html",
   "icons":{
-    "128":"img/dev-icons-128.png",
-    "16":"img/dev-icons-128.png",
-    "48":"img/dev-icons-128.png"
+    "128":"img/icons-128.png",
+    "16":"img/icons-128.png",
+    "48":"img/icons-128.png"
   },
   "manifest_version":2,
   "content_security_policy": "script-src 'self' https://ssl.google-analytics.com https://platform.twitter.com https://www.gstatic.com ; object-src 'self'",
-  "name":"Akamai Developer Toolkit - Canary Release",
+  "name":"Akamai Developer Toolkit",
   "permissions":[
     "idle",
     "alarms",
@@ -58,7 +58,7 @@
     "webRequestBlocking"
   ],
   "update_url":"https://clients2.google.com/service/update2/crx",
-  "version":"2.0.14",
+  "version":"2.0.15",
   "web_accessible_resources":[
     "fonts/*.*",
     "js/jquery-3.1.1.min.js",

@@ -575,6 +575,13 @@ chrome.runtime.onMessage.addListener(
     });
   });
 
+  $('.userguide').click(function() {
+    chrome.runtime.sendMessage({type: "gaq", target: "User_guide_clicked", behavior: "clicked"});
+    chrome.tabs.create({
+      url: 'https://developer.akamai.com/tools/developer-toolkit'
+    });
+  });
+
   $('#apicredstutorial').click(function(){
     chrome.runtime.sendMessage({type: "gaq", target: "View_api_creds_tutorial", behavior: "clicked"});
 		chrome.tabs.create({url: 'https://youtu.be/6PhU7lwOqHM'});
