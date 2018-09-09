@@ -1,28 +1,120 @@
+var valueT = {};
+var valueU = {};
+
+// Config tour steps
+ var tourSteps = [{
+          "msg": "Welcome to Akamai Developer Toolkit. let's get you setup to make your first OPEN API call.", // tour bubble / dialog text
+          "selector": "body", // selector for highlighted feature. Comma seperated list = (dialog target, additional items to pop above mask). Don't forget your '.' or '#'
+          "position": "center", // dialog location in relation to target (selector). top, bottom, left, right, (or 'center' which centers to screen)
+          "btnMsg": "Start Tour &raquo", 
+          "exitbtnMsg": "Close Tour",// if you'd like a button on the dialog simply add a message here
+          "waitForTrigger": false // should we pause the tour here? while the user does something? Pass a seletor as the trigger to resume the tour from this point
+      }, {
+          "msg": "Step 1: Click to add a new credential ",
+              "selector": "#addnewtoken",
+              "position": "bottom",
+              "nextSelector": "#addnewtoken",
+              "exit1btnMsg": "Close Tour"
+      }, {
+          "msg": "Step 2: Upload your credential file here, this is the credentials file you download from Akamai Luna control center",
+              "selector": ".file-field",
+              "position": "left",
+              "nextSelector": "#filebutton",
+              "exit1btnMsg": "Close Tour"
+      }, {
+          "msg": "Step 3: Enter a credential description, for example: 'GENERAL OPEN API'. Once you are complete click next",
+              "selector": ".cred_description",
+              "position": "top",
+              "btnMsg": "next >",
+              "nextSelector":"#tour_dialog_btn",
+              "exitbtnMsg": "Close Tour"
+      }, {
+          "msg": "Step 4: Click here to save your credential",
+              "selector": "#submitButton",
+              "position": "top",
+              "nextSelector": "#submitButton",
+              "exit1btnMsg": "Close Tour"
+      }, {
+          "msg": "Step 5: Click on the OK button to close the popup",
+              "selector": ".swal2-confirm",
+              "position": "bottom",
+              "nextSelector": ".swal2-confirm",
+              "exit1btnMsg": "Close Tour"
+      },{
+        "msg": "Step 6: click here to activate your credentials across the extension",
+            "selector": ".activate_token_creds",
+            "position": "bottom",
+            "nextSelector": ".activate_token_creds",
+            "exit1btnMsg": "Close Tour"
+    },{
+      "msg": "Step 7: Select this credential for activation",
+          "selector": "#activate_token_sidenav",
+          "position": "right",
+          "nextSelector": "#activate_token_sidenav",
+          "exit1btnMsg": "Close Tour"
+  },{
+  "msg": "Step 8: Click here to access the OPEN API tester",
+      "selector": "#tour_open_api",
+      "position": "bottom",
+      "nextSelector": "#tour_open_api",
+      "exit1btnMsg": "Close Tour"
+},{
+  "msg": "Step 9: <b>You are all set !</b> Enter an OPEN API url endpoint below and click submit. You will find the response payload and headers for the API call in the sections below",
+      "selector": ".request-section",
+      "position": "top",
+      "btnMsg": "done",
+}
+    ];
+
 function loadDialog() {
   chrome.storage.local.get('firstTime', function(valueT) {
-    var valueT = valueT['firstTime'];
+    valueT = valueT['firstTime'];
+    valueU = valueU['updated'];
     var msg = '<b>Thank you for installing the extension!</b><br/>If you are a first time user, ';
-    msg +='click <a href="#!" id="loadgettingstartedvideo" style="color: blue;"> here</a>';
-    msg += ' to view the getting started video';
+    msg +='click the <b>start tour</b> button</a>';
+    msg += ' to get a guided tour on how to add your API credentials and run your first OPEN API command. <br><b>NOTE: You will need a text file containing your credentials prior to starting the tour</b>, you can download one from Akamai Luna control center directly when you create a new credential ';
     if (valueT === 'true') {
-      chrome.runtime.sendMessage({type: "notification", id: "dialog", body: msg});
+      if (valueU !== 'true'){
+      var html = '<div id="dialog" class="card light-blue lighten-5 card-alert z-depth-2">';
+      html += '<div class="card-content light-blue-text card-alert-content">';
+      html += '<p><a href="#!" id="loadtour" class="btn white-text light-blue">Start Tour</a></p>';
+      html += '<p style="text-align: -webkit-left;">'+ msg + '</p><br>';
+      html += ''
+      html += '</div>';
+      html += '<i id="dialog_close" class="material-icons clearmark">clear</i>';
+      html += '</div>';
+      var target_dom = "notification";
+      $("#"+target_dom).prepend(html);
       chrome.runtime.sendMessage({type: "gaq", target: "first_time_install", behavior: "updated"});
+
       chrome.storage.local.set({'firstTime': 'false'});
+    }
     }
   });
 }
 
 function loadUpdateDialog() {
   chrome.storage.local.get('updatedU', function(valueU) {
-    var valueU = valueU['updatedU'];
+    valueU = valueU['updatedU'];
+    //valueT = valueT['firstTime'];
+   // console.log(valueU);
+   // console.log(valueT);
     if (valueU === 'true') {
+  
       var thisVersion = chrome.runtime.getManifest().version;
       var msg = '<b>Heads up: </b>Your extension has been autoupdated to the latest version ' + thisVersion;
-      if (valueU === 'true') {
-        chrome.runtime.sendMessage({type: "notification", id: "update-dialog", body: msg});
+        var html = '<div id="update-dialog" class="card light-blue lighten-5 card-alert z-depth-2">';
+        html += '<div class="card-content light-blue-text card-alert-content">';
+        html += '<i class="material-icons tiny">notifications</i>';
+        html += '<p>'+ msg + '</p>';
+        html += '</div>';
+        html += '<i id="dialog_close" class="material-icons clearmark">clear</i>';
+        html += '</div>';
+        var target_dom = "notification";
+        $("#"+target_dom).prepend(html);
         chrome.runtime.sendMessage({type: "gaq", target: "extension_version", behavior: "updated"});
         chrome.storage.local.set({'updatedU': 'false'});
-      }
+      
     }
   });
 }
@@ -54,27 +146,152 @@ function ifPiezisinstalled() {
     if(details) {
       if(details.name === 'Piez') {
         var msg = 'Looks like you have Piez installed separately, click <a href="#!" id="removePiez" style="color: blue;"> here </a> to uninstall Piez for the optimal experience';
-        chrome.runtime.sendMessage({
-          type: "notification", 
-          id: "piez",
-          body: msg,
-          update_target: "piez-notification"
-        });
+        var html = '<div id="piez" class="card light-blue lighten-5 card-alert z-depth-2">';
+        html += '<div class="card-content light-blue-text card-alert-content">';
+        html += '<i class="material-icons tiny">notifications</i>';
+        html += '<p>'+ msg + '</p>';
+        html += '</div>';
+        html += '<i id="piez_close" class="material-icons clearmark">clear</i>';
+        html += '</div>';
+        var target_dom = "piez-notification";
+        $("#"+target_dom).prepend(html);
       }
     }
   });
 }
 
+
 $(document).ready(function() {
+
+
+  $('select').material_select();
+  $('.initialized').hide(); // materialize bug
+ // $('.fixed-action-btn').floatingActionButton();
+ $('.button-collapse').sideNav({
+  menuWidth: 400, // Default is 300
+  edge: 'left', // Choose the horizontal origin
+  closeOnClick: false, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+  draggable: true // Choose whether you can drag to open on touch screens
+}
+);
+
+$(document).on('click', '#dialog_close', function(){
+  $("#notification").empty();
+});
+
+$(document).on('click', '#piez_close', function(){
+  $("#piez-notification").empty();
+});
+
+
+$(document).on('click', '#sidenavbutton', function(){
+  // START OPEN
+  $('.button-collapse').sideNav('show');
+});
+
+
+//listener for response details
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        if (request.msg === "openapi_response_completed") {
+            $('.openapiresults-js').empty();
+            $('.openapiresults-js').append(request.data.content);
+
+        }
+    }
+);
+//listener for response payload
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if (request.msg === "openapi_response_payload"){
+      $('.openapiresppayload-js').empty();
+      $('.openapiresppayload-js').append(request.data.content);
+      console.log('response_payload msg recieved');
+    }
+  }
+);
+
+//listener for successfull OPEN API request
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if (request.msg === "openapi_notfify"){
+      $('.responsestatus-js').empty();
+      $('.responsestatus-js').append(request.data.content);
+      console.log('response_status msg recieved');
+    }
+  }
+);
+
+//listener for response headers
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if (request.msg === "openapi_response_headers"){
+      $('.openapirespheaders-js').empty();
+      $('.openapirespheaders-js').append(request.data.content);
+      console.log('response_headers msg recieved');
+    }
+  }
+);
+//listener for request payload
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if (request.msg === "openapi_request_payload"){
+      $('.openapireqpayload-js').empty();
+      $('.openapireqpayload-js').append(request.data.content);
+      console.log('response_headers msg recieved');
+    }
+  }
+);
+
+//listener for response time
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if (request.msg === "openapi_response_time"){
+      $('.responsetime-js').empty();
+      $('.responsetime-js').append(request.data.content);
+      console.log('response_time msg recieved');
+    }
+  }
+);
+
+
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+      if (request.msg === "cred_mismatch_nocreds") {
+          //  To do something
+          $('.openapiresults-js').empty();
+      }
+  }
+);
+
+//refreshing history list while requests are being made
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+      if (request.msg === "reload_history") {
+        addRecordintoHistory();
+          //  To do something
+       //   $("#historylist").empty();
+      //    $("#historylist").load(location.href + " #historylist");
+
+
+      }
+  }
+);
+
+
   chrome.runtime.sendMessage({type: "gaq", target: "Popup_page", behavior: "loaded"});
   $('.versionNumber').attr("data-badge-caption", "v" + chrome.runtime.getManifest().version);
   loadCredentialList();
+  loadActiveCredentiallist();
   loadProxy();
   loadTwitter();
   ifPiezisinstalled();
   loadDialog();
   loadUpdateDialog();
+ 
 
+
+/*
   $(document).on('click', '#addProxyBtn', addProxy);
   $(document).on('click', '#flushdns', function() {
     chrome.runtime.sendMessage({type: "gaq", target: "flushdns", behavior: "clicked"});
@@ -131,6 +348,7 @@ $(document).ready(function() {
       loadProxy();
     });
   });
+
 
   $(document).on('click', '#addProxy #submitBtn', function() {
     chrome.runtime.sendMessage({type: "gaq", target: "Add_new_proxy_savebtn", behavior: "clicked"});
@@ -305,6 +523,8 @@ $(document).ready(function() {
     $('#editProxyForm').remove();
   });
 
+  */
+
   $(document).on('click', '#loadgettingstartedvideo', function() {
     chrome.runtime.sendMessage({type: "gaq", target: "View_getting_started_video", behavior: "clicked"});
     chrome.tabs.create({
@@ -312,11 +532,23 @@ $(document).ready(function() {
     });
   });
 
+  $(document).on('click', '#loadtour', function() {
+    chrome.runtime.sendMessage({type: "gaq", target: "View_getting_started_tour", behavior: "clicked"});
+    $('#notification').empty().hide();
+    jQuery.tour(tourSteps);
+  });
+
+
+
+
+
+
   $(document).on('click', '#removePiez', function() {
     chrome.runtime.sendMessage({type: "gaq", target: "Original_piez_user_uninstalled", behavior: "clicked"});
     chrome.management.uninstall('npbccjkjemgagjioahfccljgnlkdleod');
+    $("#piez-notification").empty();
   });
-
+/*
   $(document).on('click', '#editProxyForm #deleteProxyBtn', function() {
     chrome.runtime.sendMessage({type: "gaq", target: "deleting_edits_in_existing_proxy_form", behavior: "clicked"});
 
@@ -334,11 +566,19 @@ $(document).ready(function() {
       });
     });
   });
+  */
 
   $('#feedbackform, #feedbackformlink').click(function() {
     chrome.runtime.sendMessage({type: "gaq", target: "View_feedback_form", behavior: "clicked"});
     chrome.tabs.create({
       url: 'https://goo.gl/forms/7ZaZ7XMATVQ8xEyu1'
+    });
+  });
+
+  $('.userguide').click(function() {
+    chrome.runtime.sendMessage({type: "gaq", target: "User_guide_clicked", behavior: "clicked"});
+    chrome.tabs.create({
+      url: 'https://developer.akamai.com/tools/developer-toolkit'
     });
   });
 
@@ -352,6 +592,11 @@ $(document).ready(function() {
     chrome.tabs.create({url: 'https://youtu.be/kk9RDQaARxw'});
   });
 
+  $('#reload').click(function(){
+    window.location.href="popup.html#testing";
+    console.log('click registered');
+   });
+
   $('#debugtutorial').click(function(){
     chrome.runtime.sendMessage({type: "gaq", target: "View_debug_reqests_tutorial", behavior: "clicked"});
     chrome.tabs.create({url: 'https://youtu.be/8NW0M7PyW68'});
@@ -360,5 +605,13 @@ $(document).ready(function() {
   $('#browsersettingstutorial').click(function(){
     chrome.runtime.sendMessage({type: "gaq", target: "View_browser_settings_tutorial", behavior: "clicked"});
     chrome.tabs.create({url: 'https://youtu.be/YZsaQZzMtmM'});
+  });
+  $('#devpopssignuplink').click(function(){
+    chrome.runtime.sendMessage({type: "gaq", target: "DevPoPs Sign Up Link", behavior: "clicked"});
+    chrome.tabs.create({url: 'http://bit.ly/devpops18'});
+  });
+  $('#reportbugs').click(function(){
+    chrome.runtime.sendMessage({type: "gaq", target: "Report Bug", behavior: "clicked"});
+    chrome.tabs.create({url: 'https://github.com/akamai/akamai_developer_toolkit/issues'});
   });
 });

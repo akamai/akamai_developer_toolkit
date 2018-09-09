@@ -15,6 +15,21 @@ var img_success = "img/success_icon.png",
     img_fail = "img/fail_icon.png", 
     img_info = "img/info_icon.png";
 
+var recoveredFromIdleS = {};
+chrome.idle.setDetectionInterval(300);
+
+//extension needs to be restarted when going idle, it's impacting OPEN API tester's ability to compute the right time parameters
+chrome.idle.onStateChanged.addListener(function(state) {
+      if (state == 'active') {
+          console.log('State is now active');
+          chrome.storage.local.set({'recoveredFromIdle': 'true'}, function(){
+            chrome.runtime.reload();
+          })
+
+      }
+  });
+
+
 var showBasicNotification = function(title, message, img = img_info) {
   chrome.notifications.create(getCurrentDatetimeUTC(), {
     type: "basic",
@@ -23,6 +38,16 @@ var showBasicNotification = function(title, message, img = img_info) {
     message: message
   });
 }
+
+
+//open popup.html as a separate window every time a user clicks on the ext icon
+chrome.browserAction.onClicked.addListener(function(tab) {
+  chrome.windows.create({
+    url: chrome.runtime.getURL("popup.html"),
+    type: "popup"
+  });
+});
+
 
 var showListNotification = function(type, title, obj_result, img = img_info) {
   var display_items = [{title: '', message: ''}];
@@ -40,7 +65,11 @@ var showListNotification = function(type, title, obj_result, img = img_info) {
     title = obj_result.token_desc + ": " + title;
     context_msg = obj_result.hostname + ' logs from ' + obj_result.ipaddr;
     display_items = [{title: 'Result', message: 'Click here to see result'}];
-  }
+  } else if (type == 'OpenAPI') {
+    title = obj_result.token_desc + ": " + title;
+    context_msg = 'OPEN API Request';
+    display_items = [{title: 'Result', message: 'Click here to see result'}];
+  } 
 
   chrome.notifications.create(obj_result.requestId, {
     type: "list",
@@ -54,6 +83,13 @@ var showListNotification = function(type, title, obj_result, img = img_info) {
 
 var checkActiveCredential = function(credential_type_needed) {
   if (jQuery.isEmptyObject(activatedTokenCache)) {
+    chrome.runtime.sendMessage({
+      msg: "cred_mismatch_nocreds", 
+      data: {
+          subject: "nocreds",
+          content: "nocred"
+      }
+  });
     showBasicNotification('No Active Token', 'Please activate a credential', img_fail);
     return false;
   } else {
@@ -69,6 +105,13 @@ var checkActiveCredential = function(credential_type_needed) {
         break;
     }
     if (activatedTokenCache.tokentype !== credential_type) {
+      chrome.runtime.sendMessage({
+        msg: "cred_mismatch_nocreds", 
+        data: {
+            subject: "mistmatch_creds",
+            content: "mismatch"
+        }
+    });
       showBasicNotification('Credential Type Mismatch', 'Activate ' + credential_type + ' credential', img_fail);
       return false;
     } else {
@@ -85,6 +128,7 @@ chrome.runtime.onStartup.addListener(function() {
   initPiezStorageState();
   initDebugHeaderSwitchState();
   initCmanagerStorageState();
+  initOpenAPIStorage();
 });
 
 // Fires when user clicks disable / enable button in extension page
@@ -95,6 +139,7 @@ window.onload = function() {
   initPiezStorageState();
   initDebugHeaderSwitchState();
   initCmanagerStorageState();
+  initOpenAPIStorage();
 };
 
 // restart app when new update is available 
@@ -110,9 +155,25 @@ chrome.runtime.onInstalled.addListener(function(details) {
     });
   }
   if (details.reason === 'update'){
-    chrome.storage.local.set({'updatedU': 'true'}, function(){
-      console.log('updated value is set to true' );
-    })
+    chrome.storage.local.get('recoveredFromIdle', function(recoveredFromIdleS) {
+      recoveredFromIdleS = recoveredFromIdleS['recoveredFromIdle'];
+      if (recoveredFromIdleS !== 'true') {
+        chrome.storage.local.set({'updatedU': 'true'}, function(){
+          console.log('updated value is set to true' );
+        })
+      }
+      else {
+        chrome.storage.local.set({'recoveredFromIdle':'false'}, function(){
+          console.log('setting recoveredFromIdle from back to false, so that we show the updated notification in case of refresh');
+        })
+      }
+
+    });
+  }
+  else {
+    chrome.storage.local.set({'updatedU': 'false'});
+    //chrome.storage.local.set({'firstTime': 'false'});
+    console.log('else loop is exectued');
   }
   initFastPurgeStorage();
   initDebugReqStorage();
@@ -120,8 +181,11 @@ chrome.runtime.onInstalled.addListener(function(details) {
   initPiezStorageState();
   initDebugHeaderSwitchState();
   initCmanagerStorageState();
+  initOpenAPIStorage();
 });
 
+
+//code for Context Menus
 chrome.contextMenus.create({
   "id": "akamaidevtoolkit",
   "title": "Purge this URL", 
@@ -180,11 +244,14 @@ chrome.notifications.onClicked.addListener(function(event){
   if(event.startsWith("Purge")){
     chrome.tabs.create({url: 'fastpurge/fastpurge-history.html?id=' + event});
   }
+  if(event.startsWith("OpenAPI")){
+    chrome.tabs.create({url: 'openapitester/openapitester-history.html?id=' + event});
+  }
   chrome.notifications.clear(event);
 });
 
 // Proxy
-chrome.webRequest.onAuthRequired.addListener(
+/*chrome.webRequest.onAuthRequired.addListener(
   function(details, callbackFn) {
     if(details.isProxy === false){
       callbackFn();
@@ -201,7 +268,7 @@ chrome.webRequest.onAuthRequired.addListener(
       });
     });
   }, {urls: ["<all_urls>"]}, ['asyncBlocking']
-);
+);*/
 
 
 // This is Temporary. will be removed in next version

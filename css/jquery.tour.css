@@ -1,0 +1,148 @@
+.tour_item.active {
+    z-index: 9998;
+    position: relative;
+}
+#tour_mask {
+    background-color: rgb(0, 0, 0);
+    display: block;
+    height: 100%;
+    left: 0;
+    opacity: 0.7;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 20;
+}
+#tour_dialog {
+    background-color: #363636;
+    border: 1px solid #000000;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 0 10px 2px #367ABB, 0 2px 0 0 rgba(255, 255, 255, 0.3) inset;
+    color: #FFFFFF;
+    display: none;
+    line-height: 20px;
+    padding: 15px;
+    position: absolute !important;
+    text-shadow: 0 1px 0 #000000;
+    z-index: 9999;
+    text-align: left;
+    max-width: 380px;
+    font-size: 14px
+}
+#tour_dialog:hover a {
+    opacity: 1;
+    transition: opacity 1s;
+    -moz-transition: opacity 1s;
+    -webkit-transition: opacity 1s;
+    -o-transition: opacity 1s;
+}
+#tour_dialog hr {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: medium none;
+    border-top: 1px solid #000;
+    height: 2px;
+    margin: 15px 0;
+}
+#tour_dialog .button {
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border: 1px solid #000;
+    background: #3f9abc;
+    background: -moz-linear-gradient(top, #3f9abc 0%, #1f32b3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #3f9abc), color-stop(100%, #1f32b3));
+    background: -webkit-linear-gradient(top, #3f9abc 0%, #1f32b3 100%);
+    background: -o-linear-gradient(top, #3f9abc 0%, #1f32b3 100%);
+    background: -ms-linear-gradient(top, #3f9abc 0%, #1f32b3 100%);
+    background: linear-gradient(top, #3f9abc 0%, #1f32b3 100%);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='@start', endColorstr='@end', GradientType=0);
+    -moz-box-shadow: 0 0 1px 1px rgba(255, 255, 255, 0.1), 0 1px 0 0 #99DBF8 inset;
+    -webkit-box-shadow: 0 0 1px 1px rgba(255, 255, 255, 0.1), 0 1px 0 0 #99DBF8 inset;
+    box-shadow: 0 0 1px 1px rgba(255, 255, 255, 0.1), 0 1px 0 0 #99DBF8 inset;
+    color: #eee;
+    display: inline-block;
+    font-size: 14px;
+    padding: 6px 14px;
+    position: relative;
+    text-decoration: none;
+    vertical-align: top;
+    text-shadow: 0 -1px 1px #000000;
+    cursor: pointer;
+    float: right;
+}
+#tour_dialog .button:hover {
+    background: -moz-linear-gradient(top, #44a4c7 0%, #2136bf 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #44a4c7), color-stop(100%, #2136bf));
+    background: -webkit-linear-gradient(top, #44a4c7 0%, #2136bf 100%);
+    background: -o-linear-gradient(top, #44a4c7 0%, #2136bf 100%);
+    background: -ms-linear-gradient(top, #44a4c7 0%, #2136bf 100%);
+    background: linear-gradient(top, #44a4c7 0%, #2136bf 100%);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='44a4c7', endColorstr='2136bf', GradientType=0);
+    color: #fff !important;
+}
+#tour_dialog .arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+}
+#tour_dialog .arrow.top {
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #363636;
+    bottom: -10px;
+    left: 48%;
+}
+#tour_dialog .arrow.bottom {
+    border-bottom: 10px solid #363636;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    left: 48%;
+    top: -8px;
+}
+#tour_dialog .arrow.right {
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #363636;
+    border-top: 10px solid transparent;
+    left: -10px;
+    top: 8px;
+}
+#tour_dialog .arrow.left {
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #363636;
+    border-top: 10px solid transparent;
+    right: -10px;
+    top: 8px;
+}
+body {
+    font-family: helvetica;
+    background: #cedce7;
+    /* Old browsers */
+    background: -moz-radial-gradient(center, ellipse cover, #fff 0%, #dbdbdb 100%);
+    /* FF3.6+ */
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #fff), color-stop(100%, #dbdbdb));
+    /* Chrome,Safari4+ */
+    background: -webkit-radial-gradient(center, ellipse cover, #fff 0%, #dbdbdb 100%);
+    /* Chrome10+,Safari5.1+ */
+    background: -o-radial-gradient(center, ellipse cover, #fff 0%, #dbdbdb 100%);
+    /* Opera 12+ */
+    background: -ms-radial-gradient(center, ellipse cover, #fff 0%, #dbdbdb 100%);
+    /* IE10+ */
+    background: radial-gradient(center, ellipse cover, #fff 0%, #dbdbdb 100%);
+    /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff', endColorstr='#dbdbdb', GradientType=1);
+    /* IE6-9 fallback on horizontal gradient */
+}
+.demo_container {
+    margin: auto;
+    text-align: center;
+    width: 330px;
+}
+.demo_item {
+    background-color: #fff;
+    border: 1px solid #B1B1B1;
+    border-radius: 10px;
+    box-shadow: 0 3px 0 0 rgba(0, 0, 0, 0.2);
+    display: inline-block;
+    margin: 75px;
+    padding: 15px;
+}

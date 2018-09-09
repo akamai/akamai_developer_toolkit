@@ -2335,6 +2335,16 @@ hr {
   height: 0;
 }
 
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
 /**
  * Contain overflow in all browsers.
  */
@@ -2866,13 +2876,13 @@ ul.staggered-list li {
 }
 
 footer.page-footer {
-  padding-top: 20px;
+  /*padding-top: 20px;*/
   background-color: #ee6e73;
 }
 
 footer.page-footer .footer-copyright {
   overflow: hidden;
-  min-height: 50px;
+  min-height: 30px;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -3022,8 +3032,9 @@ td, th {
 }
 
 .collection .collection-item.avatar {
-  min-height: 84px;
+  min-height: 90px;
   padding-left: 72px;
+  padding-right: 90px;
   position: relative;
 }
 
@@ -3056,7 +3067,7 @@ td, th {
 .collection .collection-item.avatar .secondary-content {
   position: absolute;
   top: 16px;
-  right: 16px;
+  right: 2px;
 }
 
 .collection .collection-item:last-child {
@@ -3303,7 +3314,7 @@ span.badge {
 
 span.badge.new {
   font-weight: 300;
-  font-size: 0.8rem;
+  font-size: 1.0rem;
   color: #fff;
   background-color: #26a69a;
   border-radius: 2px;
@@ -4066,7 +4077,7 @@ nav .brand-logo {
   position: absolute;
   color: #fff;
   display: inline-block;
-  font-size: 2.1rem;
+  font-size: 1.5rem;
   padding: 0;
   white-space: nowrap;
 }
@@ -4204,14 +4215,14 @@ nav .input-field label.active i {
 
 @media only screen and (min-width: 601px) {
   nav.nav-extended .nav-wrapper {
-    min-height: 64px;
+    min-height: 40px;
   }
   nav, nav .nav-wrapper i, nav a.button-collapse, nav a.button-collapse i {
     height: 64px;
     line-height: 64px;
   }
   .navbar-fixed {
-    height: 64px;
+    height: 80px;
   }
 }
 
@@ -4784,7 +4795,7 @@ small {
   position: relative;
   overflow-x: auto;
   overflow-y: hidden;
-  height: 48px;
+  height: 30px;
   width: 100%;
   background-color: #fff;
   margin: 0 auto;
@@ -4825,8 +4836,8 @@ small {
 .tabs .tab {
   display: inline-block;
   text-align: center;
-  line-height: 48px;
-  height: 48px;
+  line-height: 30px;
+  height: 30px;
   padding: 0;
   margin: 0;
   text-transform: uppercase;
@@ -5061,8 +5072,8 @@ button.btn-floating {
 
 .fixed-action-btn {
   position: fixed;
-  right: 23px;
-  bottom: 23px;
+  left: 23px;
+  top: 76px;
   padding-top: 15px;
   margin-bottom: 0;
   z-index: 998;
@@ -6941,7 +6952,7 @@ input[type=range]:focus::-ms-fill-upper {
 
 .side-nav {
   position: fixed;
-  width: 300px;
+  width: 600px;
   left: 0;
   top: 0;
   margin: 0;

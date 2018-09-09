@@ -1,6 +1,8 @@
-$(document).ready(function(){
-  $('select').material_select();
-  $('.initialized').hide(); // materialize bug
+function loadcredentialaddition(){
+  console.log('credential.js loaded');
+ // $('select').material_select();
+ // $('.initialized').hide(); // materialize bug
+
 
   chrome.runtime.sendMessage({type: "gaq", target: "Add_new_credentials_page", behavior: "loaded"});
 
@@ -10,7 +12,7 @@ $(document).ready(function(){
     } else if (domain.match(/.*\.purge\.akamaiapis\.net\/?$/i)) {
       return "purge";
     } else {
-      return null;
+      return "others";
     }
     return null;
   }
@@ -107,7 +109,7 @@ $(document).ready(function(){
       return false;
     }
 
-    var domainre = /^https:\/\/[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]+\.(?:purge|luna)\.akamaiapis\.net\/?$/i;
+    var domainre = /^https:\/\/[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]+\.(?:purge|luna|imaging)\.akamaiapis\.net\/?$/i;
     if (!baseurl.match(domainre)) {
       alert('Please check if Base URL is in right format');
       $("#baseurl").focus();
@@ -162,17 +164,28 @@ $(document).ready(function(){
         }
 
 				chrome.storage.local.set({'tokens': arr_tokens} , function() { 
-					alert('Saved Successfully');
+         // alert('Saved Successfully');
+          swal({
+            title: 'Success!',
+            text: 'Your credential has been successfully saved and encrypted locally',
+            type: 'success',
+          })
 					chrome.runtime.sendMessage({type: "gaq", target: "New_credentials_page_save_successful", behavior: "yes"});
           if (button_id == "submitButton-add") { 
             $("#clearButton").trigger('click');
+            loadCredentialList();
+            loadActiveCredentiallist();
           } else if (button_id == "submitButton") {
-            closeCurrentTab();
+            $('.addingapitoken').empty();
+            loadCredentialList();
+            loadActiveCredentiallist();
           }
 				});
 			});
 		});
   });
+
+
 
   $('#clearButton').click(function() {
     chrome.runtime.sendMessage({type: "gaq", target: "New_credentials_page_reset_btn", behavior: "clicked"});
@@ -185,7 +198,14 @@ $(document).ready(function(){
     $('select').material_select();
   });
 
+  $('#closed_api_Button').click(function(){
+    $('.addingapitoken').empty();
+    loadCredentialList();
+    loadActiveCredentiallist();
+  });
+
 	$(":file").change(function(){
+    console.log('file uploaded');
 		var uploaded_file = this.files[0];
     if (!uploaded_file) {
       alert("Failed to load file");
@@ -245,9 +265,9 @@ $(document).ready(function(){
       $("#tokentype").val("General OPEN APIs");
       $('select').material_select();
     } else {
-      $("#tokentype").val(null);
+      $("#tokentype").val("Other OPEN APIs");
       $('select').material_select();
     }
   });
 
-}); // document ready
+} // document ready

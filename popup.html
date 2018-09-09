@@ -1,11 +1,14 @@
 <!doctype html>
 <html>
   <head>
-    <title>Akamai Developer Toolkit v1.0</title>
+    <title>Akamai Developer Toolkit v2.0</title>
     <link type="text/css" rel="stylesheet" href="css/materialize.css" media="screen,projection"/>
     <link type="text/css" rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/sweetalert2.min.css">
+    <link rel="stylesheet" href="css/jquery.tour.css">
     <link rel="stylesheet" href="fonts/materialicons.css"  type="text/css">
+    <link rel="stylesheet" type="text/css" href="/css/jquery.dataTables.css">
     <style>
       div.piez-main {
         background: rgb(255, 255, 255);
@@ -23,141 +26,356 @@
         width: 100%;
         overflow: hidden;
       }
+      select[name='openapi-table_length'] {
+        width: auto !important;
+        color: unset !important;
+      }
+      input[type='search'] {
+        width: auto !important;
+      }
+      label {
+        color: black;
+      }
     </style>
   </head>
-  <body>
-    <div class="container" style="width: 650px; padding: 0px">
-      <div class="row">
-        <div class="col s12">
+  <body style="background-image: url(img/akamai-blue-logo.png); 
+  background-position: fit;
+  background-repeat: no-repeat;
+  background-attachment: fixed;">
+<header>
 
-          <!-- Title and Feedback -->
-          <div class="card">
-            <div class="card-content black-text">
+   
+          <ul class="side-nav grey darken-2" id="mobile-demo">
+            <li class="sidenav-header orange">
               <div class="row" style="margin-bottom: 0px;">
-                <div class="col s9">
-                  <span class="card-title light-blue-text text-accent-4" style="display: inline-block"><h4 style="margin: 0px;">Akamai Developer Toolkit</h4></span>
-                  <span class="versionNumber new badge orange" data-badge-caption="Version" style="margin-top: 10px; position: absolute"></span>
-                  <p>
-                    <b>Disclaimer:</b>
-                    This is not an official Akamai product, please log all your issues using our feedback button on the right 
-                  </p>
-                </div>
-                <div class="col s3 right-align">
-                  <a href="#!" id="feedbackform" class="btn blue-grey lighten-5 hoverable tooltipped" data-position="bottom" data-tooltip="Provide feedback to improve the tool">
-                    <i class="material-icons blue-grey-text text-darken-2">feedback</i>
-                  </a>
-                  <div class="twitter-wjs" style="padding-top: 5px"></div>
+                <div class="col s12 center-align">
+              <h5 class="white-text">OPEN API Credential List</h5>
                 </div>
               </div>
-            </div>
-          </div>
+            </li>
+       
 
-          <!-- Notification -->
-          <div id="notification"></div>
-
-          <!-- Credential Manager -->
-          <div class="card hoverable">
-            <div class="card-content black-text">
-              <span class="card-title black-text">API Credentials Manager
-                <a href="#!" id="apicredstutorial" class="tooltipped" data-position="bottom" data-tooltip="Video tutorial on how to use this section">
-                  <i class="material-icons blue-grey-text text-darken-2 tutorial-video-icon">play_circle_outline</i>
-                </a>
-              </span>
-              <p>Manage your API credentials and toggle between different kinds of API tokens based on the service you are trying to access</p>
-              <ul id="tokenlist" class="collection orange-text text-darken-2"></ul>
-              <div id="apitab-nocredential" class="col s12 center-align" style="font-size: 13px; padding: 40px;">
-                <p>Looks like you have no API credentials configured, <a id="addnewtokenlink" href="#">click here</a> to configure one.</p>
-              </div>
-              <a id="deletealltoken" href="#" class="btn blue-grey lighten-5 hoverable tooltipped" data-position="top" data-tooltip="Delete all tokens">
-                <i class="material-icons blue-grey-text text-darken-2">delete</i></a>
-              <a id="addnewtoken" href="#" class="btn light-blue hoverable tooltipped" data-position="top" data-tooltip="Add new credential"><i class="material-icons">add</i></a>
-            </div>
-          </div>
-
-
-          <!-- Fast Purge -->
-          <div class="card hoverable">
-            <div class="card-content black-text">
-              <div class="row" style="margin-bottom: 55px;">
-                <div class="col s6">
-                  <span class="card-title black-text">Fast Purge
-                    <a href="#!" id="fastpurgetutorial" class="tooltipped" data-position="bottom" data-tooltip="Video tutorial on how to use this section">
-                      <i class="material-icons blue-grey-text text-darken-2 tutorial-video-icon">play_circle_outline</i>
-                    </a>
-                  </span>
-                  <p>Manage and make purge requests using URL or URLs, CP codes or Cache Tags</p>
-                </div>
-                <div class="col s4">
-                  <div class="switch" style="margin-top: 11px">
-                    <label>
-                      Invalidation
-                      <input id="updatetype-switch" type="checkbox">
-                      <span class="lever light-blue"></span>
-                      Delete
-                    </label>
+               
+            <ul id="tokenlist" class="collection orange-text text-darken-2" style="margin: 0.0rem;"></ul>
+            
+          
+            <li class="sidenav-header orange">
+                <div class="row" style="margin-bottom: 0px;">
+                  <div class="col s12 center-align">
+                <h5 class="white-text">Getting Started Section</h5>
                   </div>
                 </div>
-                <div class="col s2">
-                  <a id='purgehistorydetails' href="#" class="btn blue-grey lighten-5 hoverable tooltipped" data-position="bottom" data-tooltip="Purge history">
-                    <i class="material-icons blue-grey-text text-darken-2">history</i>
-                  </a>
-                </div>
-              </div>
-              <div class="input-field">
-                <textarea id="purgeurls" class="materialize-textarea" placeholder="http://www.example.com/hello.jpg"></textarea>
-                <label for="purgeurls">Type here to purge (Enter multiple urls, cpcodes or tags separated by a newline. URL(s) should start with http(s)://)</label>
-              </div>
-              <a id="submitButton-stg" class="btn blue-grey lighten-5 hoverable submit-button blue-grey-text text-darken-3" network="staging">Purge Staging</a>
-              <a id="submitButton-pro" class="btn light-blue hoverable submit-button" network="production">Purge Production</a>
-            </div>
-          </div>
+              </li>
+              <!--<li class="white"><a href="#adminops" id="loadtour" class="waves-effect waves-blue"><i class="material-icons">language</i>Guided tour to setup APIs<span class="new badge right yellow darken-3"></span></a></li>-->
+              <li class="white"><a href="#" class="userguide waves-effect waves-blue"><i class="material-icons">web</i>User Guide</a></li>
+         
 
-          <!-- Browser Settings -->
-          <div class="card hoverable">
-            <div class="card-content black-text">
-              <div class="row">
-                <div class="col s5">
-                  <span class="card-title black-text">Browser Settings
-                    <a href="#!" id="browsersettingstutorial" class="tooltipped" data-position="bottom" data-tooltip="Video tutorial on how to use this section">
-                      <i class="material-icons blue-grey-text text-darken-2 tutorial-video-icon">play_circle_outline</i>
-                    </a>
-                  </span>
-                  <p>Use the options below to flush DNS, proxy requests and enable Akamai debug headers</p>
-                </div>
-                <div class="col s4 center-align">
-                  <div class="switch tooltipped" style="margin-top: 2px;"data-position="bottom right" data-tooltip="If you don't see the headers try refreshing your page again">
-                    <label>
-                      OFF
-                      <input id="updatetype-debugheaders" type="checkbox">
-                      <span class="lever"></span>
-                      ON
-                    </label>
+           <!-- <li class="white">
+              <ul class="collapsible collapsible-accordion">
+                <li>
+                  <a class="collapsible-header waves-effect waves-blue"><i class="material-icons">folder_open</i>A submenu <i class="material-icons right" style="margin-right:0;">arrow_drop_down</i></a>
+                  <div class="collapsible-body">
+                    <ul>
+                      <li><a class="waves-effect waves-blue" href="#"><i class="material-icons">fullscreen</i>Full Screen</a></li>
+                      <li><a class="waves-effect waves-blue" href="#"><i class="material-icons">swap_horiz</i>Horizontal Menu</a></li>
+                      <li><div class="divider"></div></li>
+                    </ul>
                   </div>
-                  <div style="margin-top: 8px;">Enable Akamai Headers</div>
-                </div>
-                <div class="col s3">
-                  <a id="flushdns" href="#!" class="btn blue-grey lighten-5 hoverable tooltipped blue-grey-text text-darken-3" data-position="bottom" data-tooltip="Flushes your browser's DNS cache">Flush DNS</a>
+                </li>
+              </ul>
+            </li>-->
+            <li class="white"><a href="#" id="feedbackform" class="waves-effect waves-blue"><i class="material-icons">chat</i>New Feature Request</a></li>
+            <!--<li class="white"><div class="divider"></div></li>-->
+            <li class="white"><a href="#" id="reportbugs"class="waves-effect waves-blue"><i class="material-icons">language</i>Report Bugs<span class="new badge right yellow darken-3"></span></a></li>
+            
+            <li class="white">
+                <ul class="collapsible collapsible-accordion">
+                  <li>
+                    <a class="collapsible-header waves-effect waves-blue"><i class="material-icons">folder_special</i>Video Tutorials<span class="new badge right grey" data-badge-caption="Upcoming"></span><i class="material-icons right" style="margin-right:0;">arrow_drop_down</i></a>
+                    <div class="collapsible-body">
+                      <ul>
+                        <li><a class="waves-effect waves-blue" href="#">How to use OPEN API Tester</a></li>
+                        <li><a class="waves-effect waves-blue" href="#">Developer Points of Presence</a></li>
+                        <li><a class="waves-effect waves-blue" href="#">Brotli Comparision Tool</a></li>
+                        <li><a class="waves-effect waves-blue" href="#">How to add a new API token</a></li>
+                        <li><div class="divider"></div></li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+            <!--<li class="sidenav-footer grey darken-2">
+              <div class="row">  
+                <div class="social-icons">
+                  <div class="col s2">
+                    <a href="#"><i class="fa fa-lg fa-linkedin-square"></a></i>
+                  </div>
+                  <div class="col s2">
+                    <a href="#"><i class="fa fa-lg fa-facebook-official"></a></i>
+                  </div>
+                  <div class="col s2">
+                    <a href="#"><i class="fa fa-lg fa-twitter"></a></i>
+                  </div>
+                  <div class="col s2">
+                    <a href="#"><i class="fa fa-lg fa-google-plus"></a></i>
+                  </div>
+                  <div class="col s2">
+                    <a href="#"><i class="fa fa-lg fa-pinterest"></a></i>
+                  </div>
+                  <div class="col s2">
+                    <a href="#"><i class="fa fa-lg fa-youtube"></a></i>
+                  </div>
                 </div>
               </div>
+            </li>-->
+
+          </ul>
+          
+
+
+    <div class="navbar-fixed">
+        <nav class="nav-extended" data-target="nav-extended">
+            <div class="nav-wrapper orange">
+                <a href="#" data-activates="mobile-demo" class="button-collapse show-on-large" id="sidenavbutton" style="height:40px; line-height: 40px;"><i class="material-icons" style="height:40px; line-height: 40px;" >menu</i></a>
+         
+              <a href="#" class="brand-logo" style="line-height: 40px;">&nbsp;&nbsp;	 Akamai Developer Toolkit<span class="versionNumber new badge teal lighten-2" data-badge-caption="Version" style="margin-top: 8px; position: absolute"></span></a>
+              
+              <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <!--<li style="line-height: 30px;"><a href="#!" id="loadtour" class="btn white-text light-blue">Start Tour</a></li>-->
+                <li style="line-height: 30px;"><a href="#!" id="feedbackform" class="btn blue-grey-text text-darken-2 blue-grey lighten-5 hoverable tooltipped" data-position="bottom" data-tooltip="Provide feedback to improve the tool" style=
+                  "margin-top: 7px; height: 26px; line-height: 26px; font-size: 1rem; text-transform: unset;">
+                  Submit Feedback</a></li>
+                <li><div class="twitter-wjs" style="padding-top: 6px; padding-right: 15px; line-height: 30px;"></div></li>
+              </ul>    
+            </div>
+            <div class="nav-content orange lighten-1">
+              <ul class="tabs tabs-transparent">
+              
+                <li class="tab"><a href="#debugging">Debugging</a></li>
+                <li class="tab"><a class="active" href="#adminops">Admin Operations</a></li>
+                <li class="tab"><a href="#analysis">Site Analysis</a></li>
+                <li class="tab"><a href="#upcoming">Upcoming Features</a></li>
+                <li class="tab" id="tour_open_api"><a href="#testing">OPEN API Tester</a></li>
+              </ul>
+            </div>
+
+          </nav>
+
+        </div>
+</header>
+
+
+<main>
+  <div class="body-ext">
+
+
+
+  <!--notification-->
+    <div id="notification" style="text-align:-webkit-center;"></div>
+
+  <div id="testing" class="col l12">
+      <div class="container">
+          <div class="row">
+            <div class="col l12 m12">
+          <!-- Add your own API requests -->
+          <div class="card hoverable">
+              <div class="card-content black-text">
+                <div class="row">
+                  <div class="col s7">
+                    <span class="card-title black-text">OPEN API Tester
+                      <a href="#!" id="openapitutorial" class="tooltipped" data-position="bottom" data-tooltip="Video tutorial on how to use this section">
+                        <i class="material-icons blue-grey-text text-darken-2 tutorial-video-icon">play_circle_outline</i>
+                      </a>
+                    </span>
+                  </div>
+                  <div class="col s5 right-align">
+                      <a id='sidenavbutton' class="btn blue-grey lighten-5 hoverable tooltipped blue-grey-text text-darken-3" data-position="bottom" data-tooltip="Click here to switch active tokens">Switch OPEN API credentials</a>
+                    <a id='openapitesterhistorydetails' class="btn blue-grey lighten-5 hoverable tooltipped blue-grey-text text-darken-3" data-position="bottom" data-tooltip="Click here to view the results of your latest request">History</a>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col s12">
+                    <span>Enter your OPEN API endpoint and select the method you want to call</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col s12 card request-section" style="background-color:#e7eff7">
+                    <h6>REQUEST SECTION</h6>
+                  <div class="col s2" style="margin-top: 10px">
+                    <div class="input-field">
+                        <select id="openAPImethod">
+                            <!--<option value="" disabled selected>Method</option>-->
+                            <option value="GET" selected>GET</option>
+                            <option value="POST">POST</option>
+                            <option value="DELETE">DELETE</option>
+                          </select>
+                    </div>  
+                  </div>
+
+                  <div class="col s10">
+                      <div class="input-field">
+                        <textarea id="openapiendpoint"  placeholder="/devpops-api/v1/sandbox"  class="materialize-textarea"></textarea>
+                        <label for="openapiendpoint">Enter API endpoint you wish to test</label>
+                      </div>  
+                    </div>                
+                    <div class="col s6">
+                        <div class="input-field">
+                            <textarea id="addheadersname" placeholder="Luna-Token" class="materialize-textarea"></textarea>
+                            <label for="addheadersname">Add Header Name (Optional)</label>
+                        </div> 
+                     </div>
+                     <div class="col s6">
+                        <div class="input-field">
+                            <textarea id="addheadersvalue" placeholder="default-121424" class="materialize-textarea"></textarea>
+                            <label for="addheadersvalue">Add Header Value (Optional)</label>
+                        </div> 
+                     </div>
+
+                      <div class="col s12">
+                      <div class="input-field">
+                          <textarea id="addpostbody" placeholder="{a:b}" class="materialize-textarea"></textarea>
+                          <label for="addpostbody">Add POST data (Optional)</label>
+                      </div> 
+                      <a id="openapitester-submitButton" href="#!" class="btn light-blue hoverable submit-button" style="width: 20%;">SUBMIT</a>  
+                      <p style="padding-bottom:10px; padding-top:10px;"><i>Need more capability? <a href="#!" id="feedbackformlink" class="orange-text">click here </a> to request them</i></p>                      
+                    </div>
+                  </div>
+                  
+                 
+                    
+                         
+                          <div class="col s12 card" style="background-color: #e7f2fd">
+                            <div class="card-content">
+                              <div class="col s5">
+                                  <h6>RESPONSE SECTION</h6>
+                              </div>
+                              <div class="col s3">
+                                  <div class="responsestatus-js">
+                                    
+                                    <br>
+                                    <br>
+                                  </div>
+                                </div>
+                              <div class="col s4">
+                                <div class="responsetime-js">
+                                  
+                                  <br>
+                                  <br>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="card-tabs">
+                              <ul class="tabs tabs-fixed-width">
+                                <li class="tab"><a class="active" href="#respPayload">Response Payload</a></li>
+                                <li class="tab"><a href="#respHeaders">Response Headers</a></li>
+                               <!-- <li class="tab"><a href="#reqHeaders">Request Headers</a></li>-->
+                                <li class="tab"><a href="#reqPayload">Request Payload</a></li>
+                                <li class="tab"><a href="#detailedView">Detailed View</a></li>
+                              </ul>
+                            </div>
+                            <div class="card-content" style="background-color: #e7f2fd">
+                              <div id="respPayload">
+                                <div class="openapiresppayload-js">
+
+                                </div>
+                              </div>
+                              <div id="respHeaders">
+                                  <div class="openapirespheaders-js">
+
+                                  </div>
+                              </div>
+                             <!-- <div id="reqHeaders">
+                                 <p>Request Headers</p>
+                                 <div class="openapireqheaders-js">
+
+                                </div>
+                              </div>-->
+                              <div id="reqPayload">
+                              
+                                <div class="openapireqpayload-js">
+
+                                </div>
+                             </div>
+                              <div id="detailedView">
+                                 
+                                  <div class="openapiresults-js">
+
+                                  </div>
+                              </div>
+
+                            </div>
+                          </div>
+
+
+                  
+
+                   
+
+                    </div>
+                </div>              
+                </div>
+              </div>
+
+          <!--OpenAPI history-->
               <div class="row">
                 <div class="col s12">
-                  <h6>Proxy Configurations</h6>
-                  <span>Manage your browser's proxy settings by either selecting a pre-existing configuration or proceed by creating one</span>
-                  <div class="padding-top" id="proxyList"></div>
-                  <div class="padding-top" id="addProxy">
-                    <a id="addProxyBtn" class="btn light-blue hoverable tooltipped" data-position="bottom" data-tooltip="Add a proxy setting">
-                      <i class="material-icons">add</i>
-                    </a>
+                  <div class="card">
+                    <div class="card-content">
+        
+                      <div class="row">
+                          <div class="col s8">
+                              <span class="card-title">OPEN API History</span>
+                          </div>
+
+
+                       
+                        <div class="col s4 right-align">
+                            <!--<a href="#!" id="reload" class="btn blue-grey lighten-5 hoverable tooltipped blue-grey-text text-darken-3" data-position="bottom" data-tooltip="Click here to reload the history below">Reload</a>-->
+                          </div>
+                      </div>
+
+        
+                      <div class="row" id="historytab">
+                        <table id="openapi-table" class="hover centered" style="font-size: 14px">
+                          <thead>
+                            <tr>
+                              <th class="no-sort"></th>
+                              <th>Time(GMT)</th>
+                              <th>OPEN API Cred</th>
+                              <th>HTTP Method</th>
+                              <th>API Endpoint Requested</th>
+                              <th>Response Status</th>
+                              <th class="no-sort"></th>
+                            </tr>
+                          </thead>
+                          <tbody id="historylist">
+                          </tbody>
+                        </table>
+                      </div>
+        
+                      <div class="row right-align">
+                        <div class="col s12 right-align">
+                          <a id="clearHistoryButton" class="btn blue-grey waves-effect waves-light">Clear History</a>
+                          <a id="closeButton" class="btn light-blue waves-effect waves-light">Close Tab</a>
+                        </div>
+                      </div>
+        
+                    </div>
                   </div>
-                  <div class="padding-top">Note: Currently only HTTP requests work. HTTPs connections will fail due to chrome's proxy API implementation, if you do know how to resovle them please do let us know by clicking on the feedback button on top of this plugin.</div>
                 </div>
               </div>
+             <!-- container -->
             </div>
           </div>
+        </div>
 
-
-          <!-- Debug Requests -->
-          <div class="card hoverable">
+  </div>
+  <div id="debugging" class="col l12">
+      <div class="container">
+          <div class="row">
+            <div class="col l12 m12">
+         <!-- Debug Requests -->
+         <div class="card hoverable">
             <div class="card-content black-text">
               <div class="row">
                 <div class="col s10">
@@ -211,90 +429,298 @@
                 </div>
               </div>
             </div>
-          </div>
+         </div>
 
-          <!-- Piez -->
+                  <!-- Browser Settings -->
+                  <div class="card hoverable">
+                      <div class="card-content black-text">
+                        <div class="row">
+                          <div class="col s5">
+                            <span class="card-title black-text">Browser Settings
+                              <a href="#!" id="browsersettingstutorial" class="tooltipped" data-position="bottom" data-tooltip="Video tutorial on how to use this section">
+                                <i class="material-icons blue-grey-text text-darken-2 tutorial-video-icon">play_circle_outline</i>
+                              </a>
+                            </span>
+                            <p>Use the options below to flush DNS, proxy requests and enable Akamai debug headers</p>
+                          </div>
+                          <div class="col s4 center-align">
+                            <div class="switch tooltipped" style="margin-top: 2px;"data-position="bottom right" data-tooltip="If you don't see the headers try refreshing your page again">
+                              <label>
+                                OFF
+                                <input id="updatetype-debugheaders" type="checkbox">
+                                <span class="lever"></span>
+                                ON
+                              </label>
+                            </div>
+                            <div style="margin-top: 8px;">Enable Akamai Headers</div>
+                          </div>
+                          <div class="col s3">
+                            <a id="flushdns" href="#!" class="btn blue-grey lighten-5 hoverable tooltipped blue-grey-text text-darken-3" data-position="bottom" data-tooltip="Flushes your browser's DNS cache">Flush DNS</a>
+                          </div>
+                        </div>
+                        <!--<div class="row">
+                          <div class="col s12">
+                            <h6>Proxy Configurations</h6>
+                            <span>Manage your browser's proxy settings by either selecting a pre-existing configuration or proceed by creating one</span>
+                            <div class="padding-top" id="proxyList"></div>
+                            <div class="padding-top" id="addProxy">
+                              <a id="addProxyBtn" class="btn light-blue hoverable tooltipped" data-position="bottom" data-tooltip="Add a proxy setting">
+                                <i class="material-icons">add</i>
+                              </a>
+                            </div>
+                            <div class="padding-top">Note: Currently only HTTP requests work. HTTPs connections will fail due to chrome's proxy API implementation, if you do know how to resovle them please do let us know by clicking on the feedback button on top of this plugin.</div>
+                          </div>
+                        </div>-->
+                      </div>
+                    </div>
+            </div>
+          </div>
+        </div>
+
+  </div>
+  <div id="adminops" class="col l12 m12">
+
+      <!--<div class="container" style="width: 1440px; padding: 0px">-->
+          <div class="container">
+          <div class="row">
+            <div class="col l12 m12">
+
+           <!--Credential Manager-->
+                <div class="card hoverable">
+                    <div class="card-content black-text apimanager">
+                      <span class="card-title black-text">API Credentials Manager
+                        <a href="#!" id="apicredstutorial" class="tooltipped" data-position="bottom" data-tooltip="Video tutorial on how to use this section">
+                          <i class="material-icons blue-grey-text text-darken-2 tutorial-video-icon">play_circle_outline</i>
+                        </a>
+                      </span>
+                      <p>Manage your API credentials and toggle between different kinds of API credentials based on the service you are trying to access</p>
+                      <!--<ul id="tokenlist" class="collection orange-text text-darken-2"></ul>-->
+                      <ul id="activetoken_inuse" class="collection orange-text text-darken-2"></ul>
+                      <div id="apitab-nocredential" class="col s12 center-align" style="font-size: 13px; padding: 40px;">
+                        <p>Looks like you have no API credentials configured, <a id="addnewtokenlink" href="#">click here</a> to configure one.</p><br/>
+                        <p>If you have already added your API credentials please refresh this page by clicking "command + shift + r"</p>
+                      </div>
+                      <a id="deletealltoken" href="#" class="btn blue-grey lighten-5 hoverable tooltipped" data-position="top" data-tooltip="Delete all tokens">
+                        <i class="material-icons blue-grey-text text-darken-2">delete</i></a>
+                      <a id="addnewtoken" href="#" class="btn light-blue hoverable">add a new credential</a>
+                    </div>
+                    <div class="card-content">
+                      <div class="addingapitoken"></div>
+                    </div>
+                  </div>
+           <!-- Fast Purge -->
           <div class="card hoverable">
-            <div class="card-content black-text">
-              <div class="row">
-                <div class="col s12">
-                  <span class="card-title black-text">Piez
-                    <!-- <a href="#!" id="xxxxxxx" class="tooltipped" data&#45;position="bottom" data&#45;tooltip="Video tutorial on how to use this section"> -->
-                    <!--   <i class="material&#45;icons blue&#45;grey&#45;text text&#45;darken&#45;2">play_circle_outline</i> -->
-                    <!-- </a> -->
-                  </span>
-                  <p>Piez displays optimizations made by Akamai Image Manager, Resource Optimizer, Push/Preconnect and Script Manager. Once you make a selection below, please proceed to open up Chrome Dev Tools and select "Akamai Dev Tools - Piez"</p>
-                  <div id="piez-notification"></div>
-                </div>
-              </div>
-              
-              <div class="row row-stacked">
-                <div class="col s12">
-                  <span><h6>Select which mode you would like Piez to operate on</h6></span>
-                  <div class='piez-main'>
-                    <form id='piezConfigForm'>
-                      <input type="radio" name="piezRadio" id="piez-off" value="piez-off">
-                      <label for="piez-off">Disabled</label><br>
-                      <input type="radio" name="piezRadio" id="piez-im-simple" value="piez-im-simple">
-                      <label for="piez-im-simple">Image Manager (Simple)</label><br>
-                      <input type="radio" name="piezRadio" id="piez-im-advanced" value="piez-im-advanced">
-                      <label for="piez-im-advanced">Image Manager (Advanced)</label><br>
-                      <input type="radio" name="piezRadio" id="piez-a2" value="piez-a2">
-                      <label for="piez-a2">Push/Preconnect</label><br>
-                      <input type="radio" name="piezRadio" id="piez-ro-simple" value="piez-ro-simple">
-                      <label for="piez-ro-simple">Resource Optimizer (Simple)</label><br>
-                      <input type="radio" name="piezRadio" id="piez-ro-advanced" value="piez-ro-advanced">
-                      <label for="piez-ro-advanced">Resource Optimizer (Advanced)</label><br>
-                      <input type="radio" name="piezRadio" id="piez-3pm" value="piez-3pm">
-                      <label for="piez-3pm">Script Management</label><br>
-                    </form>
+              <div class="card-content black-text">
+                <div class="row" style="margin-bottom: 55px;">
+                  <div class="col s6">
+                    <span class="card-title black-text">Fast Purge
+                      <a href="#!" id="fastpurgetutorial" class="tooltipped" data-position="bottom" data-tooltip="Video tutorial on how to use this section">
+                        <i class="material-icons blue-grey-text text-darken-2 tutorial-video-icon">play_circle_outline</i>
+                      </a>
+                    </span>
+                    <p>Manage and make purge requests using URL or URLs, CP codes or Cache Tags</p>
+                  </div>
+                  <div class="col s4">
+                    <div class="switch" style="margin-top: 11px">
+                      <label>
+                        Invalidation
+                        <input id="updatetype-switch" type="checkbox">
+                        <span class="lever light-blue"></span>
+                        Delete
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col s2">
+                    <a id='purgehistorydetails' href="#" class="btn blue-grey lighten-5 hoverable tooltipped" data-position="bottom" data-tooltip="Purge history">
+                      <i class="material-icons blue-grey-text text-darken-2">history</i>
+                    </a>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Upcoming -->
-          <div class="card grey darken-1">
-            <div class="row">
-              <div class="col s12">
-                <h5 style="padding-left:20px;" class="white-text">Upcoming Features</h5>
-                <h6 style="padding-left:20px;" class="white-text">Below is the list of features that are currently being developed, if you wish to have a feature added to this extension please <a href="#" id="feedbackformlink" class="orange-text">click here </a> to request them</h6>
-              </div>
-            </div>
-            <div class="card white hoverable grey lighten-1">
-              <div class="card-content black-text">
-                <span class="card-title black-text">Developer Points of Presence 
-                  <a href="#!" id="devpopstutorial" class="tooltipped" data-position="bottom" data-tooltip="video tutorial on how to use this section">
-                    <i class="material-icons blue-grey-text text-darken-2 tutorial-video-icon">play_circle_outline</i>
-                  </a>
-                </span>
-                <p>Manage your Akamai sandboxes and debug issues going through the sandbox</p>
-                <br/><br/>
-                <div id="devpops-nosandbox" class="center-align" style="font-size: 13px;">
-                  <p>Looks like you have no sandboxes created, <a id="createsandboxlink" href="#">click here</a> to create one.</p>
-                  <p>Note: you will need to have aleast PAPI api tokens configured or devpops API tokens configured</p>
-                  <br/>
+                <div class="input-field">
+                  <textarea id="purgeurls" class="materialize-textarea" placeholder="http://www.example.com/hello.jpg"></textarea>
+                  <label for="purgeurls">Type here to purge (Enter multiple urls, cpcodes or tags separated by a newline. URL(s) should start with http(s)://)</label>
                 </div>
-                <a id="deleteallsandbox" href="#" class="btn blue-grey lighten-5 hoverable tooltipped disabled" data-position="top" data-tooltip="Delete all sandboxes"><i class="material-icons blue-grey-text text-darken-2">delete</i></a>
-                <a id="addnewsandbox" href="#" class="btn light-blue hoverable tooltipped disabled" data-position="top" data-tooltip="Create a new Akamai sandbox"><i class="material-icons">add</i></a> 
+                <a id="submitButton-stg" class="btn blue-grey lighten-5 hoverable submit-button blue-grey-text text-darken-3" network="staging">Purge Staging</a>
+                <a id="submitButton-pro" class="btn light-blue hoverable submit-button" style="width:auto;" network="production">Purge Production</a>
+              </div>
+            </div>
+  
+            </div>
+          </div>
+       </div>
+
+
+  </div>
+  <div id="analysis" class="col l12">
+      <div class="container">
+          <div class="row">
+            <div class="col l12 m12">
+              <!-- Piez -->
+              <div class="card hoverable">
+                  <div class="card-content black-text">
+                    <div class="row">
+                      <div class="col s12">
+                        <span class="card-title black-text">Piez
+                          <!-- <a href="#!" id="xxxxxxx" class="tooltipped" data&#45;position="bottom" data&#45;tooltip="Video tutorial on how to use this section"> -->
+                          <!--   <i class="material&#45;icons blue&#45;grey&#45;text text&#45;darken&#45;2">play_circle_outline</i> -->
+                          <!-- </a> -->
+                        </span>
+                        <p>Piez displays optimizations made by Akamai Image Manager, Resource Optimizer, Push/Preconnect and Script Manager. Once you make a selection below, please proceed to open up Chrome Dev Tools and select "Akamai Dev Tools - Piez"</p>
+                        <div id="piez-notification"></div>
+                      </div>
+                    </div>
+                    
+                    <div class="row row-stacked">
+                      <div class="col s12">
+                        <span><h6>Select which mode you would like Piez to operate on</h6></span>
+                        <div class='piez-main'>
+                          <form id='piezConfigForm'>
+                            <input type="radio" name="piezRadio" id="piez-off" value="piez-off">
+                            <label for="piez-off">Disabled</label><br>
+                            <input type="radio" name="piezRadio" id="piez-im-simple" value="piez-im-simple">
+                            <label for="piez-im-simple">Image Manager (Simple)</label><br>
+                            <input type="radio" name="piezRadio" id="piez-im-advanced" value="piez-im-advanced">
+                            <label for="piez-im-advanced">Image Manager (Advanced)</label><br>
+                            <input type="radio" name="piezRadio" id="piez-a2" value="piez-a2">
+                            <label for="piez-a2">Push/Preconnect</label><br>
+                            <input type="radio" name="piezRadio" id="piez-ro-simple" value="piez-ro-simple">
+                            <label for="piez-ro-simple">Resource Optimizer (Simple)</label><br>
+                            <input type="radio" name="piezRadio" id="piez-ro-advanced" value="piez-ro-advanced">
+                            <label for="piez-ro-advanced">Resource Optimizer (Advanced)</label><br>
+                            <input type="radio" name="piezRadio" id="piez-3pm" value="piez-3pm">
+                            <label for="piez-3pm">Script Management</label><br>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+            </div>
+          </div>
+      </div>
+
+
+  </div>
+  <div id="upcoming" class="col l12">
+      <div class="container">
+          <div class="row">
+            <div class="col l12 m12">
+                            <!-- Upcoming -->
+                            <div class="card grey darken-1">
+                                <div class="row">
+                                  <div class="col s12">
+                                    <h5 style="padding-left:20px;" class="white-text">Upcoming Features</h5>
+                                    <h6 style="padding-left:20px;" class="white-text">Below is the list of features that are currently being developed, if you wish to have a feature added to this extension please <a href="#" id="feedbackformlink" class="orange-text">click here </a> to request them</h6>
+                                  </div>
+                                </div>
+                                <div class="card white hoverable grey lighten-1">
+                                  <div class="card-content black-text">
+                                    <span class="card-title black-text">Developer Points of Presence 
+                                      <a href="#!" id="devpopstutorial" class="tooltipped" data-position="bottom" data-tooltip="video tutorial on how to use this section">
+                                        <i class="material-icons blue-grey-text text-darken-2 tutorial-video-icon">play_circle_outline</i>
+                                      </a>
+                                    </span>
+                                    <p>Allows you to create isolated Akamai sandboxes that you can you put in front of your development environment.</p>
+                                    <br/><br/>
+                                    <div id="devpops-nosandbox" class="center-align" style="font-size: 13px;">
+                                      <p>Sign up here to get early access: <a id="devpopssignuplink" href="#">SIGN UP FORM</a></p>
+                                    
+                                      <br/>
+                                    </div>
+                                    <a id="deleteallsandbox" href="#" class="btn blue-grey lighten-5 hoverable tooltipped disabled" data-position="top" data-tooltip="Delete all sandboxes"><i class="material-icons blue-grey-text text-darken-2">delete</i></a>
+                                    <a id="addnewsandbox" href="#" class="btn light-blue hoverable tooltipped disabled" data-position="top" data-tooltip="Create a new Akamai sandbox"><i class="material-icons">add</i></a> 
+                                  </div>
+                                </div>
+                              </div>
+                              <!--upcoming section div is closed here-->
+            </div>
+          </div>
+      </div>
+
+  </div>
+
+    <div class="container" style="width: 750px; padding: 0px">
+      <div class="row">
+        <div class="col s12">
+
+          <!-- Title and Feedback -->
+         <!-- <div class="card">
+            <div class="card-content black-text">
+              <div class="row" style="margin-bottom: 0px;">
+                <div class="col s9">
+                  <span class="card-title light-blue-text text-accent-4" style="display: inline-block"><h4 style="margin: 0px;">Akamai Developer Toolkit</h4></span>
+                  <span class="versionNumber new badge orange" data-badge-caption="Version" style="margin-top: 10px; position: absolute"></span>
+                  <p>
+                    <b>Disclaimer:</b>
+                    This is not an official Akamai product, please log all your issues using our feedback button on the right 
+                  </p>
+                </div>
+                <div class="col s3 right-align">
+                  <a href="#!" id="feedbackform" class="btn blue-grey lighten-5 hoverable tooltipped" data-position="bottom" data-tooltip="Provide feedback to improve the tool">
+                    <i class="material-icons blue-grey-text text-darken-2">feedback</i>
+                  </a>
+                  <div class="twitter-wjs" style="padding-top: 5px"></div>
+                </div>
               </div>
             </div>
           </div>
-          <!--upcoming section div is closed here-->
+        -->
+
+          <!-- Notification -->
+          <div id="notification"></div>
+
+
+
+ 
+
+
+ 
+
+
+          </div>
+      </div>
+
+          
+
+
+
+
 
         </div>
       </div>
     </div> <!-- container -->
 
+    
+  </div>
+  </main>
+
+
+    <footer class="page-footer orange lighten-1">
+        <div class="footer-copyright orange ">
+          <div class="container">
+           <b>Disclaimer</b> This is not an official Akamai product. Please report all issues, bugs and suggestions for improvment using the "submit feedback" button on the top right corner of this app
+          </div>
+        </div>
+      </footer>
     <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/sweetalert2.min.js"></script>
     <script type="text/javascript" src="js/common.js"></script>
     <script type="text/javascript" src="js/popup.js"></script>
+    <script type="text/javascript" src="cmanager/credential.js"></script>
     <script type="text/javascript" src="cmanager/cmanager.js"></script>
     <script type="text/javascript" src="fastpurge/fastpurge.js"></script>
     <script type="text/javascript" src="browserst/browserst.js"></script>
     <script type="text/javascript" src="debugreq/debugreq.js"></script>
+    <script type="text/javascript" src="openapitester/openapitester.js"></script>
     <script type="text/javascript" src="piez/piez.js"></script>
+    <script type="text/javascript" src="openapitester/openapitester-details.js"></script>
+    <script type="text/javascript" src="openapitester/openapitester-history.js"></script>
+    <script type="text/javascript" src="js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="js/jquery.tour.js"></script>
+
+
+
   </body>
 </html>
