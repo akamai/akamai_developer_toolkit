@@ -1,4 +1,6 @@
+var tableapis = {};
 $(document).ready(function() {
+
     chrome.runtime.sendMessage({type: "gaq", target: "OpenAPI_history_page", behavior: "loaded"});
   
     loadHistory(function(){
@@ -44,9 +46,9 @@ $(document).ready(function() {
       tr.hide();
     });
   });
-  
-  function initDataTable() {
-    $('#openapi-table').DataTable({
+
+  function initDataTable(){
+    tableapis = $('#openapi-table').DataTable({
       "columnDefs": [ {
         "targets"  : 'no-sort',
         "orderable": false
@@ -56,6 +58,7 @@ $(document).ready(function() {
       ]
     });
   }
+
   
   function loadHistory(callback) {
     $("#historylist").empty();
@@ -97,6 +100,15 @@ $(document).ready(function() {
           initDataTable();
         } 
       });
+    });
+  }
+  
+
+
+  function addRecordintoHistory(){
+    $('#openapi-table').DataTable().clear().destroy();
+    loadHistory(function(){
+      initDataTable();
     });
   }
   

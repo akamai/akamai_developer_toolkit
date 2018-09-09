@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/sweetalert2.min.css">
     <link rel="stylesheet" href="css/jquery.tour.css">
     <link rel="stylesheet" href="fonts/materialicons.css"  type="text/css">
+    <link rel="stylesheet" type="text/css" href="/css/jquery.dataTables.css">
     <style>
       div.piez-main {
         background: rgb(255, 255, 255);
@@ -140,6 +141,7 @@
               <a href="#" class="brand-logo" style="line-height: 40px;">&nbsp;&nbsp;	 Akamai Developer Toolkit<span class="versionNumber new badge teal lighten-2" data-badge-caption="Version" style="margin-top: 8px; position: absolute"></span></a>
               
               <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <!--<li style="line-height: 30px;"><a href="#!" id="loadtour" class="btn white-text light-blue">Start Tour</a></li>-->
                 <li style="line-height: 30px;"><a href="#!" id="feedbackform" class="btn blue-grey-text text-darken-2 blue-grey lighten-5 hoverable tooltipped" data-position="bottom" data-tooltip="Provide feedback to improve the tool" style=
                   "margin-top: 7px; height: 26px; line-height: 26px; font-size: 1rem; text-transform: unset;">
                   Submit Feedback</a></li>
@@ -164,6 +166,9 @@
 
 
 <main>
+  <div class="body-ext">
+
+
 
   <!--notification-->
     <div id="notification" style="text-align:-webkit-center;"></div>
@@ -241,9 +246,16 @@
                          
                           <div class="col s12 card" style="background-color: #e7f2fd">
                             <div class="card-content">
-                              <div class="col s8">
+                              <div class="col s5">
                                   <h6>RESPONSE SECTION</h6>
                               </div>
+                              <div class="col s3">
+                                  <div class="responsestatus-js">
+                                    
+                                    <br>
+                                    <br>
+                                  </div>
+                                </div>
                               <div class="col s4">
                                 <div class="responsetime-js">
                                   
@@ -680,8 +692,10 @@
     </div> <!-- container -->
 
     
-
+  </div>
   </main>
+
+
     <footer class="page-footer orange lighten-1">
         <div class="footer-copyright orange ">
           <div class="container">
@@ -705,6 +719,7 @@
     <script type="text/javascript" src="openapitester/openapitester-history.js"></script>
     <script type="text/javascript" src="js/jquery.dataTables.js"></script>
     <script type="text/javascript" src="js/jquery.tour.js"></script>
+
 
 
   </body>

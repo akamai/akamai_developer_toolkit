@@ -15,6 +15,7 @@ function saveOpenAPIResult(openapi_result) {
     openapi_history[openapi_result.requestId] = openapi_result;  
     chrome.storage.local.set({ openapiHistory: openapi_history });
     console.log("New OpenAPI record added");
+    loadHistory1();
   });
 }
 
@@ -39,7 +40,17 @@ var OnRequestSuccess = function(response, status, obj_request, jqappxhr, respp_t
   //console.log(openapireq_result.respreq_time);
   saveOpenAPIResult(openapireq_result);
   loadOpenAPIResults(openapireq_result);
-  showListNotification("OpenAPI", "Request Success", openapireq_result, img_success);
+  var loadresp_status = '<p style="margin-top: 10px;"> | Request Status:<span class="new badge green" style="margin-top:-5px;" data-badge-caption="SUCCESS"></span></p><br><br>'
+       //message to send success notification to popup.js
+       chrome.runtime.sendMessage({
+        msg: "openapi_notfify", 
+        data: {
+            subject: "MSG",
+            content: loadresp_status
+        }
+    });
+
+  //showListNotification("OpenAPI", "Request Success", openapireq_result, img_success);
 }
 
     var OnRequestError = function(xhr, status, error, obj_request, respe_time) { 
@@ -63,7 +74,17 @@ var OnRequestSuccess = function(response, status, obj_request, jqappxhr, respp_t
       }
       saveOpenAPIResult(openapireqerror_result);
       loadOpenAPIResults(openapireqerror_result);
-      showListNotification("OpenAPI", "Request Failed", openapireqerror_result, img_fail);
+      var loadresp_status = '<p style="margin-top: 10px;"> | Request Status:<span class="new badge red" style="margin-top:-5px;" data-badge-caption="ERROR"></span></p><br><br>'
+      //message to send success notification to popup.js
+      chrome.runtime.sendMessage({
+       msg: "openapi_notfify", 
+       data: {
+           subject: "MSG",
+           content: loadresp_status
+       }
+   });
+    //  $.notify("OPEN API request unsuccessful", "error");
+    // showListNotification("OpenAPI", "Request Failed", openapireqerror_result, img_fail);
   }
   
   
@@ -94,7 +115,7 @@ var OnRequestSuccess = function(response, status, obj_request, jqappxhr, respp_t
           requestedTime: getCurrentDatetimeUTC()
         }
         sendGetReq(obj_request, OnRequestSuccess, OnRequestError);
-        showBasicNotification("OPEN API GET Requested", "You will get notified shortly");
+        //showBasicNotification("OPEN API GET Requested", "You will get notified shortly");
         sleep(Math.floor((Math.random() * 1000) + 100), callback);
       }
       if(arr_method == "POST"){
@@ -113,7 +134,7 @@ var OnRequestSuccess = function(response, status, obj_request, jqappxhr, respp_t
         }
         
         sendPostReq(obj_request, OnRequestSuccess, OnRequestError, callback);
-        showBasicNotification("OPEN API POST Requested", "You will get notified shortly");
+        //showBasicNotification("OPEN API POST Requested", "You will get notified shortly");
         sleep(Math.floor((Math.random() * 1000) + 100), callback);
 
       }
@@ -129,7 +150,7 @@ var OnRequestSuccess = function(response, status, obj_request, jqappxhr, respp_t
           requestedTime: getCurrentDatetimeUTC()
         }
         sendDeleteReq(obj_request, OnRequestSuccess, OnRequestError, callback);
-        showBasicNotification("OPEN API POST Requested", "You will get notified shortly");
+       // showBasicNotification("OPEN API POST Requested", "You will get notified shortly");
         sleep(Math.floor((Math.random() * 1000) + 100), callback);
 
       }
@@ -137,3 +158,13 @@ var OnRequestSuccess = function(response, status, obj_request, jqappxhr, respp_t
 
   }
   
+
+  function loadHistory1() {
+    chrome.runtime.sendMessage({
+      msg: "reload_history", 
+      data: {
+          subject: "XHR5 response",
+          content: "history reloaded"
+      }
+  });
+  }

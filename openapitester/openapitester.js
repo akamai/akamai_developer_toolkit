@@ -6,6 +6,7 @@
   });
 
 
+
   function loadOpenAPIResults(openapi_result){
     $("#openapiresults-js").empty();
     $('.openapiresppayload-js').empty();
@@ -45,8 +46,9 @@
 
     var loadrequest_payload = '<pre style="font-size: 1.0rem; background-color: white">' + openapi_result.body_data + '</pre>';
      
-    var loadresp_time = '<p style="margin-top: 10px;">Time taken for response:<span class="new badge" style="margin-top:-5px;" data-badge-caption="ms">'+ openapi_result.respreq_time + '</span></p><br><br>'
-    //need to define this
+    var loadresp_time = '<p style="margin-top: 10px;">| Time taken for response:<span class="new badge" style="margin-top:-5px;" data-badge-caption="ms">'+ openapi_result.respreq_time + '</span></p><br><br>'
+    
+  //need to define this
    // var loadrequest_headers ={
    //   body_data: "Request Payload"
    // }
@@ -92,16 +94,16 @@
     //defining html for request payload
       var html4 = '<div class="card-content black-text">';
       html4 += ''+ loadrequest_payload + '</div>'; 
-      
+
+//message to send detailed response to popup.js
+     chrome.runtime.sendMessage({
+      msg: "openapi_response_completed", 
+      data: {
+          subject: "XHR response",
+          content: html1
+      }
+  });
      
-     //message to send detailed response to popup.js
-    chrome.runtime.sendMessage({
-        msg: "openapi_response_completed", 
-        data: {
-            subject: "XHR response",
-            content: html1
-        }
-    });
      //message to send detailed response payload to popup.js
     chrome.runtime.sendMessage({
       msg: "openapi_response_payload", 
@@ -162,6 +164,8 @@
         $('.openapirespheaders-js').empty();
         $('.openapireqheaders-js').empty();
         $('.openapireqpayload-js').empty();
+        $('.responsestatus-js').empty();
+        $('.responsetime-js').empty();
         //inject spinner into div
         $('.openapiresults-js').append('<div style="style="padding-top: 10px; padding-bottom: 10px;"><div class="progress orange lighten-1"><div class="indeterminate orange lighten-5"></div></div></div>');
         $('.openapiresppayload-js').append('<div style="style="padding-top: 10px; padding-bottom: 10px;"><div class="progress orange lighten-1"><div class="indeterminate orange lighten-5"></div></div></div>');
@@ -185,12 +189,3 @@
   });
   
 
-  function loadHistory1() {
-    chrome.runtime.sendMessage({
-      msg: "reload_history", 
-      data: {
-          subject: "XHR4 response",
-          content: "history reloaded"
-      }
-  });
-  }

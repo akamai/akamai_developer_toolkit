@@ -8,10 +8,13 @@
  * Licensed under the MIT license (http://www.opensource.org/licenses/mit-license.php).
  * 2013/02/09
 */
+var var_exit = false;
 (function($, window){
+
     $.tour = function (TourSteps, TourCompleteCallback) {
 
         var Tour = {
+            
             startFrom: 0, // override this to start the tour from a specified point
             offsetFudge: 15, // adjusts distance from target for tour dialog
             allowSkip: false, // coming in a future update
@@ -19,7 +22,10 @@
 
             init: function () {
                 $('body').prepend('<div id="tour_mask"></div><div id="tour_dialog"><div class="arrow top"></div><div class="msg"></div></div>');
-                this.showStep();
+                if (var_exit === false){
+                    this.showStep();
+                }
+
             },
 
             // increment steps or pause if we're waiting on a trigger to advance
@@ -41,6 +47,7 @@
                     stop: this.startFrom
                 }, this.tourClickHandler);
 
+
                 if (!$('#tour_mask').is(":visible")) {
                     $('#tour_mask').fadeIn();
                 }
@@ -48,6 +55,12 @@
                 $(TourSteps[this.startFrom].selector).addClass('active').fadeIn();
                 $('#tour_dialog').fadeIn(function () {
                     parent.dialogVisible();
+                });
+                $('#exit_tour_dialog_btn').on('click', function(e){
+                    Tour.tourComplete();
+                    TourSteps.length = 0;
+                    var_exit = true;
+                    return;
                 });
             },
 
@@ -73,6 +86,12 @@
                         }
                     });
                 }
+                $('#tour_mask').fadeOut(function () {
+                    $('.tour_item').removeClass('active');
+                    if (typeof TourCompleteCallback == 'function') {
+                        TourCompleteCallback.call();
+                    }
+                });
             },
 
             // To use: include MixPanel js (see mixpanel.com). Set identity or person info *before* the tour starts.
@@ -88,6 +107,8 @@
             getContent: function () {
                 var message = TourSteps[this.startFrom].msg;
                 message += TourSteps[this.startFrom].btnMsg ? "<hr><div id='tour_dialog_btn' class='button'>" + TourSteps[this.startFrom].btnMsg + "</div>" : "";
+                message += TourSteps[this.startFrom].exitbtnMsg ? "<div id='exit_tour_dialog_btn' class='button'>" + TourSteps[this.startFrom].exitbtnMsg + "</div>" : "";
+                message += TourSteps[this.startFrom].exit1btnMsg ? "<hr><div id='exit_tour_dialog_btn' class='button'>" + TourSteps[this.startFrom].exit1btnMsg + "</div>" : "";
                 $('#tour_dialog .msg').html(message);
             },
 
@@ -189,12 +210,17 @@
                     if ($(e.currentTarget).is(nextSel) || $(nextSel).find(e.currentTarget).length > 0) {
                         Tour.stepComplete();
                     }
-                } else { // no next selector specified. Any click or action will continue the tour
+                } 
+                
+                else { // no next selector specified. Any click or action will continue the tour
                     Tour.stepComplete();
+                   // Tour.tourComplete();
                 }
             }
         };
         Tour.init(); // kickoff our tour
+
+
 
     };
 }(jQuery, window));
