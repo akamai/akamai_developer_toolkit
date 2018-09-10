@@ -43,7 +43,31 @@
     height: 2px;
     margin: 15px 0;
 }
-#tour_dialog .button {
+
+#tour_dialog #exit_tour_dialog_btn.button {
+    border-radius: 4px;
+    display: inline-block;
+    font-size: 14px;
+    padding: 6px 14px;
+    position: relative;
+    vertical-align: top;
+    cursor: pointer;
+    float: right;
+    border: 1px solid #000;
+    background-color: #9e9e9e !important;
+}
+
+#tour_dialog #exit_tour_dialog_btn.button:hover {
+    background: -moz-linear-gradient(top, #44a4c7 0%, #2136bf 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #44a4c7), color-stop(100%, #2136bf));
+    background: -webkit-linear-gradient(top, #44a4c7 0%, #2136bf 100%);
+    background: -o-linear-gradient(top, #44a4c7 0%, #2136bf 100%);
+    background: -ms-linear-gradient(top, #44a4c7 0%, #2136bf 100%);
+    background: linear-gradient(top, #44a4c7 0%, #2136bf 100%);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='44a4c7', endColorstr='2136bf', GradientType=0);
+    color: #fff !important;
+}
+#tour_dialog #tour_dialog_btn.button {
     border-radius: 4px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -70,7 +94,7 @@
     cursor: pointer;
     float: right;
 }
-#tour_dialog .button:hover {
+#tour_dialog #tour_dialog_btn.button:hover {
     background: -moz-linear-gradient(top, #44a4c7 0%, #2136bf 100%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #44a4c7), color-stop(100%, #2136bf));
     background: -webkit-linear-gradient(top, #44a4c7 0%, #2136bf 100%);
