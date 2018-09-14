@@ -138,6 +138,26 @@ var OnRequestSuccess = function(response, status, obj_request, jqappxhr, respp_t
         sleep(Math.floor((Math.random() * 1000) + 100), callback);
 
       }
+      if(arr_method == "PUT"){
+        var obj_request = {
+          url: activatedTokenCache.baseurl + arr_openapiendpoint,
+          endpoint: arr_openapiendpoint,
+          method: arr_method,
+          headernamevalue: arr_headernamevalue,
+          headername: arr_headersname,
+          headervalue: arr_headersvalue,
+          body_data: arr_addpostbody,
+          auth_header: authorizationHeader({method: "PUT", body: arr_addpostbody, tokens: activatedTokenCache, endpoint: arr_openapiendpoint}),
+          requestId: "OpenAPI_" + new Date().getTime().toString(),
+          token_desc: activatedTokenCache.desc,
+          requestedTime: getCurrentDatetimeUTC()
+        }
+        
+        sendPutReq(obj_request, OnRequestSuccess, OnRequestError, callback);
+        //showBasicNotification("OPEN API POST Requested", "You will get notified shortly");
+        sleep(Math.floor((Math.random() * 1000) + 100), callback);
+
+      }
 
       if(arr_method == "DELETE"){
         var obj_request = {
