@@ -15,8 +15,10 @@ function loadDetails(openapireq_req_id, callback) {
         requestId: "Request Id",
         status: "Response Status",
         method: "HTTP Method",
-        endpoint: "API endpoint",
-        body_data: "POST Payload"
+        endpoint: "API Endpoint",
+        body_data: "POST Payload",
+        response_headers: "Response Headers",
+        respreq_time: "Total Time For Response"
  
       }
   
@@ -26,10 +28,13 @@ function loadDetails(openapireq_req_id, callback) {
         let key = arr_keys[i];
         var text = "";
         if (jQuery.type(history_data[key]) == 'object' && key != 'token_desc') {
-          text = "<pre>" + JSON.stringify(history_data[key], null, 2) + "</pre>";
-        } else if (jQuery.type(history_data[key]) == 'array') {
+            text = "<pre>" + JSON.stringify(history_data[key], null, 2) + "</pre>";
+        } else if (jQuery.type(history_data[key]) == 'object Object'){
+          text += "<p>" + history_data[key] + "</p>";
+        }
+        else if (jQuery.type(history_data[key]) == 'array') {
           for(var k=0; k < history_data[key].length; k++) {
-            text += "<p>" + history_data[key][k] + "</p>";
+            text += "<pre>" + JSON.stringify(history_data[key][k], null, 2) + "</pre>";
           }
         } else if (key == 'token_desc') {
           text = history_data[key];

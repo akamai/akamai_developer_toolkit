@@ -15,11 +15,11 @@ var img_success = "img/success_icon.png",
     img_fail = "img/fail_icon.png", 
     img_info = "img/info_icon.png";
 
-var recoveredFromIdleS = {};
-chrome.idle.setDetectionInterval(300);
+//var recoveredFromIdleS = {};
+//chrome.idle.setDetectionInterval(300);
 
 //extension needs to be restarted when going idle, it's impacting OPEN API tester's ability to compute the right time parameters
-chrome.idle.onStateChanged.addListener(function(state) {
+/*chrome.idle.onStateChanged.addListener(function(state) {
       if (state == 'active') {
           console.log('State is now active');
           chrome.storage.local.set({'recoveredFromIdle': 'true'}, function(){
@@ -27,7 +27,7 @@ chrome.idle.onStateChanged.addListener(function(state) {
           })
 
       }
-  });
+  });*/
 
 
 var showBasicNotification = function(title, message, img = img_info) {
