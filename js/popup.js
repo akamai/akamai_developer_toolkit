@@ -524,13 +524,14 @@ chrome.runtime.onMessage.addListener(
   });
 
   */
-
+/*
   $(document).on('click', '#loadgettingstartedvideo', function() {
     chrome.runtime.sendMessage({type: "gaq", target: "View_getting_started_video", behavior: "clicked"});
     chrome.tabs.create({
       url: 'https://www.youtube.com/watch?v=6PhU7lwOqHM'
     });
   });
+  */
 
   $(document).on('click', '#loadtour', function() {
     chrome.runtime.sendMessage({type: "gaq", target: "View_getting_started_tour", behavior: "clicked"});
@@ -578,10 +579,11 @@ chrome.runtime.onMessage.addListener(
   $('.userguide').click(function() {
     chrome.runtime.sendMessage({type: "gaq", target: "User_guide_clicked", behavior: "clicked"});
     chrome.tabs.create({
-      url: 'https://developer.akamai.com/tools/developer-toolkit'
+      url: 'https://developer.akamai.com/tools/akamai-toolkit-chrome'
     });
   });
 
+  /*
   $('#apicredstutorial').click(function(){
     chrome.runtime.sendMessage({type: "gaq", target: "View_api_creds_tutorial", behavior: "clicked"});
 		chrome.tabs.create({url: 'https://youtu.be/6PhU7lwOqHM'});
@@ -606,6 +608,8 @@ chrome.runtime.onMessage.addListener(
     chrome.runtime.sendMessage({type: "gaq", target: "View_browser_settings_tutorial", behavior: "clicked"});
     chrome.tabs.create({url: 'https://youtu.be/YZsaQZzMtmM'});
   });
+  */
+
   $('#devpopssignuplink').click(function(){
     chrome.runtime.sendMessage({type: "gaq", target: "DevPoPs Sign Up Link", behavior: "clicked"});
     chrome.tabs.create({url: 'http://bit.ly/devpops18'});
