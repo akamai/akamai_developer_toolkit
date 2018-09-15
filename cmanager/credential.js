@@ -75,7 +75,7 @@ function loadcredentialaddition(){
             obj_input.focus();
             break;
           case 'baseurl':
-            alert('Please enter Base URL');
+            alert('Please enter Host');
             obj_input.focus();
             break;
           case 'accesstoken':
@@ -104,14 +104,14 @@ function loadcredentialaddition(){
     var urlparser = document.createElement('a');
     urlparser.href = baseurl;
     if (urlparser.protocol !== 'https:') {
-      alert('Base URL should start with https://');
+      alert('Host should start with https://');
       $("#baseurl").focus();
       return false;
     }
 
-    var domainre = /^https:\/\/[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]+\.(?:purge|luna|imaging)\.akamaiapis\.net\/?$/i;
+    var domainre = /^https:\/\/[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]+\.(?:purge|luna|imaging|imaging-staging)\.akamaiapis\.net\/?$/i;
     if (!baseurl.match(domainre)) {
-      alert('Please check if Base URL is in right format');
+      alert('Please check if Host is in right format');
       $("#baseurl").focus();
       return false;
     }
@@ -210,7 +210,7 @@ function loadcredentialaddition(){
     if (!uploaded_file) {
       alert("Failed to load file");
     } else if (!uploaded_file.type.match('text.*')) {
-		  alert(uploaded_file.name + " is not a valid text file");
+		  alert(uploaded_file.name + " is not a valid text or edgerc file");
     } else {
       var read = new FileReader();
       read.onload = function(frObj) {
@@ -262,10 +262,10 @@ function loadcredentialaddition(){
       $("#tokentype").val("Fast Purge APIs");
       $('select').material_select();
     } else if (credential_type === "luna") {
-      $("#tokentype").val("General OPEN APIs");
+      $("#tokentype").val("General Akamai APIs");
       $('select').material_select();
     } else {
-      $("#tokentype").val("Other OPEN APIs");
+      $("#tokentype").val("Other Akamai APIs");
       $('select').material_select();
     }
   });
