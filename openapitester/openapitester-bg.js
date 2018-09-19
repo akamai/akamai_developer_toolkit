@@ -88,7 +88,7 @@ var OnRequestSuccess = function(response, status, obj_request, jqappxhr, respp_t
   }
   
   
-  function makeOpenAPIReq(arr_openapiendpoint, arr_method, arr_headersname, arr_headersvalue, arr_addpostbody, callback) {
+  function makeOpenAPIReq(arr_openapiendpoint, arr_method, arr_headersname, arr_headerspresent, arr_headersvalue, arr_addpostbody, callback) {
      // console.log(arr_method);
      // console.log(arr_openapiendpoint);
     //  console.log(arr_addpostbody);
@@ -101,11 +101,14 @@ var OnRequestSuccess = function(response, status, obj_request, jqappxhr, respp_t
       //}
       var arr_headernamevalue = {};
       arr_headernamevalue [arr_headersname] = arr_headersvalue;
+      console.log(arr_headersname);
+      console.log(arr_headersvalue);
       if (arr_method == "GET"){
         var obj_request = {
           url: activatedTokenCache.baseurl + arr_openapiendpoint,
           endpoint: arr_openapiendpoint,
           method: arr_method,
+          headerpresent: arr_headerspresent,
           headernamevalue: arr_headernamevalue,
           headername: arr_headersname,
           headervalue: arr_headersvalue,
@@ -123,6 +126,7 @@ var OnRequestSuccess = function(response, status, obj_request, jqappxhr, respp_t
           url: activatedTokenCache.baseurl + arr_openapiendpoint,
           endpoint: arr_openapiendpoint,
           method: arr_method,
+          headerpresent: arr_headerspresent,
           headernamevalue: arr_headernamevalue,
           headername: arr_headersname,
           headervalue: arr_headersvalue,
@@ -143,6 +147,7 @@ var OnRequestSuccess = function(response, status, obj_request, jqappxhr, respp_t
           url: activatedTokenCache.baseurl + arr_openapiendpoint,
           endpoint: arr_openapiendpoint,
           method: arr_method,
+          headerpresent: arr_headerspresent,
           headernamevalue: arr_headernamevalue,
           headername: arr_headersname,
           headervalue: arr_headersvalue,
@@ -164,6 +169,10 @@ var OnRequestSuccess = function(response, status, obj_request, jqappxhr, respp_t
           url: activatedTokenCache.baseurl + arr_openapiendpoint,
           endpoint: arr_openapiendpoint,
           method: arr_method,
+          headerpresent: arr_headerspresent,
+          headernamevalue: arr_headernamevalue,
+          headername: arr_headersname,
+          headervalue: arr_headersvalue,
           auth_header: authorizationHeader({method: "DELETE", tokens: activatedTokenCache, endpoint: arr_openapiendpoint}),
           requestId: "OpenAPI_" + new Date().getTime().toString(),
           token_desc: activatedTokenCache.desc,

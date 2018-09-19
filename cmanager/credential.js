@@ -109,7 +109,7 @@ function loadcredentialaddition(){
       return false;
     }
 
-    var domainre = /^https:\/\/[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]+\.(?:purge|luna|imaging|imaging-staging)\.akamaiapis\.net\/?$/i;
+    var domainre = /^https:\/\/[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]+\.(?:purge|luna|imaging|imaging-staging|luna-dev|purge-dev|imaging-dev)\.akamaiapis\.net\/?$/i;
     if (!baseurl.match(domainre)) {
       alert('Please check if Host is in right format');
       $("#baseurl").focus();
@@ -262,10 +262,10 @@ function loadcredentialaddition(){
       $("#tokentype").val("Fast Purge APIs");
       $('select').material_select();
     } else if (credential_type === "luna") {
-      $("#tokentype").val("General Akamai APIs");
+      $("#tokentype").val("General OPEN APIs");
       $('select').material_select();
     } else {
-      $("#tokentype").val("Other Akamai APIs");
+      $("#tokentype").val("Other OPEN APIs");
       $('select').material_select();
     }
   });
