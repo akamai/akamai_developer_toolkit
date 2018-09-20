@@ -145,11 +145,17 @@
       chrome.runtime.getBackgroundPage(function(backgroundpage) {
           backgroundpage._gaq.push(['_trackEvent', 'Submit_openapitester_req', 'clicked']);
       });
-
+      var arr_target_headerspresent = false;
       var arr_target_openapiendpoint = $('#openapiendpoint').val().split("\n");
       var arr_target_method = $('#openAPImethod').prop('value');
       var arr_target_headersname = $('#addheadersname').val().split("\n");
       var arr_target_headersvalue = $('#addheadersvalue').val().split("\n");
+      var arr_target_headersnamelngth = $('#addheadersname').val().length;
+      console.log(arr_target_headersnamelngth);
+      //var arr_target_headersvaluelngth = $('#addheadersvalue').val().length;
+      if (arr_target_headersnamelngth >0){
+        arr_target_headerspresent = true;
+      }
       var arr_target_addpostbody = $('#addpostbody').val();
       body_data = arr_target_addpostbody.replace(/\n/g,"");
       //console.log(body_data);
@@ -180,7 +186,7 @@
           submit_buttons.addClass("disabled");
           this_obj.html('<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>');
           chrome.runtime.getBackgroundPage(function(backgroundpage) {
-            backgroundpage.makeOpenAPIReq(arr_target_openapiendpoint.filter(Boolean), arr_target_method, arr_target_headersname, arr_target_headersvalue, body_data, function(request_result) {
+            backgroundpage.makeOpenAPIReq(arr_target_openapiendpoint.filter(Boolean), arr_target_method, arr_target_headersname, arr_target_headerspresent, arr_target_headersvalue, body_data, function(request_result) {
                 submit_buttons.removeClass("disabled").blur();
                 this_obj.html(this_html);
               });
