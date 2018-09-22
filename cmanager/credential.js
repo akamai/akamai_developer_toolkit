@@ -210,7 +210,7 @@ function loadcredentialaddition(){
     if (!uploaded_file) {
       alert("Failed to load file");
     } else if (!uploaded_file.type.match('text.*')) {
-		  alert(uploaded_file.name + " is not a valid text or edgerc file");
+		  alert(uploaded_file.name + " is not a valid text file");
     } else {
       var read = new FileReader();
       read.onload = function(frObj) {

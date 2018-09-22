@@ -1,7 +1,7 @@
 var tableapis = {};
 $(document).ready(function() {
 
-    chrome.runtime.sendMessage({type: "gaq", target: "OpenAPI_history_page", behavior: "loaded"});
+    //chrome.runtime.sendMessage({type: "gaq", target: "OpenAPI_history_page", behavior: "loaded"});
   
     loadHistory(function(){
       initDataTable();
