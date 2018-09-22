@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/jquery.tour.css">
     <link rel="stylesheet" href="fonts/materialicons.css"  type="text/css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.dataTables.css">
+    <link href='papiviz/css/papiviz.css' media='all' type='text/css' rel='stylesheet'/>
     <style>
       div.piez-main {
         background: rgb(255, 255, 255);
@@ -156,6 +157,7 @@
                 <li class="tab"><a href="#analysis">Site Analysis</a></li>
                 <li class="tab"><a href="#upcoming">Upcoming Features</a></li>
                 <li class="tab" id="tour_open_api"><a href="#testing">Akamai API Tester</a></li>
+                <li class="tab"><a href="#jsonvisualization">Others</a></li>
               </ul>
             </div>
 
@@ -200,7 +202,19 @@
                 </div>
                 <div class="row">
                   <div class="col s12 card request-section" style="background-color:#e7eff7">
-                    <h6>REQUEST SECTION</h6>
+                    <div class="row">
+                      <br>
+                        <div class="col s8">
+                            <h6>REQUEST SECTION</h6>
+                        </div>
+                        <div class="col s4 right-align" style="padding-right:20px;">
+                            <a id="openapitester-submitButton" href="#!" class="btn light-blue hoverable submit-button">SUBMIT</a> 
+                        </div>
+                    </div>
+                
+
+                   
+                    
                   <div class="col s2" style="margin-top: 10px">
                     <div class="input-field">
                         <select id="openAPImethod">
@@ -237,7 +251,7 @@
                           <textarea id="addpostbody" placeholder="{a:b}" class="materialize-textarea"></textarea>
                           <label for="addpostbody">Add POST data (Optional)</label>
                       </div> 
-                      <a id="openapitester-submitButton" href="#!" class="btn light-blue hoverable submit-button" style="width: 20%;">SUBMIT</a>  
+                      
                       <p style="padding-bottom:10px; padding-top:10px;"><i>Need more capability? <a href="#!" id="feedbackformlink" class="orange-text">click here </a> to request them</i></p>                      
                     </div>
                   </div>
@@ -641,6 +655,46 @@
 
   </div>
 
+<div id="jsonvisualization" class="col l12">
+  <div class="container">
+    <div class="row">
+      <div class="col l12 m12">
+          <div class="card hoverable">
+              <div class="card-content black-text">
+                  <div class="row">
+                      <div class="col s7">
+                        <span class="card-title black-text">JSON Visualizer
+                          <a href="#!" id="papivisualizer" class="tooltipped" data-position="bottom" data-tooltip="Coming Soon: Video tutorial on how to use this section">
+                            <i class="material-icons blue-grey-text text-darken-2 tutorial-video-icon">play_circle_outline</i>
+                          </a>
+                        </span>
+                      </div>
+                     <!-- <div class="col s5 right-align">
+                          <a id='sidenavbutton' class="btn blue-grey lighten-5 hoverable tooltipped blue-grey-text text-darken-3" data-position="bottom" data-tooltip="Click here to switch active tokens">Switch Akamai API credentials</a>
+                        <a id='openapitesterhistorydetails' class="btn blue-grey lighten-5 hoverable tooltipped blue-grey-text text-darken-3" data-position="bottom" data-tooltip="Click here to view the results of your latest request">History</a>
+                      </div>-->
+                    </div>
+                    <div class="row">
+                      <div class="col s12">
+                        <span>Helps visualize your JSON files. Copy paste the PAPI file here for easier visualization, below is a sample papi file to show you how the visualization works</span>
+                      </div>
+                    </div>
+            <div style="margin-top:20px;">
+              <textarea id='inputJSON' type='text' style='width:100%;height:150px;margin-bottom:10px;'></textarea>
+              <a id='btnVisualize' class='btn light-blue' style='width:100%;'>Visualize</a>
+              
+              <div class='divider' style='margin-top:20px;'></div>
+      
+              <div id='top'></div>
+            </div>
+            </div>
+          </div>
+ 
+      </div>
+    </div>
+  </div>
+</div>
+
     <div class="container" style="width: 750px; padding: 0px">
       <div class="row">
         <div class="col s12">
@@ -720,7 +774,9 @@
     <script type="text/javascript" src="openapitester/openapitester-history.js"></script>
     <script type="text/javascript" src="js/jquery.dataTables.js"></script>
     <script type="text/javascript" src="js/jquery.tour.js"></script>
-
+    <script type="text/javascript" src="papiviz/lib/index.js"></script>
+    <script type="text/javascript" src="papiviz/js/jquery.json2html.js"></script>
+    <script type="text/javascript" src="papiviz/js/json2html.js"></script>
 
 
   </body>
