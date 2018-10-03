@@ -1,11 +1,15 @@
 function getTimeStampInUtc() {
-  obj_date = new Date();
-  year = obj_date.getUTCFullYear();
-  month = obj_date.getUTCMonth() + 1;
-  date = obj_date.getUTCDate();
-  hours = obj_date.getUTCHours();
-  minutes = obj_date.getUTCMinutes();
-  seconds = obj_date.getUTCSeconds();
+  //obj_date = new Date();
+  obj_date = moment.utc().format("YYYYMMDDTHH:mm:ss+0000");
+  console.log(obj_date);
+  return obj_date;
+ /*year = moment().year(obj_date);
+ console.log(year);
+  month = moment().month(obj_date) + 1;
+  date = moment().date(obj_date);
+  hours = moment().hour(obj_date);
+  minutes = moment().minute(obj_date);
+  seconds = moment().seconds(obj_date);
   temp_arr = [year, month, date, hours, minutes, seconds]
   for (i = 0; i < temp_arr.length; i++) {
     if (temp_arr[i] < 10) {
@@ -13,6 +17,8 @@ function getTimeStampInUtc() {
     }
   }
   return temp_arr[0] + temp_arr[1] + temp_arr[2] + 'T' + temp_arr[3] + ':' + temp_arr[4] + ':' + temp_arr[5] + '+0000';
+*/
+
 }
 
 function authHeaderValueWithOutSignature(apiTokens, timestamp) {
