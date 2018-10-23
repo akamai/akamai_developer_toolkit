@@ -1,1 +1,51 @@
-var _0x5936=['\x66\x75\x6e\x63\x74\x69\x6f\x6e\x20\x2a\x5c\x28\x20\x2a\x5c\x29','\x5c\x2b\x5c\x2b\x20\x2a\x28\x3f\x3a\x5f\x30\x78\x28\x3f\x3a\x5b\x61\x2d\x66\x30\x2d\x39\x5d\x29\x7b\x34\x2c\x36\x7d\x7c\x28\x3f\x3a\x5c\x62\x7c\x5c\x64\x29\x5b\x61\x2d\x7a\x30\x2d\x39\x5d\x7b\x31\x2c\x34\x7d\x28\x3f\x3a\x5c\x62\x7c\x5c\x64\x29\x29','\x69\x6e\x69\x74','\x74\x65\x73\x74','\x69\x6e\x70\x75\x74','\x31\x36\x35\x35\x39\x35\x39\x36\x30\x34\x31\x30\x33\x30\x33\x34\x34\x38\x38\x31\x31\x33\x36\x37\x30\x38\x32\x33\x30\x30\x31\x32\x39\x32\x36\x36\x39\x30\x39\x32','\x70\x69\x65\x7a\x2d\x69\x6d\x2d\x73\x69\x6d\x70\x6c\x65','\x70\x69\x65\x7a\x2d\x69\x6d\x2d\x61\x64\x76\x61\x6e\x63\x65\x64','\x70\x69\x65\x7a\x2d\x61\x32','\x70\x69\x65\x7a\x2d\x72\x6f\x2d\x61\x64\x76\x61\x6e\x63\x65\x64','\x70\x69\x65\x7a\x2d\x6f\x66\x66','\x69\x73\x45\x6d\x70\x74\x79\x4f\x62\x6a\x65\x63\x74','\x73\x74\x72\x69\x6e\x67\x69\x66\x79','\x65\x6e\x63\x72\x79\x70\x74','\x6c\x6f\x67','\x74\x6f\x53\x74\x72\x69\x6e\x67','\x6f\x62\x6a\x65\x63\x74','\x41\x45\x53','\x64\x65\x63\x72\x79\x70\x74','\x65\x6e\x63','\x55\x74\x66\x38','\x70\x61\x72\x73\x65','\x63\x6f\x6e\x73\x74\x72\x75\x63\x74\x6f\x72','\x63\x6f\x75\x6e\x74\x65\x72','\x6c\x65\x6e\x67\x74\x68','\x64\x65\x62\x75','\x67\x67\x65\x72','\x63\x61\x6c\x6c','\x61\x63\x74\x69\x6f\x6e','\x61\x70\x70\x6c\x79'];(function(_0x15d356,_0x4f0595){var _0x25430a=function(_0x3fe658){while(--_0x3fe658){_0x15d356['push'](_0x15d356['shift']());}};_0x25430a(++_0x4f0595);}(_0x5936,0x10d));var _0x2085=function(_0x1d08f2,_0x2b926c){_0x1d08f2=_0x1d08f2-0x0;var _0x529e7e=_0x5936[_0x1d08f2];return _0x529e7e;};var _0x56eeba=function(){var _0x53147c=!![];return function(_0x14f5aa,_0x41e676){var _0x58fdb8=_0x53147c?function(){if(_0x41e676){var _0x2eb14b=_0x41e676[_0x2085('0x0')](_0x14f5aa,arguments);_0x41e676=null;return _0x2eb14b;}}:function(){};_0x53147c=![];return _0x58fdb8;};}();(function(){_0x56eeba(this,function(){var _0x5f342f=new RegExp(_0x2085('0x1'));var _0x14917f=new RegExp(_0x2085('0x2'),'\x69');var _0x2c0c03=_0x1683a8(_0x2085('0x3'));if(!_0x5f342f[_0x2085('0x4')](_0x2c0c03+'\x63\x68\x61\x69\x6e')||!_0x14917f['\x74\x65\x73\x74'](_0x2c0c03+_0x2085('0x5'))){_0x2c0c03('\x30');}else{_0x1683a8();}})();}());const enkey=_0x2085('0x6');const possible_keys=[enkey,_0x2085('0x7'),_0x2085('0x8'),_0x2085('0x9'),'\x70\x69\x65\x7a\x2d\x72\x6f\x2d\x73\x69\x6d\x70\x6c\x65',_0x2085('0xa'),'\x70\x69\x65\x7a\x2d\x33\x70\x6d',_0x2085('0xb')];function a(_0xc57d22){if(jQuery[_0x2085('0xc')](_0xc57d22)){return![];}else{try{var _0x5d2a28=JSON[_0x2085('0xd')](_0xc57d22);var _0xa74444=CryptoJS['\x41\x45\x53'][_0x2085('0xe')](_0x5d2a28,enkey);}catch(_0x4bf4f1){console[_0x2085('0xf')](_0x4bf4f1);return![];}return _0xa74444[_0x2085('0x10')]();}}function b(_0x5bf909){if(_0x5bf909==undefined||_0x5bf909==null||_0x5bf909==''){return![];}else{for(var _0x251b1e=0x0;_0x251b1e<possible_keys['\x6c\x65\x6e\x67\x74\x68'];_0x251b1e++){var _0x4840f8=pleaseDecrypt(_0x5bf909,possible_keys[_0x251b1e]);if(typeof _0x4840f8==_0x2085('0x11')){return _0x4840f8;}}return![];}}function pleaseDecrypt(_0x73aabe,_0x35558d){try{var _0x88dc9b=CryptoJS[_0x2085('0x12')][_0x2085('0x13')](_0x73aabe,_0x35558d);var _0x225e05=_0x88dc9b[_0x2085('0x10')](CryptoJS[_0x2085('0x14')][_0x2085('0x15')]);}catch(_0x442f13){console[_0x2085('0xf')](_0x442f13);return![];}return JSON[_0x2085('0x16')](_0x225e05);}function _0x1683a8(_0x503457){function _0x30bf87(_0x124b7a){if(typeof _0x124b7a==='\x73\x74\x72\x69\x6e\x67'){return function(_0x36068a){}[_0x2085('0x17')]('\x77\x68\x69\x6c\x65\x20\x28\x74\x72\x75\x65\x29\x20\x7b\x7d')[_0x2085('0x0')](_0x2085('0x18'));}else{if((''+_0x124b7a/_0x124b7a)[_0x2085('0x19')]!==0x1||_0x124b7a%0x14===0x0){(function(){return!![];}[_0x2085('0x17')](_0x2085('0x1a')+_0x2085('0x1b'))[_0x2085('0x1c')](_0x2085('0x1d')));}else{(function(){return![];}[_0x2085('0x17')](_0x2085('0x1a')+_0x2085('0x1b'))[_0x2085('0x0')]('\x73\x74\x61\x74\x65\x4f\x62\x6a\x65\x63\x74'));}}_0x30bf87(++_0x124b7a);}try{if(_0x503457){return _0x30bf87;}else{_0x30bf87(0x0);}}catch(_0x2274fa){}}
+const enkey = '1655959604103034488113670823001292669092';
+const possible_keys = [enkey,
+  "piez-im-simple",
+  "piez-im-advanced",
+  "piez-a2",
+  "piez-ro-simple",
+  "piez-ro-advanced",
+  "piez-3pm",
+  "piez-off"
+];
+
+function a(obj) {
+  if (jQuery.isEmptyObject(obj)) {
+    return false;
+  } else {
+    try {
+      var str = JSON.stringify(obj)
+      var encrypted = CryptoJS.AES.encrypt(str, enkey);
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+    return encrypted.toString();
+  }
+}
+
+function b(enstr) {
+  if (enstr == undefined || enstr == null || enstr == '') {
+    return false;
+  } else {
+    for(var y=0; y < possible_keys.length; y++) {
+      var de_result = pleaseDecrypt(enstr, possible_keys[y]);
+      if (typeof de_result == "object") {
+        return de_result;
+      }
+    }
+    return false;
+  }
+}
+
+function pleaseDecrypt(encrypted_str, possible_key) {
+  try {
+    var decrypted = CryptoJS.AES.decrypt(encrypted_str, possible_key);
+    var str = decrypted.toString(CryptoJS.enc.Utf8);
+  } catch (err) {
+    // console.log("Trying different key " + possible_key);
+    console.log(err);
+    return false;
+  }
+  return JSON.parse(str);
+}
