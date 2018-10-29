@@ -109,7 +109,7 @@ function loadcredentialaddition(){
       return false;
     }
 
-    var domainre = /^https:\/\/[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]+\.(?:purge|luna|imaging|imaging-staging|luna-dev|purge-dev|imaging-dev)\.akamaiapis\.net\/?$/i;
+    var domainre = /^https:\/\/[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]+\.(?:purge|luna|imaging|imaging-staging|luna-dev|purge-dev|imaging-dev|cloudsecurity|cloudsecurity-staging|cloudsecurity-dev)\.akamaiapis\.net\/?$/i;
     if (!baseurl.match(domainre)) {
       alert('Please check if Host is in right format');
       $("#baseurl").focus();

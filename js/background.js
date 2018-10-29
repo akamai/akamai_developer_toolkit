@@ -251,7 +251,7 @@ chrome.notifications.onClicked.addListener(function(event){
 });
 
 // Proxy
-/*chrome.webRequest.onAuthRequired.addListener(
+chrome.webRequest.onAuthRequired.addListener(
   function(details, callbackFn) {
     if(details.isProxy === false){
       callbackFn();
@@ -268,7 +268,7 @@ chrome.notifications.onClicked.addListener(function(event){
       });
     });
   }, {urls: ["<all_urls>"]}, ['asyncBlocking']
-);*/
+);
 
 
 // This is Temporary. will be removed in next version
