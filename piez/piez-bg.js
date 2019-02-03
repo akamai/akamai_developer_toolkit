@@ -120,7 +120,7 @@ chrome.webRequest.onBeforeRedirect.addListener(function getNewUrl(redirect) {
 
 // Piez
 chrome.runtime.onConnect.addListener(function(port) {
-  console.log ('testing');
+  //console.log ('testing');
   devtools_port = port;
   port.onMessage.addListener(function onMessageListener (message) {
     switch (message.type) {
