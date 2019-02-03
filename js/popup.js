@@ -530,7 +530,7 @@ chrome.runtime.onMessage.addListener(
       url: 'https://www.youtube.com/watch?v=6PhU7lwOqHM'
     });
   });
-
+*/
 
   $(document).on('click', '#loadtour', function() {
     chrome.runtime.sendMessage({type: "gaq", target: "View_getting_started_tour", behavior: "clicked"});
@@ -541,14 +541,12 @@ chrome.runtime.onMessage.addListener(
 
 
 
-
-
   $(document).on('click', '#removePiez', function() {
     chrome.runtime.sendMessage({type: "gaq", target: "Original_piez_user_uninstalled", behavior: "clicked"});
     chrome.management.uninstall('npbccjkjemgagjioahfccljgnlkdleod');
     $("#piez-notification").empty();
   });
-
+/*
   $(document).on('click', '#editProxyForm #deleteProxyBtn', function() {
     chrome.runtime.sendMessage({type: "gaq", target: "deleting_edits_in_existing_proxy_form", behavior: "clicked"});
 
@@ -566,7 +564,7 @@ chrome.runtime.onMessage.addListener(
       });
     });
   });
-  
+ */ 
 
   $('.userguide').click(function() {
     chrome.runtime.sendMessage({type: "gaq", target: "User_guide_clicked", behavior: "clicked"});
