@@ -56,8 +56,7 @@
     "https://*/*",
     "http://*/*",
     "webRequest",
-    "webRequestBlocking",
-    "proxy"
+    "webRequestBlocking"
   ],
   "update_url":"https://clients2.google.com/service/update2/crx",
   "version":"2.0.33",
