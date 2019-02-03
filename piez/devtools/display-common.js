@@ -18,43 +18,57 @@
 		var pctChange = (((transformedSizeInt/originalSizeInt) - 1) * 100).toFixed(2);
 
 		if (transformedSizeInt == originalSizeInt) {
-			return '<span class="warning">  ' + '0%' + '</td>';
-		}
-		else if (pctChange > 0) {
-			return '<span class="error"> +' + Math.abs(pctChange).toString() + "%" + '</td>';
-		}
-		else if (pctChange < 0) {
-			return '<span class="success"> -' + Math.abs(pctChange).toString() + "%" + '</td>';
+			return '<span class="warning">  ' + '(' + '0%' + ')' + '</td>';
+		} else if (pctChange > 0) {
+			return '<span class="error"> ' + '(+' + Math.abs(pctChange).toString() + '%)' +'</td>';
+		} else if (pctChange < 0) {
+			return '<span class="success">' + '(-' + Math.abs(pctChange).toString() + '%)' + '</td>';
 		}
 	};
+	global.displayPercentChange1 = function(originalSize, transformedSize) {
+		var originalSizeInt    = parseInt(originalSize);
+		var transformedSizeInt = parseInt(transformedSize);
+
+		var pctChange = (((transformedSizeInt/originalSizeInt) - 1) * 100).toFixed(2);
+
+		if (transformedSizeInt == originalSizeInt) {
+			return 0;
+		} else if (pctChange > 0) {
+			return  Math.abs(pctChange);
+		} else if (pctChange < 0) {
+			return Math.abs(pctChange);
+		}
+	};
+	
 
 	global.showSummaryTable = function(display_mode) {
 		var summaryTable = document.getElementById('conversionSummary');
 		summaryTable.style.display = 'block';
 
 		if (display_mode == 'piez-a2') {
-			summaryTable.innerHTML =    '<div class="col-1-4-box"><h1 id="col-1-title">Policy Version</h1><h3 id="col-1-info">&nbsp</h3></div>' +
-										'<div class="col-1-4-box"><h1 id="col-2-title">Preconnects</h1><h3 id="col-2-info">&nbsp</h3></div>' +
-										'<div class="col-1-4-box"><h1 id="col-3-title">Pushed Resources</h1><h3 id="col-3-info">&nbsp</h3></div>' +
-										'<div class="col-1-4-box"><h1 id="col-4-title">Page Load Time (ms)</h1><h3 id="col-4-info">&nbsp</h3></div>';
-		}
-		else if (display_mode == 'piez-ro-simple' || display_mode == 'piez-ro-advanced') {
-			summaryTable.innerHTML =    '<div class="col-1-4-box"><h1 id="col-1-title">Not RO Optimized</h1><h3 id="col-1-info">&nbsp</h3></div>' +
-										'<div class="col-1-4-box"><h1 id="col-2-title">Optimized</h1><h3 id="col-2-info">&nbsp;</h3></div>' +
-										'<div class="col-1-4-box"><h1 id="col-3-title">Total Saved Bytes</h1><h3 id="col-3-info">&nbsp;</h3></div>' +
-										'<div class="col-1-4-box"><h1 id="col-4-title">% Bytes Change</h1><h3 id="col-4-info">&nbsp;</h3></div>';
-		}
-		else if (display_mode == 'piez-3pm') {
-			summaryTable.innerHTML =    '<div class="col-1-4-box"><h1 id="col-1-title">Deferred</h1><h3 id="col-1-info">&nbsp</h3></div>' +
-										'<div class="col-1-4-box"><h1 id="col-2-title">SPOF-Protected</h1><h3 id="col-2-info">&nbsp;</h3></div>' +
-										'<div class="col-1-4-box"><h1 id="col-3-title">Blocked</h1><h3 id="col-3-info">&nbsp;</h3></div>' +
-										'<div class="col-1-4-box"><h1 id="col-4-title">Total</h1><h3 id="col-4-info">&nbsp;</h3></div>';
-		}
-		else {
-			summaryTable.innerHTML =    '<div class="col-1-4-box"><h1 id="col-1-title">Optimized Realtime</h1><h3 id="col-1-info">&nbsp</h3></div>' +
-										'<div class="col-1-4-box"><h1 id="col-2-title">Optimized Offline</h1><h3 id="col-2-info">&nbsp;</h3></div>' +
-										'<div class="col-1-4-box"><h1 id="col-3-title">Total Saved Bytes</h1><h3 id="col-3-info">&nbsp;</h3></div>' +
-										'<div class="col-1-4-box"><h1 id="col-4-title">% Bytes Change</h1><h3 id="col-4-info">&nbsp;</h3></div>';
+			summaryTable.innerHTML =
+				'<div class="col-1-4-box"><h1 id="col-1-title">Policy Version</h1><h3 id="col-1-info">&nbsp</h3></div>' +
+				'<div class="col-1-4-box"><h1 id="col-2-title">Preconnects</h1><h3 id="col-2-info">&nbsp</h3></div>' +
+				'<div class="col-1-4-box"><h1 id="col-3-title">Pushed Resources</h1><h3 id="col-3-info">&nbsp</h3></div>' +
+				'<div class="col-1-4-box"><h1 id="col-4-title">Page Load Time (ms)</h1><h3 id="col-4-info">&nbsp</h3></div>';
+		} else if (display_mode == 'piez-ro-simple' || display_mode == 'piez-ro-advanced') {
+			summaryTable.innerHTML =    
+				'<div class="col-1-4-box"><h1 id="col-1-title">Not RO Optimized</h1><h3 id="col-1-info">&nbsp</h3></div>' +
+				'<div class="col-1-4-box"><h1 id="col-2-title">Optimized</h1><h3 id="col-2-info">&nbsp;</h3></div>' +
+				'<div class="col-1-4-box"><h1 id="col-3-title">Total Saved Bytes</h1><h3 id="col-3-info">&nbsp;</h3></div>' +
+				'<div class="col-1-4-box"><h1 id="col-4-title">% Bytes Change</h1><h3 id="col-4-info">&nbsp;</h3></div>';
+		} else if (display_mode == 'piez-3pm') {
+			summaryTable.innerHTML =    
+				'<div class="col-1-4-box"><h1 id="col-1-title">Deferred</h1><h3 id="col-1-info">&nbsp</h3></div>' +
+				'<div class="col-1-4-box"><h1 id="col-2-title">SPOF-Protected</h1><h3 id="col-2-info">&nbsp;</h3></div>' +
+				'<div class="col-1-4-box"><h1 id="col-3-title">Blocked</h1><h3 id="col-3-info">&nbsp;</h3></div>' +
+				'<div class="col-1-4-box"><h1 id="col-4-title">Total</h1><h3 id="col-4-info">&nbsp;</h3></div>';
+		} else {
+			summaryTable.innerHTML =    
+				'<div class="col-1-4-box"><h4 id="col-1-title"><h4 id="col-1-info">&nbsp</h4></h4><div id="block_container"><h4 id="bloc1">Savings :</h4><h4 id="col-1-2-info">&nbsp</h4><h4 id="col-1-3-info">&nbsp</h4></div></div>' +
+				'<div class="col-1-4-box"><h4 id="col-2-title"><h4 id="col-2-info">&nbsp;</h4><div id="block_container"><h4 id="bloc2">Savings :</h4><h4 id="col-2-2-info">&nbsp</h4><h4 id="col-2-3-info">&nbsp</h4></div></div>' +
+				'<div class="col-1-4-box"><h4 id="col-3-title">Total Saved Bytes</h4><h4 id="col-3-info" class="success"∂>&nbsp;</h4></div>' +
+				'<div class="col-1-4-box"><h4 id="col-4-title">% Bytes Change</h4><h4 id="col-4-info">&nbsp;</h4></div>';
 		}
 	};
 
@@ -70,23 +84,26 @@
 			} else {
 				document.getElementById('col-4-info').textContent = '\u00A0';
 			}
-		}
-		else if(display_mode === 'piez-ro-simple'|| display_mode == 'piez-ro-advanced') {
-			document.getElementById('col-1-info').textContent = page.totalNonRoResources.toString();
+		} else if(display_mode === 'piez-ro-simple'|| display_mode == 'piez-ro-advanced') {
+			document.getElementById('col-1-info').textContent = page.totalNonRoResources.toString() 
 			document.getElementById('col-2-info').textContent = page.totalRoOfflineTransforms.toString();
 			document.getElementById('col-3-info').textContent = displayBytes(page.totalRoOriginalSize - (page.totalRoOfflineTransformSize));
 			document.getElementById('col-4-info').innerHTML   = displayPercentChange(page.totalRoOriginalSize, (page.totalRoOfflineTransformSize));
-		}
-		else if (display_mode == 'piez-3pm') {
+		} else if (display_mode == 'piez-3pm') {
 			document.getElementById('col-1-info').textContent = page.total3PmDeferred.toString();
 			document.getElementById('col-2-info').textContent = page.total3PmSpofProtected.toString();
 			document.getElementById('col-3-info').textContent = page.total3PmSpofBlocked.toString();
 			document.getElementById('col-4-info').textContent = page.total3PmResources.toString();
-		}
+		} else {
+			//  Video
+			document.getElementById('col-1-info').textContent = "Optimized videos :  " + page.countImVideosTransformed.toString(); 
+			document.getElementById('col-1-2-info').innerHTML = AllfileSizeDiff(page.totalVideoOriginalMb,page.totalVideoTransformedMb);
+			document.getElementById('col-1-3-info').innerHTML = displayPercentChange(page.totalVideoOriginalMb,page.totalVideoTransformedMb);
+			// Images			
+			document.getElementById('col-2-info').textContent = "Optimized images :  " + page.countImImagesTransformed.toString();
+			document.getElementById('col-2-2-info').innerHTML = AllfileSizeDiff(page.totalImageOriginalMb,page.totalImageTransformedMb);
+			document.getElementById('col-2-3-info').innerHTML = displayPercentChange(page.totalImageOriginalMb,page.totalImageTransformedMb);
 
-		else {
-			document.getElementById('col-1-info').textContent = page.totalICImagesTransformed.toString();
-			document.getElementById('col-2-info').textContent = page.totalIMImagesTransformed.toString();
 			document.getElementById('col-3-info').textContent = displayBytes(page.totalImIcOriginalSize - (page.totalImTransformSize + page.totalIcTransformSize));
 			document.getElementById('col-4-info').innerHTML   = displayPercentChange(page.totalImIcOriginalSize, (page.totalImTransformSize + page.totalIcTransformSize));
 		}
@@ -97,19 +114,16 @@
 		if (display_mode === 'piez-a2') {
 			document.getElementById('detailsBox1Title').textContent = 'Preconnected Resources';
 			document.getElementById('detailsBox2Title').textContent = 'Pushed Resources';
-		}
-		 else if (display_mode === 'piez-ro-simple' || display_mode == 'piez-ro-advanced') {
+		} else if (display_mode === 'piez-ro-simple' || display_mode == 'piez-ro-advanced') {
 			document.getElementById('detailsBox1Title').textContent = 'Optimized Details';
 			document.getElementById('detailsBox2Title').textContent = 'In Progress Details';
 			document.getElementById('detailsBox3Title').textContent = 'Not Optimized';
-		}
-		else if (display_mode == 'piez-3pm') {
+		} else if (display_mode == 'piez-3pm') {
 			document.getElementById('detailsBox1Title').textContent = 'Script Managment Details';
-		}
-		else {
-			document.getElementById('detailsBox1Title').textContent = 'Optimized Offline Details';
+		} else {
+			document.getElementById('detailsBox1Title').textContent = 'Optimization Details';
 			document.getElementById('detailsBox2Title').textContent = 'Optimized Realtime Details';
-			document.getElementById('detailsBox3Title').textContent = 'Non Image Manager Images';
+			document.getElementById('detailsBox3Title').textContent = 'Non Image Manager';
 		}
 	};
 
@@ -124,25 +138,33 @@
 		document.getElementById('notEnabled').innerHTML            = "<div class='piezConfigMessageHeader'>" + message_header + '</div>' + "<div class='piezConfigMessageSteps'>" + message_steps + '</div>';
 	};
 
+	global.AllfileSizeDiff = function(originalSize, transformedSize) {
+		if (parseInt(originalSize) > parseInt(transformedSize)) {
+			return '<span class="success">' + displayBytes(originalSize-transformedSize) + '</td>';
+		} else if (parseInt(originalSize) < parseInt(transformedSize)){
+			return '<span class="error">' + displayBytes(originalSize-transformedSize) + '</td>';
+		} else {
+			return '<span class="warning">' + displayBytes(originalSize-transformedSize) + '</td>';
+		}
+	};
+	
 	global.fileSizeDiff = function(originalSize, transformedSize) {
 		if (parseInt(originalSize) > parseInt(transformedSize)) {
 			return '<td class="success">' + displayBytes(transformedSize) + '</td>';
-		}
-		else if (parseInt(originalSize) < parseInt(transformedSize)){
+		} else if (parseInt(originalSize) < parseInt(transformedSize)){
 			return '<td class="error">' + displayBytes(transformedSize) + '</td>';
-		}
-		else {
+		} else {
 			return '<td class="warning">' + displayBytes(transformedSize) + '</td>';
 		}
 	};
 
 	global.hideDetails = function(display_mode) {
 		//insert blank space to keep box height
-		document.getElementById('col-1-info').textContent        = '\u00A0';
-		document.getElementById('col-2-info').textContent        = '\u00A0';
-		document.getElementById('col-3-info').textContent        = '\u00A0';
-		document.getElementById('col-4-info').textContent        = '\u00A0';
-		document.getElementById('imageBox').style.display        = 'none';
+		document.getElementById('col-1-info').textContent    = '\u00A0';
+		document.getElementById('col-2-info').textContent    = '\u00A0';
+		document.getElementById('col-3-info').textContent    = '\u00A0';
+		document.getElementById('col-4-info').textContent    = '\u00A0';
+		document.getElementById('imageBox').style.display    = 'none';
 		document.getElementById('detailsBox1').style.display = 'none';
 		document.getElementById('detailsBox2').style.display = 'none';
 		document.getElementById('detailsBox3').style.display = 'none';

@@ -4,7 +4,6 @@ function ImageToggle() {
 	this.trImageElement = document.getElementById('toggleTransformedImage');
 	this.transformedSelected = document.getElementById('transformedImage');
 	this.originalSelected = document.getElementById('originalImage');
-
 	instance = this;
 
 	this.toggleBox.onclick = function() {
@@ -16,8 +15,7 @@ function ImageToggle() {
 		if (instance.transformedSelected.className == 'unselectedImage' && instance.originalSelected.className == 'unselectedImage') {
 			instance.transformedSelected.className = 'selectedImage';
 			instance.originalSelected.className = 'unselectedImage';
-		}
-		else {
+		} else {
 			var swapSelectedImage = instance.transformedSelected.className;
 			instance.transformedSelected.className = instance.originalSelected.className;
 			instance.originalSelected.className = swapSelectedImage;
@@ -42,7 +40,7 @@ ImageToggle.prototype.addImages = function(originalImage, transformedImage) {
 	};
 
 	oImage.onload = function() {
-		document.getElementById("imageToggleBoxMessage").style.visibility = 'visible';
+		document.getElementById("toggleBoxMessage").style.visibility = 'visible';
 		document.getElementById("imageToggleBox").style.display = 'block';
 		document.getElementById("ImageAjaxloader").style.display = 'none';
 

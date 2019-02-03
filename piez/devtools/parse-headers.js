@@ -5,15 +5,16 @@
 		if (display_mode === 'piez-a2') { //A2 does parsing separate from this
 			return;
 		}
-		if (/x-im-original-size/i.test(JSON.stringify(http_transaction.response.headers))) {
-			page.totalIMImagesTransformed += 1;
+		//&& http_transaction.response.status==200
+		if (/x-im-original-size/i.test(JSON.stringify(http_transaction.response.headers)) ) {
+			
 			parseImHeaders(http_transaction, page, display_mode);
 		}
 		// Real Time IM and IC
 		else if (/x-image-server-original-size/i.test(JSON.stringify(http_transaction.response.headers))) {
 			page.totalICImagesTransformed += 1;
 			parseIcHeaders(http_transaction, page);
-		}
+		}	
 		else if (/X-Akam-SW-Deferred/i.test(JSON.stringify(http_transaction.response.headers))) {
 			page.total3PmDeferred += 1;
 			parse3PmHeaders(http_transaction, page);

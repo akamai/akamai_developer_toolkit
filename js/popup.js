@@ -283,7 +283,7 @@ chrome.runtime.onMessage.addListener(
   $('.versionNumber').attr("data-badge-caption", "v" + chrome.runtime.getManifest().version);
   loadCredentialList();
   loadActiveCredentiallist();
-  loadProxy();
+  //loadProxy();
   loadTwitter();
   ifPiezisinstalled();
   loadDialog();
@@ -291,7 +291,6 @@ chrome.runtime.onMessage.addListener(
  
 
 
-/*
   $(document).on('click', '#addProxyBtn', addProxy);
   $(document).on('click', '#flushdns', function() {
     chrome.runtime.sendMessage({type: "gaq", target: "flushdns", behavior: "clicked"});
@@ -523,7 +522,7 @@ chrome.runtime.onMessage.addListener(
     $('#editProxyForm').remove();
   });
 
-  */
+
 /*
   $(document).on('click', '#loadgettingstartedvideo', function() {
     chrome.runtime.sendMessage({type: "gaq", target: "View_getting_started_video", behavior: "clicked"});
@@ -531,15 +530,13 @@ chrome.runtime.onMessage.addListener(
       url: 'https://www.youtube.com/watch?v=6PhU7lwOqHM'
     });
   });
-  */
+*/
 
   $(document).on('click', '#loadtour', function() {
     chrome.runtime.sendMessage({type: "gaq", target: "View_getting_started_tour", behavior: "clicked"});
     $('#notification').empty().hide();
     jQuery.tour(tourSteps);
   });
-
-
 
 
 
@@ -567,14 +564,7 @@ chrome.runtime.onMessage.addListener(
       });
     });
   });
-  */
-
-  $('#feedbackform, #feedbackformlink').click(function() {
-    chrome.runtime.sendMessage({type: "gaq", target: "View_feedback_form", behavior: "clicked"});
-    chrome.tabs.create({
-      url: 'https://goo.gl/forms/7ZaZ7XMATVQ8xEyu1'
-    });
-  });
+ */ 
 
   $('.userguide').click(function() {
     chrome.runtime.sendMessage({type: "gaq", target: "User_guide_clicked", behavior: "clicked"});
@@ -609,6 +599,13 @@ chrome.runtime.onMessage.addListener(
     chrome.tabs.create({url: 'https://youtu.be/YZsaQZzMtmM'});
   });
   */
+
+ $('#feedbackform, #feedbackformlink').click(function() {
+  chrome.runtime.sendMessage({type: "gaq", target: "View_feedback_form", behavior: "clicked"});
+  chrome.tabs.create({
+    url: 'https://goo.gl/forms/7ZaZ7XMATVQ8xEyu1'
+  });
+});
 
   $('#devpopssignuplink').click(function(){
     chrome.runtime.sendMessage({type: "gaq", target: "DevPoPs Sign Up Link", behavior: "clicked"});

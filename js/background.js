@@ -268,8 +268,8 @@ chrome.notifications.onClicked.addListener(function(event){
       });
     });
   }, {urls: ["<all_urls>"]}, ['asyncBlocking']
-);*/
-
+);
+*/
 
 // This is Temporary. will be removed in next version
 var initStorageTemp = function() {

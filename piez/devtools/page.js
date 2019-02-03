@@ -6,9 +6,17 @@
 		this.pageLoadTime                 = 0;
 		this.totalImIcOriginalSize        = 0;
 		this.totalImTransformSize         = 0;
-		this.totalIMImagesTransformed     = 0;
 		this.imDownloadDetails            = [];
 		this.localCacheEnabled            = false;
+
+		// /Advan changes
+		this.countImImagesTransformed	  = 0;		
+		this.totalImageOriginalMb		  = 0;
+		this.totalImageTransformedMb	  = 0;
+		
+		this.countImVideosTransformed	  = 0;
+		this.totalVideoOriginalMb		  = 0;
+		this.totalVideoTransformedMb	  = 0;
 
 		this.totalIcTransformSize         = 0;
 		this.totalICImagesTransformed     = 0;
