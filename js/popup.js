@@ -135,7 +135,7 @@ function loadTwitter(){
   }(document, "script", "twitter-wjs"));
   var atag = document.createElement("a");
   atag.text = "Tweet";
-  atag.href = "https://twitter.com/intent/tweet?text=This%20is%20awesome%21%20I%20can%20now%20control%20and%20debug%20Akamai%20features%20directly%20from%20my%20workspace.%20Check%20out%20the%20new%20Akamai%20developer%20toolkit%20chrome%20extension%20https%3A%2F%2Fakamaidevops.page.link%2Fshare%20";
+  atag.href = "https://twitter.com/intent/tweet?text=Are%20you%20a%20CDN%20admin%20that%20gets%20requests%20daily%20to%20purge%20content%2C%20translate%20Akamai%20error%20codes%2C%20pull%20Akamai%20logs%20or%20test%20new%20Akamai%20APIs%3F%20Checkout%20this%20chrome%20extension%20that%20allows%20users%20to%20do%20all%20these%20common%20tasks%20directly%20from%20within%20your%20Chrome%20workspace%20https%3A%2F%2Fc.akamai.tools%2Fchrome";
   atag.setAttribute("class", "twitter-share-button");
   atag.setAttribute("data-size", "large");
   $('.twitter-wjs').prepend(atag);

@@ -54,6 +54,6 @@ function isValidIPv4(ip) {
 }
 
 function isValidDomain(domain) {
-  var domainre= /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+/g;
+  var domainre= /^((?!-))(xn--)?[a-z0-9][a-z0-9-_]{0,61}[a-z0-9]{0,}\.?((xn--)?([a-z0-9\-.]{1,61}|[a-z0-9-]{1,30})\.?[a-zA-Z0-9]{2,})$/i;
   return domainre.test(domain);
 }
