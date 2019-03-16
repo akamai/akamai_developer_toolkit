@@ -4,8 +4,8 @@ var akamai_debug_headers = [
   "akamai-x-check-cacheable",
   "akamai-x-get-cache-key",
   "akamai-x-get-true-cache-key",
-  "akamai-x-get-extracted-values",
   "akamai-x-get-request-id",
+  "akamai-x-get-brotli-status",
   "akamai-x-serial-no",
   "akamai-x-get-ssl-client-session-id",
   "akamai-x-get-client-id"
