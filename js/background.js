@@ -223,19 +223,21 @@ chrome.contextMenus.onClicked.addListener(function(event){
     return false;
   }
 
-  chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tabs) {
-    var tab = tabs[0]; 
-    chrome.tabs.executeScript(tab.id, {file: "js/jquery-3.1.1.min.js"}, function() {
-      chrome.tabs.executeScript(tab.id, {file: "js/HoldOn.min.js"}, function() {
-        chrome.tabs.executeScript(tab.id, {file: "js/modal.js"}, function() {
-          chrome.tabs.sendMessage(tab.id, {action: "open"}, function(response) {
-            makePurgeRequest([currentUrl], network, function(){
-              chrome.tabs.sendMessage(tab.id, {action: "close"});
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    if (tabs.length) {
+      var tab = tabs[0];
+      chrome.tabs.executeScript(tab.id, {file: "js/jquery-3.1.1.min.js"}, function() {
+        chrome.tabs.executeScript(tab.id, {file: "js/HoldOn.min.js"}, function() {
+          chrome.tabs.executeScript(tab.id, {file: "js/modal.js"}, function() {
+            chrome.tabs.sendMessage(tab.id, {action: "open"}, function(response) {
+              makePurgeRequest([currentUrl], network, function(){
+                chrome.tabs.sendMessage(tab.id, {action: "close"});
+              });
             });
           });
         });
       });
-    });
+    }
   });
 });
 
