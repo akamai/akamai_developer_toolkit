@@ -58,9 +58,16 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 beforeSendCallback = function(details) {
-  if(/^[^:]*:(?:\/\/)?(?:[^\/]*\.)?akamaiapis.net\/.*$/.test(details.url) || /^https:\/\/ac\.akamai\.com\/.*/.test(details.url)) {
+  // URLs to not add headers for, because they don't support ACAO or have known issues with CORS pre-flight
+  if(/^[^:]*:(?:\/\/)?(?:[^\/]*\.)?akamaiapis.net\/.*$/.test(details.url) ||
+     /^https:\/\/ac\.akamai\.com\/.*/.test(details.url) ||
+     // Google Fonts
+     /fonts\.gstatic\.com/.test(details.url) ||
+     // Akamai mPulse
+     /\.go-mpulse\.net/.test(details.url)) {
     return;
   }
+
   if (akamaiDebugHeaderSwitchStateCached === 'ON' && details.url.indexOf('http') != -1) {
     switch(piezCurrentStateCached) {
       case "piez-off":
