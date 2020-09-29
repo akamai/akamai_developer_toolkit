@@ -587,27 +587,33 @@
                     </div>
                     
                     <div class="row row-stacked">
-                      <div class="col s12">
-                        <span><h6>Select which mode you would like Piez to operate on</h6></span>
-                        <div class='piez-main'>
-                          <form id='piezConfigForm'>
-                            <input type="radio" name="piezRadio" id="piez-off" value="piez-off">
-                            <label for="piez-off">Disabled</label><br>
-                            <input type="radio" name="piezRadio" id="piez-im-simple" value="piez-im-simple">
-                            <label for="piez-im-simple">Image Manager (Simple)</label><br>
-                            <input type="radio" name="piezRadio" id="piez-im-advanced" value="piez-im-advanced">
-                            <label for="piez-im-advanced">Image Manager (Advanced)</label><br>
-                            <input type="radio" name="piezRadio" id="piez-a2" value="piez-a2">
-                            <label for="piez-a2">Push/Preconnect</label><br>
-                            <input type="radio" name="piezRadio" id="piez-ro-simple" value="piez-ro-simple">
-                            <label for="piez-ro-simple">Resource Optimizer (Simple)</label><br>
-                            <input type="radio" name="piezRadio" id="piez-ro-advanced" value="piez-ro-advanced">
-                            <label for="piez-ro-advanced">Resource Optimizer (Advanced)</label><br>
-                            <input type="radio" name="piezRadio" id="piez-3pm" value="piez-3pm">
-                            <label for="piez-3pm">Script Management</label><br>
-                          </form>
+                        <div class="col s12">
+                            <span><h6>Select which mode you would like Piez to operate on</h6></span>
+                            <div class='piez-main'>
+                                <form id='piezConfigForm'>
+                                    <input type="radio" name="piezRadio" id="piez-off" value="piez-off">
+                                    <label for="piez-off">Disabled</label><br>
+                                    <input type="radio" name="piezRadio" id="piez-im-simple" value="piez-im-simple">
+                                    <label for="piez-im-simple">Image Manager (Simple)</label><br>
+                                    <input type="radio" name="piezRadio" id="piez-im-advanced" value="piez-im-advanced">
+                                    <label for="piez-im-advanced">Image Manager (Advanced)</label><br>
+                                    <input type="radio" name="piezRadio" id="piez-a2" value="piez-a2">
+                                    <label for="piez-a2">Push/Preconnect</label><br>
+                                    <input type="radio" name="piezRadio" id="piez-ro-simple" value="piez-ro-simple">
+                                    <label for="piez-ro-simple">Resource Optimizer (Simple)</label><br>
+                                    <input type="radio" name="piezRadio" id="piez-ro-advanced" value="piez-ro-advanced">
+                                    <label for="piez-ro-advanced">Resource Optimizer (Advanced)</label><br>
+                                    <input type="radio" name="piezRadio" id="piez-3pm" value="piez-3pm">
+                                    <label for="piez-3pm">Script Management</label><br>
+                                </form>
+                            </div>
                         </div>
-                      </div>
+                        <div class="col s12">
+                            <div class="input-field">
+                                <textarea id="piez-urls" class="materialize-textarea" placeholder="www.akamai.com,test.example.com,www.example.co.uk"></textarea>
+                                <label for="purgeurls">List of URLs to inject with headers for Piez</label>
+                            </div>
+                        </div>
                     </div>
                   </div>
                 </div>
