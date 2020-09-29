@@ -61,20 +61,11 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 beforeSendCallback = function(details) {
 
-
-
-    var urlobj = new URL(details.url);
-    var hostname = urlobj.hostname;
-
-    console.log(hostname)
-    
-
-    if (piezUrls.indexOf(hostname) == -1) {
-        return;
-    } 
-
-    console.log("Match" + hostname);
-
+  var urlobj = new URL(details.url);
+  var hostname = urlobj.hostname;
+  if (piezUrls.indexOf(hostname) == -1) {
+       return;
+  } 
 
   if (akamaiDebugHeaderSwitchStateCached === 'ON' && details.url.indexOf('http') != -1) {
     switch(piezCurrentStateCached) {
@@ -237,10 +228,7 @@ var setPiezCurrentState = function(state) {
 
 // Piez
 var setPiezUrls = function (urls) {
-    console.log("setting urls " + urls);
-
     var urls_array = urls.split(',')
-
     piezUrls = urls_array;
 }
 
