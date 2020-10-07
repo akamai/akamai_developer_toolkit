@@ -41,6 +41,13 @@ document.getElementById("piez-3pm").onclick = function() {
   });
 };
 
+document.getElementById("piez-urls").onchange = function () {
+    chrome.runtime.sendMessage({
+        type: "piez-urls",
+        value: document.getElementById("piez-urls").value
+    });
+};
+
 var setFormField = function(piezSettings) {
   chrome.storage.local.get("piezCurrentState", function(result) {
     document.getElementById(result["piezCurrentState"]).checked = true;

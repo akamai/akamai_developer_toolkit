@@ -31,6 +31,8 @@ var piezCurrentStateOptions = {
   }
 };
 
+
+var piezUrls = '';
 var piezCurrentStateCached = '';
 var akamaiDebugHeaderSwitchStateCached = '';
 
@@ -58,9 +60,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 beforeSendCallback = function(details) {
-  if(/^[^:]*:(?:\/\/)?(?:[^\/]*\.)?akamaiapis.net\/.*$/.test(details.url) || /^https:\/\/ac\.akamai\.com\/.*/.test(details.url)) {
-    return;
-  }
+
+  var urlobj = new URL(details.url);
+  var hostname = urlobj.hostname;
+  if (piezUrls.indexOf(hostname) == -1) {
+       return;
+  } 
+
   if (akamaiDebugHeaderSwitchStateCached === 'ON' && details.url.indexOf('http') != -1) {
     switch(piezCurrentStateCached) {
       case "piez-off":
@@ -177,7 +183,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       break;
     case "piez-3pm":
       setPiezCurrentState('piez-3pm');
-      break;
+          break;
+      case "piez-urls":
+          setPiezUrls(request.value);
+          break;
     default:
       // console.log('Unexpected extension request. ', request);
       break;
@@ -215,6 +224,15 @@ var setPiezCurrentState = function(state) {
     });
   }
 }
+
+
+// Piez
+var setPiezUrls = function (urls) {
+    var urls_array = urls.split(',')
+    piezUrls = urls_array;
+}
+
+
 
 var initPiezStorageState = function() {
   chrome.storage.local.get("piezCurrentState", function(result) {
