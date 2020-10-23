@@ -43,13 +43,10 @@
   "content_security_policy": "script-src 'self' https://ssl.google-analytics.com https://platform.twitter.com https://www.gstatic.com ; object-src 'self'",
   "name":"Akamai Developer Toolkit",
   "permissions":[
-    "idle",
-    "alarms",
     "notifications",
     "tabs",
     "activeTab",
     "storage",
-    "cookies",
     "webNavigation",
     "contextMenus",
     "management",
@@ -59,7 +56,7 @@
     "webRequestBlocking"
   ],
   "update_url":"https://clients2.google.com/service/update2/crx",
-  "version":"2.0.40",
+  "version":"2.0.41",
   "web_accessible_resources":[
     "fonts/*.*",
     "js/jquery-3.1.1.min.js",
