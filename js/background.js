@@ -125,8 +125,6 @@ chrome.runtime.onStartup.addListener(function() {
   initFastPurgeStorage();
   initDebugReqStorage();
   initStorageTemp(); 
-  initPiezStorageState();
-  initDebugHeaderSwitchState();
   initCmanagerStorageState();
   initOpenAPIStorage();
 });
@@ -136,8 +134,6 @@ window.onload = function() {
   initFastPurgeStorage();
   initDebugReqStorage();
   initStorageTemp(); 
-  initPiezStorageState();
-  initDebugHeaderSwitchState();
   initCmanagerStorageState();
   initOpenAPIStorage();
 };
@@ -177,9 +173,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
   }
   initFastPurgeStorage();
   initDebugReqStorage();
-  initStorageTemp(); 
-  initPiezStorageState();
-  initDebugHeaderSwitchState();
+  initStorageTemp();
   initCmanagerStorageState();
   initOpenAPIStorage();
 });
@@ -304,15 +298,15 @@ var initStorageTemp = function() {
   });
 
   // for fastpurge records migration - temporary
-	chrome.storage.local.get(null, function(data) {
-		var arr_history = [];
+  chrome.storage.local.get(null, function(data) {
+    var arr_history = [];
     var arr_history_keys = [];
-		for (var key in data) {
-			if (key.startsWith("H_")) {
-				arr_history.push(data[key]);
+    for (var key in data) {
+      if (key.startsWith("H_")) {
+        arr_history.push(data[key]);
         arr_history_keys.push(key);
-			}
-		}
+      }
+    }
     if (arr_history_keys.length > 0) {
       chrome.storage.local.remove(arr_history_keys, function(){
         console.log("Removed old format purge records");
@@ -330,16 +324,16 @@ var initStorageTemp = function() {
         });
       });
     }
-	});
+  });
 
   // for D_Debug records - temporary
-	chrome.storage.local.get(null, function(data) {
+  chrome.storage.local.get(null, function(data) {
     var arr_history_keys = [];
-		for (var key in data) {
-			if (key.startsWith("D_")) {
+    for (var key in data) {
+      if (key.startsWith("D_")) {
         arr_history_keys.push(key);
-			}
-		}
+      }
+    }
     if (arr_history_keys.length > 0) {
       chrome.storage.local.remove(arr_history_keys, function(){
         console.log("Removed old format debugreq records");
@@ -347,22 +341,3 @@ var initStorageTemp = function() {
     }
   });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
