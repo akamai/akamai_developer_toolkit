@@ -141,7 +141,7 @@ function loadTwitter(){
   $('.twitter-wjs').prepend(atag);
 }
 
-function ifPiezisinstalled() {
+/*function ifPiezisinstalled() {
   chrome.management.get('npbccjkjemgagjioahfccljgnlkdleod', function(details) {
     if(details) {
       if(details.name === 'Piez') {
@@ -158,8 +158,7 @@ function ifPiezisinstalled() {
       }
     }
   });
-}
-
+}*/
 
 $(document).ready(function() {
 
@@ -285,7 +284,7 @@ chrome.runtime.onMessage.addListener(
   loadActiveCredentiallist();
   //loadProxy();
   loadTwitter();
-  ifPiezisinstalled();
+  //ifPiezisinstalled();
   loadDialog();
   loadUpdateDialog();
  
