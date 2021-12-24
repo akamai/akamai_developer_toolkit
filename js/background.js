@@ -39,7 +39,6 @@ var showBasicNotification = function(title, message, img = img_info) {
   });
 }
 
-
 //open popup.html as a separate window every time a user clicks on the ext icon
 chrome.browserAction.onClicked.addListener(function(tab) {
   chrome.windows.create({
@@ -200,7 +199,8 @@ chrome.contextMenus.create({
 
 chrome.contextMenus.onClicked.addListener(function(event){
   var network = "staging";
-  if (event.srcUrl != null) {
+  var currentUrl = event.frameUrl || event.pageUrl;
+  if (currentUrl != null) {
     switch (event.menuItemId) {
       case "akamaidevtoolkitchild1":
         network = "staging";
@@ -216,18 +216,22 @@ chrome.contextMenus.onClicked.addListener(function(event){
     alert("URL does not exist");
     return false;
   }
+
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.executeScript(tabs[0].id, {file: "js/jquery-3.1.1.min.js"}, function() {
-      chrome.tabs.executeScript(tabs[0].id, {file: "js/HoldOn.min.js"}, function() {
-        chrome.tabs.executeScript(tabs[0].id, {file: "js/modal.js"}, function() {
-          chrome.tabs.sendMessage(tabs[0].id, {action: "open"}, function(response) {
-            makePurgeRequest([event.srcUrl], network, function(){
-              chrome.tabs.sendMessage(tabs[0].id, {action: "close"});
+    if (tabs.length) {
+      var tab = tabs[0];
+      chrome.tabs.executeScript(tab.id, {file: "js/jquery-3.1.1.min.js"}, function() {
+        chrome.tabs.executeScript(tab.id, {file: "js/HoldOn.min.js"}, function() {
+          chrome.tabs.executeScript(tab.id, {file: "js/modal.js"}, function() {
+            chrome.tabs.sendMessage(tab.id, {action: "open"}, function(response) {
+              makePurgeRequest([currentUrl], network, function(){
+                chrome.tabs.sendMessage(tab.id, {action: "close"});
+              });
             });
           });
         });
       });
-    });
+    }
   });
 });
 
